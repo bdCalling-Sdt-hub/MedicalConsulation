@@ -8,7 +8,7 @@ import IconLinkedin from "../../public/icons/IconLinkedin";
 
 function Footer() {
   return (
-    <section className={`bg-primary5 py-20`}>
+    <section className={`bg-primary5 pt-20`}>
       <div className="container mx-auto">
         <div>
           <h1
@@ -107,7 +107,11 @@ function Footer() {
             </div>
           </div>
         </div>
-        <div></div>
+        <div className={`border-t border-t-primary1 py-8 mt-10`}>
+          <h1 className={`text-right text-neutral8`}>
+            © 2024 All Rights Reserved by My Doctor Clinic
+          </h1>
+        </div>
       </div>
     </section>
   );

@@ -20,6 +20,8 @@ module.exports = {
         neutral10: "#262626",
         neutral4: "#F0F0F0",
         offBlack: "#00000073",
+        offWhite: "#F0F2F5",
+        gray50: "#00000040",
         secondaryBlack: "#000000D9",
       },
       fontFamily: {
