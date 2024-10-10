@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import about from "../../../public/images/about.png";
 import Banner from "@/components/Banner";
+import AboutUs2 from "@/components/AboutUs2";
 
 const page = () => {
   return (
@@ -10,32 +11,15 @@ const page = () => {
       <Banner />
 
       {/* about us 2 section */}
-      <section className={`py-20 bg-primary2`}>
-        <div className="container mx-auto flex flex-row gap-4">
-          <div className="w-4/12">
-            <h1 className={`text-primary10 text-[48px] font-abril font-bold`}>
-              15 Minutes
-              <br />
-              Consultation
-              <br />
-              with Specialist
-              <br />
-              Doctor
-            </h1>
-            <p className={`text-black font-normal text-lg `}>
-              Every hour, every day
-            </p>
-            <button
-              className={`text-white bg-primary10 font-merri text-sm py-2 px-6 rounded-sm font-normal mt-7`}
-            >
-              Book Now
-            </button>
-          </div>
-          <div className="">
-            <Image src={about} alt="about" />
-          </div>
-        </div>
-      </section>
+      <div className="bg-primary2 pt-10">
+        <p
+          className={`text-sm font-normal font-merri text-offBlack text-center`}
+        >
+          Home
+          <span className={`text-secondaryBlack`}> / About Us</span>
+        </p>
+      </div>
+      <AboutUs2 />
     </>
   );
 };
