@@ -21,7 +21,7 @@ function Header() {
         </div>
         <div className="flex flex-row items-center gap-4">
           <button
-            className={`text-secondaryBlack font-merri text-sm py-2 px-6 rounded-sm font-normal mt-4`}
+            className={`text-secondaryBlack font-merri text-sm py-2 px-6 rounded-sm font-normal`}
           >
             Sign In
           </button>
