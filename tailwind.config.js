@@ -1,9 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
@@ -14,13 +14,16 @@ module.exports = {
         primary4: "#E7DCA6",
         primary6: "#D9C771",
         primary10: "#625A33",
+        primary9: "#7C7140",
         neutral8: "#595959",
+        neutral4: "#F0F0F0",
         offBlack: "#00000073",
+        secondaryBlack: "#000000D9",
       },
       fontFamily: {
-        roboto: ["'Roboto', 'sans-serif'"],
-        abril: ["'Abril Fatface', 'serif'"],
-        merri: ["'Merriweather', 'serif'"],
+        roboto: ["Roboto", "sans-serif"],
+        abril: ["Abril Fatface", "serif"],
+        merri: ["Merriweather", "serif"],
       },
     },
   },
