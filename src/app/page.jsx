@@ -3,6 +3,7 @@ import IconVerifiedSuccess from "../../public/icons/IconVerifiedSuccess";
 import Image from "next/image";
 import patients from "../../public/images/patients.png";
 import about from "../../public/images/about.png";
+import Accordion from "@/components/Accordion";
 
 function Page() {
   return (
@@ -269,7 +270,24 @@ function Page() {
               appointment <br />
               today and discover the unparalleled benefits of MyDoctorClinic.
             </p>
+            <div className={`text-center`}>
+              <button
+                className={`text-secondaryBlack bg-primary2 text-center font-merri text-sm py-2 px-6 rounded-sm font-normal mt-7`}
+              >
+                Book Now
+              </button>
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* FAQ section */}
+      <section className={`bg-white py-20`}>
+        <div className="container mx-auto">
+          <h1 className={`text-black text-2xl font-merri font-normal pb-6`}>
+            Frequently Asked Questions
+          </h1>
+          <Accordion />
         </div>
       </section>
     </>
