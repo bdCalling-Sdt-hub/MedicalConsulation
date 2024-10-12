@@ -1,9 +1,21 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import logo from "../../public/images/logo.png";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 function Header() {
+  const currentLocationPath = usePathname();
+
+  // JSON data for navigation items
+  const navItems = [
+    { name: "Home", path: "/" },
+    { name: "About Us", path: "/about" },
+    { name: "Services", path: "/services" },
+    { name: "FAQ", path: "/faq" },
+  ];
+
   return (
     <section className="bg-primary6">
       <div className="container mx-auto py-4 flex flex-row justify-between items-center">
@@ -14,18 +26,19 @@ function Header() {
           <ul
             className={`flex flex-row items-center gap-8 text-sm font-merri font-regular text-offBlack`}
           >
-            <Link href="/">
-              <li className={`text-black`}>Home</li>
-            </Link>
-            <Link href="/about">
-              <li>About Us</li>
-            </Link>
-            <Link href="/services">
-              <li>Services</li>
-            </Link>
-            <Link href="/faq">
-              <li>FAQ</li>
-            </Link>
+            {navItems.map((item) => (
+              <Link key={item.path} href={item.path}>
+                <li
+                  className={`font-normal ${
+                    currentLocationPath === item.path
+                      ? "text-secondaryBlack"
+                      : "text-offBlack"
+                  }`}
+                >
+                  {item.name}
+                </li>
+              </Link>
+            ))}
           </ul>
         </div>
         <div className="flex flex-row items-center gap-4">

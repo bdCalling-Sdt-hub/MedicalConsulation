@@ -20,7 +20,7 @@ function Services({ title, titleStyle, containerBg }) {
   };
 
   return (
-    <section className={`py-20 ${containerBg || "bg-primary3"}`}>
+    <section className={`${containerBg || "bg-primary3 py-20"}`}>
       <div className="container mx-auto">
         <h1
           className={`${

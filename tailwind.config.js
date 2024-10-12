@@ -27,6 +27,7 @@ module.exports = {
         offWhite: "#F0F2F5",
         gray50: "#00000040",
         secondaryBlack: "#000000D9",
+        offBorder: "#0000000F",
       },
       fontFamily: {
         roboto: ["Roboto", "sans-serif"],

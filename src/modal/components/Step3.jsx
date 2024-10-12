@@ -23,7 +23,7 @@ function Step3() {
 
   return (
     <div>
-      <h1 className={`secondaryBlack text-[20px] font-merri font-normal mb-6`}>
+      <h1 className={`text-secondaryBlack text-[20px] font-merri font-normal mb-6`}>
         Schedule
       </h1>
 

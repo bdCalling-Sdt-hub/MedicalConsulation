@@ -5,6 +5,10 @@ import IconRightArrow from "../../public/icons/IconRightArrow";
 import Services from "../components/Services";
 import Doctors from "./components/Step2";
 import Step3 from "./components/Step3";
+import Step4 from "./components/Step4";
+import Step5 from "./components/Step5";
+import { ToastContainer, toast } from "react-toastify"; // Import Toastify
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 
 function BookAppointment() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,11 +25,17 @@ function BookAppointment() {
 
   const handleCancel = () => {
     setIsModalOpen(false);
-    setCurrentStep(1); // Reset to the first step when modal closes
+    setCurrentStep(1);
   };
 
   const handleNext = () => {
-    if (currentStep < 5) {
+    if (currentStep === 5) {
+      setIsModalOpen(false);
+      toast.success("Congratulations! your appointment has completed!", {
+        autoClose: 2000,
+      });
+      handleCancel();
+    } else if (currentStep < 5) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -78,167 +88,54 @@ function BookAppointment() {
         <div className="p-4">
           {/* Steps navigation */}
           <div className="flex flex-row items-center gap-4 mb-4">
-            <div
-              className={`flex-row flex items-center gap-2 ${
-                currentStep === 1 ? "border-b-[2px] border-b-primary6" : ""
-              } pb-2`}
-            >
+            {/* Step indicators */}
+            {[1, 2, 3, 4, 5].map((step) => (
               <div
-                className={`${
-                  currentStep === 1
-                    ? "bg-primary6 border-primary6"
-                    : "border-gray50"
-                } border w-6 h-6 rounded-full flex items-center justify-center`}
+                key={step}
+                className={`flex-row flex items-center gap-2 ${
+                  currentStep === step ? "border-b-[2px] border-b-primary6" : ""
+                } pb-2`}
               >
-                <h2
-                  className={`font-normal text-base font-merri ${
-                    currentStep === 1 ? "text-white" : "text-gray50"
-                  }`}
+                <div
+                  className={`${
+                    currentStep === step
+                      ? "bg-primary6 border-primary6"
+                      : "border-gray50"
+                  } border w-6 h-6 rounded-full flex items-center justify-center`}
                 >
-                  1
-                </h2>
-              </div>
-              <h3 className="text-offBlack text-base font-roboto font-normal">
-                Step 1
-              </h3>
-              {currentStep >= 1 && (
-                <div className="ml-2">
-                  <IconRightArrow />
+                  <h2
+                    className={`font-normal text-base font-merri ${
+                      currentStep === step ? "text-white" : "text-gray50"
+                    }`}
+                  >
+                    {step}
+                  </h2>
                 </div>
-              )}
-            </div>
-            <div
-              className={`flex-row flex items-center gap-2 ${
-                currentStep === 2 ? "border-b-[2px] border-b-primary6" : ""
-              } pb-2`}
-            >
-              <div
-                className={`${
-                  currentStep === 2
-                    ? "bg-primary6 border-primary6"
-                    : "border-gray50"
-                } border w-6 h-6 rounded-full flex items-center justify-center`}
-              >
-                <h2
-                  className={`font-normal text-base font-merri ${
-                    currentStep === 2 ? "text-white" : "text-gray50"
-                  }`}
-                >
-                  2
-                </h2>
+                <h3 className="text-offBlack text-base font-roboto font-normal">
+                  Step {step}
+                </h3>
+                {currentStep >= step && (
+                  <div className="ml-2">
+                    <IconRightArrow />
+                  </div>
+                )}
               </div>
-              <h3 className="text-offBlack text-base font-roboto font-normal">
-                Step 2
-              </h3>
-              {currentStep >= 2 && (
-                <div className="ml-2">
-                  <IconRightArrow />
-                </div>
-              )}
-            </div>
-            <div
-              className={`flex-row flex items-center gap-2 ${
-                currentStep === 3 ? "border-b-[2px] border-b-primary6" : ""
-              } pb-2`}
-            >
-              <div
-                className={`${
-                  currentStep === 3
-                    ? "bg-primary6 border-primary6"
-                    : "border-gray50"
-                } border w-6 h-6 rounded-full flex items-center justify-center`}
-              >
-                <h2
-                  className={`font-normal text-base font-merri ${
-                    currentStep === 3 ? "text-white" : "text-gray50"
-                  }`}
-                >
-                  3
-                </h2>
-              </div>
-              <h3 className="text-offBlack text-base font-roboto font-normal">
-                Step 3
-              </h3>
-              {currentStep >= 3 && (
-                <div className="ml-2">
-                  <IconRightArrow />
-                </div>
-              )}
-            </div>
-            <div
-              className={`flex-row flex items-center gap-2 ${
-                currentStep === 4 ? "border-b-[2px] border-b-primary6" : ""
-              } pb-2`}
-            >
-              <div
-                className={`${
-                  currentStep === 4
-                    ? "bg-primary6 border-primary6"
-                    : "border-gray50"
-                } border w-6 h-6 rounded-full flex items-center justify-center`}
-              >
-                <h2
-                  className={`font-normal text-base font-merri ${
-                    currentStep === 4 ? "text-white" : "text-gray50"
-                  }`}
-                >
-                  4
-                </h2>
-              </div>
-              <h3 className="text-offBlack text-base font-roboto font-normal">
-                Step 4
-              </h3>
-              {currentStep >= 4 && (
-                <div className="ml-2">
-                  <IconRightArrow />
-                </div>
-              )}
-            </div>
-            <div
-              className={`flex-row flex items-center gap-2 ${
-                currentStep === 5 ? "border-b-[2px] border-b-primary6" : ""
-              } pb-2`}
-            >
-              <div
-                className={`${
-                  currentStep === 5
-                    ? "bg-primary6 border-primary6"
-                    : "border-gray50"
-                } border w-6 h-6 rounded-full flex items-center justify-center`}
-              >
-                <h2
-                  className={`font-normal text-base font-merri ${
-                    currentStep === 5 ? "text-white" : "text-gray50"
-                  }`}
-                >
-                  5
-                </h2>
-              </div>
-              <h3 className="text-offBlack text-base font-roboto font-normal">
-                Step 5
-              </h3>
-              {currentStep >= 5 && (
-                <div className="ml-2">
-                  <IconRightArrow />
-                </div>
-              )}
-            </div>
-            {/* Add similar blocks for other steps if needed */}
+            ))}
           </div>
 
           {/* Body content */}
           <div className="mt-4">
             {currentStep === 1 && (
               <Services
-                containerBg={`bg-trasnparent`}
+                containerBg={`bg-transparent`}
                 title="Choose Consultation Type"
-                titleStyle={`secondaryBlack text-[20px] font-merri font-normal mb-6`}
+                titleStyle={`text-secondaryBlack text-[20px] font-merri font-normal mb-6`}
               />
             )}
             {currentStep === 2 && <Doctors />}
             {currentStep === 3 && <Step3 />}
-            {currentStep === 4 && <h1>Step 4 Content</h1>}
-            {currentStep === 5 && <h1>Step 5 Content</h1>}
+            {currentStep === 4 && <Step4 />}
+            {currentStep === 5 && <Step5 />}
           </div>
         </div>
 
@@ -265,6 +162,8 @@ function BookAppointment() {
           </div>
         </div>
       </Modal>
+
+      <ToastContainer position="top-center" />
     </>
   );
 }

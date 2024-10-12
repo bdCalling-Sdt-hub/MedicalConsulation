@@ -17,3 +17,23 @@
   :where(.css-dev-only-do-not-override-vryruh).ant-modal .ant-modal-content {
     background-color: #F0F2F5;
   }
+/* CustomRadio.css */
+:where(.css-dev-only-do-not-override-vryruh) .ant-radio-wrapper .ant-radio-checked .ant-radio-inner {
+    border-color: #D9C771; /* Color when checked */
+    background-color: #D9C771; /* Background color when checked */
+}
+
+:where(.css-dev-only-do-not-override-vryruh) .ant-radio-wrapper:hover .ant-radio-inner,
+:where(.css-dev-only-do-not-override-vryruh) .ant-radio-wrapper .ant-radio-inner:hover {
+    border-color: #D9C771; /* Hover border color */
+}
+
+:where(.css-dev-only-do-not-override-vryruh) .ant-radio-wrapper:hover .ant-radio-checked .ant-radio-inner {
+    border-color: #D9C771; /* Ensures checked radio has the same color on hover */
+}
+:where(.css-dev-only-do-not-override-vryruh).ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-checked:not(.ant-checkbox-disabled) .ant-checkbox-inner {
+  background-color: #D9C771;
+}
+:where(.css-dev-only-do-not-override-vryruh).ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-inner, :where(.css-dev-only-do-not-override-vryruh).ant-checkbox:not(.ant-checkbox-disabled):hover .ant-checkbox-inner {
+  border-color: #D9C771;
+}

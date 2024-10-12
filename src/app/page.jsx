@@ -7,6 +7,7 @@ import BookAppointment from "@/modal/BookAppointment";
 import FAQ from "@/components/FAQ";
 import Testimonials from "@/components/Testimonials";
 import HealthyTips from "@/components/HealthyTips";
+import { ToastContainer } from "react-toastify";
 
 function Page() {
   return (
@@ -33,6 +34,7 @@ function Page() {
 
       {/* healthy section */}
       <HealthyTips />
+      <ToastContainer />
     </>
   );
 }

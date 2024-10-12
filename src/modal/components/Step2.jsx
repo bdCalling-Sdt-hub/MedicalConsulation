@@ -14,7 +14,9 @@ function Doctors() {
 
   return (
     <div>
-      <h1 className={`secondaryBlack text-[20px] font-merri font-normal mb-6`}>
+      <h1
+        className={`text-secondaryBlack text-[20px] font-merri font-normal mb-6`}
+      >
         Choose your Doctor
       </h1>
 
@@ -41,7 +43,12 @@ function Doctors() {
               </h2>
             </div>
             <div className="flex items-center gap-4 border-t border-t-neutral4 pt-4 mt-2 px-4">
-              <Rate allowHalf defaultValue={doctor?.ratings} count={3} />
+              <Rate
+                allowHalf
+                defaultValue={doctor?.ratings}
+                count={3}
+                style={{ fontSize: 16 }}
+              />
               <h3
                 className={`text-sm text-secondaryBlack font-roboto font-normal`}
               >

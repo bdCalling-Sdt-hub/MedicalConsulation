@@ -30,21 +30,5 @@
     "ratings": 2.6,
     "totalRatings": 75,
     "image": "https://i.pravatar.cc/150?img=4"
-  },
-  {
-    "id": 5,
-    "name": "Dr. Linda Martinez",
-    "serviceName": "Dermatology Checkup",
-    "ratings": 2.9,
-    "totalRatings": 65,
-    "image": "https://i.pravatar.cc/150?img=5"
-  },
-  {
-    "id": 6,
-    "name": "Dr. James Brown",
-    "serviceName": "General Surgery",
-    "ratings": 3.0,
-    "totalRatings": 150,
-    "image": "https://i.pravatar.cc/150?img=6"
   }
 ]
