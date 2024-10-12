@@ -2,7 +2,8 @@
 import { Modal } from "antd";
 import React, { useState } from "react";
 import IconRightArrow from "../../public/icons/IconRightArrow";
-import Services from "./Services";
+import Services from "../components/Services";
+import Doctors from "./components/Doctors";
 
 function BookAppointment() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -225,8 +226,14 @@ function BookAppointment() {
 
           {/* Body content */}
           <div className="mt-4">
-            {currentStep === 1 && <Services />}
-            {currentStep === 2 && <h1>Step 2 Content</h1>}
+            {currentStep === 1 && (
+              <Services
+                containerBg={`bg-trasnparent`}
+                title="Choose Consultation Type"
+                titleStyle={`secondaryBlack text-[20px] font-merri font-normal mb-6`}
+              />
+            )}
+            {currentStep === 2 && <Doctors />}
             {currentStep === 3 && <h1>Step 3 Content</h1>}
             {currentStep === 4 && <h1>Step 4 Content</h1>}
             {currentStep === 5 && <h1>Step 5 Content</h1>}

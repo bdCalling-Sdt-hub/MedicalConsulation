@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "Dr. Alice Johnson",
+    "serviceName": "Cardiology Consultation",
+    "ratings": 3.5,
+    "totalRatings": 120,
+    "image": "https://i.pravatar.cc/150?img=1"
+  },
+  {
+    "id": 2,
+    "name": "Dr. Michael Smith",
+    "serviceName": "Orthopedic Surgery",
+    "ratings": 4.7,
+    "totalRatings": 98,
+    "image": "https://i.pravatar.cc/150?img=2"
+  },
+  {
+    "id": 3,
+    "name": "Dr. Emily Davis",
+    "serviceName": "Pediatric Care",
+    "ratings": 4.8,
+    "totalRatings": 85,
+    "image": "https://i.pravatar.cc/150?img=3"
+  },
+  {
+    "id": 4,
+    "name": "Dr. Robert Williams",
+    "serviceName": "Neurology Consultation",
+    "ratings": 4.6,
+    "totalRatings": 75,
+    "image": "https://i.pravatar.cc/150?img=4"
+  },
+  {
+    "id": 5,
+    "name": "Dr. Linda Martinez",
+    "serviceName": "Dermatology Checkup",
+    "ratings": 4.4,
+    "totalRatings": 65,
+    "image": "https://i.pravatar.cc/150?img=5"
+  },
+  {
+    "id": 6,
+    "name": "Dr. James Brown",
+    "serviceName": "General Surgery",
+    "ratings": 4.9,
+    "totalRatings": 150,
+    "image": "https://i.pravatar.cc/150?img=6"
+  }
+]

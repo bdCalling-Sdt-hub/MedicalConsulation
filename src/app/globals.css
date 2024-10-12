@@ -12,3 +12,8 @@
     font-weight: normal;
     font-style: normal;
   }
+
+  /* ant design customization */
+  :where(.css-dev-only-do-not-override-vryruh).ant-modal .ant-modal-content {
+    background-color: #F0F2F5;
+  }

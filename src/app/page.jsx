@@ -3,7 +3,7 @@ import Banner from "@/components/Banner";
 import AboutUs from "@/components/AboutUs";
 import AboutUs2 from "@/components/AboutUs2";
 import Services from "@/components/Services";
-import BookAppointment from "@/components/BookAppointment";
+import BookAppointment from "@/modal/BookAppointment";
 import FAQ from "@/components/FAQ";
 import Testimonials from "@/components/Testimonials";
 import HealthyTips from "@/components/HealthyTips";
