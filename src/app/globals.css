@@ -19,21 +19,38 @@
   }
 /* CustomRadio.css */
 :where(.css-dev-only-do-not-override-vryruh) .ant-radio-wrapper .ant-radio-checked .ant-radio-inner {
-    border-color: #D9C771; /* Color when checked */
-    background-color: #D9C771; /* Background color when checked */
+    border-color: #D9C771!important; /* Color when checked */
+    background-color: #D9C771!important; /* Background color when checked */
 }
 
 :where(.css-dev-only-do-not-override-vryruh) .ant-radio-wrapper:hover .ant-radio-inner,
 :where(.css-dev-only-do-not-override-vryruh) .ant-radio-wrapper .ant-radio-inner:hover {
-    border-color: #D9C771; /* Hover border color */
+    border-color: #D9C771!important; /* Hover border color */
 }
 
 :where(.css-dev-only-do-not-override-vryruh) .ant-radio-wrapper:hover .ant-radio-checked .ant-radio-inner {
-    border-color: #D9C771; /* Ensures checked radio has the same color on hover */
+    border-color: #D9C771!important; /* Ensures checked radio has the same color on hover */
 }
 :where(.css-dev-only-do-not-override-vryruh).ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-checked:not(.ant-checkbox-disabled) .ant-checkbox-inner {
-  background-color: #D9C771;
+  background-color: #D9C771!important;
 }
 :where(.css-dev-only-do-not-override-vryruh).ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-inner, :where(.css-dev-only-do-not-override-vryruh).ant-checkbox:not(.ant-checkbox-disabled):hover .ant-checkbox-inner {
-  border-color: #D9C771;
+  border-color: #D9C771!important;
+}
+
+:where(.css-dev-only-do-not-override-vryruh).ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #D9C771!important;
+  border-color: #D9C771!important;
+}
+.ant-input, .ant-input-affix-wrapper{
+  border-color: #D9C771!important;
+}
+.ant-input:hover, .ant-input-affix-wrapper:hover{
+  border-color: #D9C771!important;
+}
+.ant-input:focus, .ant-input-affix-wrapper:focus{
+  border-color: #D9C771!important;
+}
+.ant-input-affix-wrapper:focus{
+  border-color: #D9C771!important;
 }
