@@ -31,12 +31,22 @@ function Doctors() {
           >
             <Image src={doctorImage} alt="doctor" />
             <div className={`px-4`}>
-              <h1>{doctor?.name}</h1>
-              <h2>{doctor?.serviceName}</h2>
-              <div className="flex items-center gap-4">
-                <Rate allowHalf defaultValue={doctor?.ratings} count={3} />
-                <h3>{doctor?.totalRatings}</h3>
-              </div>
+              <h1
+                className={`text-base font-merri font-normal text-secondaryBlack my-2`}
+              >
+                {doctor?.name}
+              </h1>
+              <h2 className={`text-sm font-merri font-normal text-offBlack`}>
+                {doctor?.serviceName}
+              </h2>
+            </div>
+            <div className="flex items-center gap-4 border-t border-t-neutral4 pt-4 mt-2 px-4">
+              <Rate allowHalf defaultValue={doctor?.ratings} count={3} />
+              <h3
+                className={`text-sm text-secondaryBlack font-roboto font-normal`}
+              >
+                {doctor?.totalRatings} Ratings
+              </h3>
             </div>
           </div>
         ))}

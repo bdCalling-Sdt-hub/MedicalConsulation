@@ -3,7 +3,8 @@ import { Modal } from "antd";
 import React, { useState } from "react";
 import IconRightArrow from "../../public/icons/IconRightArrow";
 import Services from "../components/Services";
-import Doctors from "./components/Doctors";
+import Doctors from "./components/Step2";
+import Step3 from "./components/Step3";
 
 function BookAppointment() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -72,6 +73,7 @@ function BookAppointment() {
         footer={null}
         maskClosable={false}
         width={"70%"}
+        closeIcon={<span style={{ color: "red", fontSize: "24px" }}>×</span>}
       >
         <div className="p-4">
           {/* Steps navigation */}
@@ -234,7 +236,7 @@ function BookAppointment() {
               />
             )}
             {currentStep === 2 && <Doctors />}
-            {currentStep === 3 && <h1>Step 3 Content</h1>}
+            {currentStep === 3 && <Step3 />}
             {currentStep === 4 && <h1>Step 4 Content</h1>}
             {currentStep === 5 && <h1>Step 5 Content</h1>}
           </div>
@@ -254,12 +256,6 @@ function BookAppointment() {
           )}
 
           <div>
-            <button
-              className="text-secondaryBlack py-2 px-4 rounded-sm text-base font-merri font-medium"
-              onClick={handleCancel}
-            >
-              Cancel
-            </button>
             <button
               className="bg-primary6 text-white py-2 px-4 rounded-sm"
               onClick={handleNext}
