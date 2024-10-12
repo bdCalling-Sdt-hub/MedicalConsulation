@@ -24,7 +24,7 @@ function Doctors() {
             key={doctor.id}
             className={`bg-white pb-4 rounded cursor-pointer border ${
               selectedDoctor?.id === doctor.id
-                ? "border-red-500"
+                ? "border-primary7"
                 : "border-transparent"
             } `}
             onClick={() => handleSelectDoctor(doctor)}
@@ -34,7 +34,7 @@ function Doctors() {
               <h1>{doctor?.name}</h1>
               <h2>{doctor?.serviceName}</h2>
               <div className="flex items-center gap-4">
-                <Rate allowHalf defaultValue={doctor?.ratings} />{" "}
+                <Rate allowHalf defaultValue={doctor?.ratings} count={3} />
                 <h3>{doctor?.totalRatings}</h3>
               </div>
             </div>
