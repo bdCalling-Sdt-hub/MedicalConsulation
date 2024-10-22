@@ -1,6 +1,6 @@
 import { api } from "../api/baseApi";
 
-export const paymentSlices = api.injectEndpoints({
+export const zoomSlices = api.injectEndpoints({
   endpoints: (builder) => ({
     getPaymentRecords: builder.query<null, unknown>({
       query: ({ id, page, limit }) => ({
@@ -29,4 +29,4 @@ export const paymentSlices = api.injectEndpoints({
 });
 
 export const { useGetPaymentRecordsQuery, usePaymentIntentMutation } =
-  paymentSlices;
+  zoomSlices;

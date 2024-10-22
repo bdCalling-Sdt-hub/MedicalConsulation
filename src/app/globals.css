@@ -13,6 +13,22 @@
     font-style: normal;
   }
 
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
+
+  .blur-background {
+    position: fixed;
+    background-color: rgb(217,199,113,.7); /* Semi-transparent background */
+    backdrop-filter: blur(10px); /* Applies blur effect */
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds subtle shadow */
+ 
+  }
+  
+  
+
   /* ant design customization */
   :where(.css-dev-only-do-not-override-vryruh).ant-modal .ant-modal-content {
     background-color: #F0F2F5;

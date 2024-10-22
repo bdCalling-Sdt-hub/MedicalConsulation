@@ -1,8 +1,14 @@
 "use client";
-import React, { useState } from "react";
+
+import { useGetAllServicesQuery } from "../../redux/apiSlices/servicesSlices";
+import { useState } from "react";
 
 function Services({ title, titleStyle, containerBg }) {
   const [selectedItem, setSelectedItem] = useState(null); // State to store only one selected item
+
+  const { data, isError, error } = useGetAllServicesQuery();
+
+  console.log(data, error);
 
   const services = [
     "10 Minutes Telephone Consultation",
@@ -20,7 +26,7 @@ function Services({ title, titleStyle, containerBg }) {
   };
 
   return (
-    <section className={`${containerBg || "bg-primary3 py-20"}`}>
+    <section id="services" className={`${containerBg || "bg-primary3 py-20"}`}>
       <div className="container mx-auto">
         <h1
           className={`${

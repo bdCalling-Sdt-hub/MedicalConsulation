@@ -1,8 +1,8 @@
-import React from "react";
+import Link from "next/link";
 
 function Banner() {
   return (
-    <section>
+    <section id="home">
       <div
         style={{ backgroundImage: "url('/images/banner.png')" }}
         className="h-[70vh] w-full bg-cover bg-center"
@@ -23,11 +23,12 @@ function Banner() {
             expert guidance and <br />
             support you need from the comfort of your home.
           </h5>
-          <button
+          <Link
+            href="/#book"
             className={`text-secondaryBlack bg-primary6 font-merri text-sm py-2 px-6 rounded-sm font-normal mt-4`}
           >
             Book for Consultation
-          </button>
+          </Link>
         </div>
       </div>
     </section>

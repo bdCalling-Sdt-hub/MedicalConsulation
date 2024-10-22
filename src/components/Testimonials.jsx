@@ -1,10 +1,9 @@
 import Image from "next/image";
-import React from "react";
 import user from "../../public/images/user.jpg";
 
 function Testimonials() {
   return (
-    <section className={`py-20 bg-primary1`}>
+    <section id="testimonials" className={`py-20 bg-primary1`}>
       <div className="container mx-auto">
         <h1
           className={`text-primary10 text-[32px] leading-[22px] font-merri mb-6`}
