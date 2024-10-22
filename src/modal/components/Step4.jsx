@@ -108,17 +108,7 @@ function Step4() {
           >
             Consultation Summary
           </h1>
-          <div className="mt-4 border-b border-b-offBorder pb-2">
-            <Image src={doctorImage} alt="doctor" className={`w-40 h-40`} />
-            <h1
-              className={`text-[20px] font-merri font-normal text-secondaryBlack mt-3`}
-            >
-              Dr. John Michael
-            </h1>
-            <h2 className={`text-base font-merri font-normal text-offBlack`}>
-              Medicine
-            </h2>
-          </div>
+          
 
           <div
             className={`flex flex-row items-center justify-between py-2 border-t border-t-offBorder`}
