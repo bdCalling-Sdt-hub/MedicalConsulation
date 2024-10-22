@@ -6,13 +6,13 @@ export const servicesSlices = api.injectEndpoints({
       query: ({ id, page, limit }) => ({
         url: `/service/get-all-services`,
       }),
-      providesTags: ["book"],
+      providesTags: ["services"],
     }),
     getServiceById: builder.query({
       query: (id) => ({
         url: `/service/get-service-by-id/${id}`,
       }),
-      providesTags: ["book"],
+      providesTags: ["services"],
     }),
     updateServiceById: builder.mutation({
       query: ({ id, data }) => ({
@@ -20,14 +20,14 @@ export const servicesSlices = api.injectEndpoints({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: ["book"],
+      invalidatesTags: ["services"],
     }),
     deletedService: builder.mutation({
       query: (id) => ({
         url: `/service/get-service-by-id/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["book"],
+      invalidatesTags: ["services"],
     }),
     addService: builder.mutation({
       query: (data) => ({
@@ -35,7 +35,7 @@ export const servicesSlices = api.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["book"],
+      invalidatesTags: ["services"],
     }),
 
     disableService: builder.mutation({
@@ -44,7 +44,7 @@ export const servicesSlices = api.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["book"],
+      invalidatesTags: ["services"],
     }),
     enableService: builder.mutation({
       query: ({ id, data }) => ({
@@ -52,7 +52,7 @@ export const servicesSlices = api.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["book"],
+      invalidatesTags: ["services"],
     }),
     approvedService: builder.mutation({
       query: ({ id, data }) => ({
@@ -60,7 +60,7 @@ export const servicesSlices = api.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["book"],
+      invalidatesTags: ["services"],
     }),
     cancelServices: builder.mutation({
       query: ({ id, data }) => ({
@@ -68,7 +68,7 @@ export const servicesSlices = api.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["book"],
+      invalidatesTags: ["services"],
     }),
   }),
 });

@@ -1,17 +1,16 @@
-import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {getStorageToken, removeStorageToken} from '../../utils/utils';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import {clearToken} from '../apiSlices/tokenSlice';
+import { clearToken } from "../apiSlices/tokenSlice";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://192.168.11.161:5000/api/v1',
+  baseUrl: "http://192.168.12.158:3000",
   timeout: 10000,
-  prepareHeaders: async (headers, {getState}) => {
-    const token = getStorageToken();
+  prepareHeaders: async (headers, { getState }) => {
+    const token = localStorage.getItem("token");
     // console.log(token);
     if (token) {
       // console.log(token);
-      headers.set('authorization', `Bearer ${token}`);
+      headers.set("authorization", `Bearer ${token}`);
       // headers.getSetCookie()
     }
     return headers;
@@ -31,7 +30,7 @@ const baseQueryWithRath: typeof baseQuery = async (args, api, extraOptions) => {
     // Handle token refresh logic here if needed
     // For now, we'll log out the user
     // removeStorageRole();
-    removeStorageToken();
+
     api.dispatch(clearToken());
     // result = await baseQuery(args, api, extraOptions);
   }
@@ -40,22 +39,23 @@ const baseQueryWithRath: typeof baseQuery = async (args, api, extraOptions) => {
 };
 
 export const api = createApi({
-  reducerPath: 'api',
+  reducerPath: "api",
   // keepUnusedDataFor: 0,
   baseQuery: baseQueryWithRath,
 
   endpoints: () => ({}),
   tagTypes: [
-    'user',
-    'message',
-    'chat',
-    'news_feed',
-    'facedown',
-    'friend',
-    'additional',
-    'book',
-    'payment',
+    "user",
+    "services",
+    "appointments",
+    "notes",
+    "prescription",
+    "review",
+    "termsAndCondition",
+    "faqs",
+    "notifications",
+    "payment",
   ],
 });
 
-export const imageUrl = 'http://192.168.11.161:5000/';
+export const imageUrl = "http://192.168.11.161:5000/";
