@@ -163,7 +163,7 @@ function Header() {
                     Name
                   </p>
                   <Input
-                    className={`py-2`}
+                    className={`py-2 focus:outline-none`}
                     type="text"
                     placeholder="Enter your full name"
                   />
@@ -175,7 +175,7 @@ function Header() {
                     Email
                   </p>
                   <Input
-                    className={`py-2`}
+                    className={`py-2 focus:outline-none`}
                     type="email"
                     placeholder="Enter your e-mail"
                   />

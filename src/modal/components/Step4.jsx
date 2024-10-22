@@ -49,7 +49,7 @@ function Step4() {
                 type="text"
                 id="cardNumber"
                 placeholder="1234 1234 1234 1234"
-                className={`border border-neutral5 p-2 rounded w-full mt-1 text-base text-offBlack font-merri font-normal`}
+                className={`border border-neutral5 p-2 rounded w-full mt-1 text-base text-offBlack font-merri font-normal focus:outline-none`}
               />
             </div>
 
@@ -64,7 +64,7 @@ function Step4() {
                   type="text"
                   id="cardNumber"
                   placeholder="MM/YY"
-                  className={`border border-neutral5 p-2 rounded w-full mt-1 text-base text-offBlack font-merri font-normal`}
+                  className={`border border-neutral5 p-2 rounded w-full mt-1 text-base text-offBlack font-merri font-normal focus:outline-none`}
                 />
               </div>
               <div>
@@ -77,7 +77,7 @@ function Step4() {
                   type="text"
                   id="cardNumber"
                   placeholder="123"
-                  className={`border border-neutral5 p-2 rounded w-full mt-1 text-base text-offBlack font-merri font-normal`}
+                  className={`border border-neutral5 p-2 rounded w-full mt-1 text-base text-offBlack font-merri font-normal focus:outline-none`}
                 />
               </div>
             </div>

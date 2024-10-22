@@ -3,16 +3,16 @@ import { Modal } from "antd";
 import React, { useState } from "react";
 import IconRightArrow from "../../public/icons/IconRightArrow";
 import Services from "../components/Services";
-import Doctors from "./components/Step2";
 import Step3 from "./components/Step3";
 import Step4 from "./components/Step4";
 import Step5 from "./components/Step5";
-import { ToastContainer, toast } from "react-toastify"; // Import Toastify
-import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
+import { ToastContainer, toast } from "react-toastify"; 
+import "react-toastify/dist/ReactToastify.css"; 
+import NewStep from "./components/NewStep";
 
 function BookAppointment() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1); // Step state
+  const [currentStep, setCurrentStep] = useState(1); 
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -20,7 +20,7 @@ function BookAppointment() {
 
   const handleOk = () => {
     setIsModalOpen(false);
-    setCurrentStep(1); // Reset to the first step when modal closes
+    setCurrentStep(1); 
   };
 
   const handleCancel = () => {
@@ -31,7 +31,7 @@ function BookAppointment() {
   const handleNext = () => {
     if (currentStep === 5) {
       setIsModalOpen(false);
-      toast.success("Congratulations! your appointment has completed!", {
+      toast.success("Congratulations! Your appointment has been completed!", {
         autoClose: 2000,
       });
       handleCancel();
@@ -132,10 +132,10 @@ function BookAppointment() {
                 titleStyle={`text-secondaryBlack text-[20px] font-merri font-normal mb-6`}
               />
             )}
-            {currentStep === 2 && <Doctors />}
-            {currentStep === 3 && <Step3 />}
-            {currentStep === 4 && <Step4 />}
-            {currentStep === 5 && <Step5 />}
+            {currentStep === 2 && <Step3 />} {/* Now step 2 */}
+            {currentStep === 3 && <Step4 />} {/* Now step 3 */}
+            {currentStep === 4 && <NewStep />} {/* Now step 4 */}
+            {currentStep === 5 && <Step5 />} {/* Now step 5 */}
           </div>
         </div>
 
@@ -157,7 +157,7 @@ function BookAppointment() {
               className="bg-primary6 text-white py-2 px-4 rounded-sm"
               onClick={handleNext}
             >
-              {currentStep === 5 ? "Finish" : "Next"}
+              {currentStep === 5 ? "Finish" : currentStep === 4 ? "Skip & Next" : "Next"}
             </button>
           </div>
         </div>
