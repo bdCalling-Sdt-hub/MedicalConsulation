@@ -157,7 +157,7 @@ function BookAppointment() {
               className="bg-primary6 text-white py-2 px-4 rounded-sm"
               onClick={handleNext}
             >
-              {currentStep === 5 ? "Finish" : currentStep === 4 ? "Skip & Next" : "Next"}
+              {currentStep === 5 ? "Finish" : "Next"}
             </button>
           </div>
         </div>
