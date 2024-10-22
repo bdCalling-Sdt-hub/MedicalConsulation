@@ -20,7 +20,7 @@ function Step5() {
             type="text"
             id="cardNumber"
             placeholder="Enter your E-mail"
-            className={`border border-neutral5 p-2 rounded w-full mt-1 text-base text-offBlack font-merri font-normal`}
+            className={`border border-neutral5 p-2 rounded w-full mt-1 text-base text-offBlack font-merri font-normal focus:outline-none`}
           />
         </div>
       </div>
