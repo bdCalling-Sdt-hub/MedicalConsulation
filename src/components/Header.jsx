@@ -82,7 +82,6 @@ function Header() {
   return (
     <>
       <section
-        id="home"
         className={`${
           navbarFixed ? "blur-background" : "bg-primary6"
         } z-[9999] fixed w-full shadow-xl`}
