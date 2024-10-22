@@ -1,10 +1,9 @@
-import React from "react";
 import TipsCard from "./TipsCard";
 import placeholderImage from "../../public/images/placeholder.png";
 
 function HealthyTips() {
   return (
-    <section className={`py-20 bg-white`}>
+    <section id="tips" className={`py-20 bg-white`}>
       <div className="container mx-auto">
         <h1
           className={`text-black text-2xl font-normal leading-[32px] font-merri mb-6`}

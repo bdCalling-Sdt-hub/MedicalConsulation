@@ -1,12 +1,10 @@
-import React from "react";
 import IconVerifiedSuccess from "../../public/icons/IconVerifiedSuccess";
 import Image from "next/image";
 import patients from "../../public/images/patients.png";
-import about from "../../public/images/about.png";
 
 function AboutUs() {
   return (
-    <section className={`py-20 bg-primary1`}>
+    <section id="about" className={`py-20 bg-primary1`}>
       <div className="container mx-auto">
         <h3 className={`text-offBlack text-[20px] font-merri font-normal`}>
           About Us

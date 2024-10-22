@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+
+import { useState } from "react";
 
 function Services({ title, titleStyle, containerBg }) {
   const [selectedItem, setSelectedItem] = useState(null); // State to store only one selected item
@@ -20,7 +21,7 @@ function Services({ title, titleStyle, containerBg }) {
   };
 
   return (
-    <section className={`${containerBg || "bg-primary3 py-20"}`}>
+    <section id="services" className={`${containerBg || "bg-primary3 py-20"}`}>
       <div className="container mx-auto">
         <h1
           className={`${

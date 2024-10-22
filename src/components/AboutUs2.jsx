@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import Link from "next/link";
 import about from "../../public/images/about.png";
 
 function AboutUs2() {
@@ -19,11 +19,12 @@ function AboutUs2() {
           <p className={`text-black font-normal text-lg `}>
             Every hour, every day
           </p>
-          <button
+          <Link
+            href="/#book"
             className={`text-white bg-primary10 font-merri text-sm py-2 px-6 rounded-sm font-normal mt-7`}
           >
             Book Now
-          </button>
+          </Link>
         </div>
         <div className="">
           <Image src={about} alt="about" />

@@ -1,15 +1,17 @@
 "use client";
-import Image from "next/image";
-import React, { useState } from "react";
-import logo from "../../public/images/logo.png";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+
 import { Checkbox, Flex, Input, Modal } from "antd";
-import bigLogo from "../../public/images/big-logo.png";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+
 import IconColoredFb from "../../public/icons/IconColoredFb";
 import IconColoredGoogle from "../../public/icons/IconColoredGoogle";
 import IconColoredTwitter from "../../public/icons/IconColoredTwitter";
-import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import Image from "next/image";
+import Link from "next/link";
+import bigLogo from "../../public/images/big-logo.png";
+import logo from "../../public/images/logo.png";
+import { usePathname } from "next/navigation";
 
 function Header() {
   const currentLocationPath = usePathname();
@@ -21,10 +23,12 @@ function Header() {
     useState(false);
 
   const navItems = [
-    { name: "Home", path: "/" },
-    { name: "About Us", path: "/about" },
-    { name: "Services", path: "/services" },
-    { name: "FAQ", path: "/faq" },
+    { name: "Home", path: "#home" },
+    { name: "About Us", path: "#about" },
+    { name: "Services", path: "#services" },
+    { name: "FAQ", path: "#faq" },
+    { name: "Testimonials", path: "#testimonials" },
+    { name: "Tips", path: "#tips" },
   ];
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -52,9 +56,37 @@ function Header() {
     setIsCreateNewPassModalOpen(false);
   };
 
+  const [activeHash, setActiveHash] = useState("");
+  const [navbarFixed, setNavbarFixed] = useState(false);
+  useEffect(() => {
+    const handleHashChange = (e) => {
+      setActiveHash(window.location.hash);
+    };
+
+    const navbarFixed = () => {
+      if (window.scrollY > 0) {
+        setNavbarFixed(true);
+      } else {
+        setNavbarFixed(false);
+      }
+    };
+    window.addEventListener("scroll", navbarFixed);
+    window.addEventListener("hashchange", handleHashChange);
+
+    window.addEventListener("scroll", handleHashChange);
+    return () => {
+      window.removeEventListener("scroll", handleHashChange);
+    };
+  }, []);
+
   return (
     <>
-      <section className="bg-primary6">
+      <section
+        id="home"
+        className={`${
+          navbarFixed ? "blur-background" : "bg-primary6"
+        } z-[9999] fixed w-full shadow-xl`}
+      >
         <div className="container mx-auto py-4 flex flex-row justify-between items-center">
           <div>
             <Image src={logo} alt="logo" />
@@ -66,8 +98,8 @@ function Header() {
               {navItems.map((item) => (
                 <Link key={item.path} href={item.path}>
                   <li
-                    className={`font-normal ${
-                      currentLocationPath === item.path
+                    className={`font-normal  ${
+                      (activeHash || "#home") === `${item.path}`
                         ? "text-secondaryBlack"
                         : "text-offBlack"
                     }`}

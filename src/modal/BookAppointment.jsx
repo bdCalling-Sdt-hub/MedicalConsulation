@@ -1,18 +1,21 @@
 "use client";
-import { Modal } from "antd";
-import React, { useState } from "react";
+
+import "react-toastify/dist/ReactToastify.css";
+
+import { ToastContainer, toast } from "react-toastify";
+
 import IconRightArrow from "../../public/icons/IconRightArrow";
+import { Modal } from "antd";
+import NewStep from "./components/NewStep";
 import Services from "../components/Services";
 import Step3 from "./components/Step3";
 import Step4 from "./components/Step4";
 import Step5 from "./components/Step5";
-import { ToastContainer, toast } from "react-toastify"; 
-import "react-toastify/dist/ReactToastify.css"; 
-import NewStep from "./components/NewStep";
+import { useState } from "react";
 
 function BookAppointment() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1); 
+  const [currentStep, setCurrentStep] = useState(1);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -20,7 +23,7 @@ function BookAppointment() {
 
   const handleOk = () => {
     setIsModalOpen(false);
-    setCurrentStep(1); 
+    setCurrentStep(1);
   };
 
   const handleCancel = () => {
@@ -48,7 +51,7 @@ function BookAppointment() {
 
   return (
     <>
-      <section className="py-20 bg-primary10">
+      <section id="book" className="py-20 bg-primary10">
         <div className="container mx-auto">
           <div>
             <h1 className="text-primary2 text-[48px] font-normal font-merri text-center">
