@@ -1,17 +1,17 @@
 "use client";
 
-import { Checkbox, Flex, Input, Modal } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { Checkbox, Flex, Input, Modal } from "antd";
 import { useEffect, useState } from "react";
 
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import IconColoredFb from "../../public/icons/IconColoredFb";
 import IconColoredGoogle from "../../public/icons/IconColoredGoogle";
 import IconColoredTwitter from "../../public/icons/IconColoredTwitter";
-import Image from "next/image";
-import Link from "next/link";
 import bigLogo from "../../public/images/big-logo.png";
 import logo from "../../public/images/logo.png";
-import { usePathname } from "next/navigation";
 
 function Header() {
   const currentLocationPath = usePathname();
