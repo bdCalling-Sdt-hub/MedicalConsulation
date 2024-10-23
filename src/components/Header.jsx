@@ -95,7 +95,7 @@ function Header() {
       <section
         className={`${
           navbarFixed ? "blur-background" : "bg-primary6"
-        } z-[9999] fixed w-full shadow-xl`}
+        } z-50 fixed w-full shadow-xl`}
       >
         <div className="container mx-auto py-4 flex flex-row justify-between items-center">
           <div>
@@ -145,16 +145,20 @@ function Header() {
           </div>
         </div>
       </section>
+
+      {/* ===================== register modal ================ */}
+
       <Modal
         open={isModalOpen}
         onCancel={handleCancel}
         footer={null}
         maskClosable={false}
+        centered
         width={"50%"}
         closeIcon={<span style={{ color: "red", fontSize: "24px" }}>×</span>}
       >
         <div className="flex flex-col items-center justify-center p-4">
-          <Image src={bigLogo} alt="logo" />
+          {/* <Image src={bigLogo} alt="logo" /> */}
           <h1
             className={`text-secondaryblack text-4xl font-bold font-merri mt-8`}
           >
@@ -291,27 +295,24 @@ function Header() {
           </div>
         </div>
       </Modal>
-
+      {/*==================== Login modal ================== */}
       <Modal
         open={isSignInModalOpen}
         onCancel={handleSignInCancel}
         footer={null}
         maskClosable={false}
+        centered
         width={"50%"}
         closeIcon={<span style={{ color: "red", fontSize: "24px" }}>×</span>}
       >
         <div className="flex flex-col items-center justify-center p-4">
-          <Image src={bigLogo} alt="logo" />
+          {/* <Image src={bigLogo} alt="logo" /> */}
           <h1
             className={`text-secondaryblack text-4xl font-bold font-merri mt-8`}
           >
             Welcome back!
           </h1>
-          <h1
-            className={`text-secondaryblack text-[20px] font-normal font-merri mt-8`}
-          >
-            Sign In with the data that used while registration
-          </h1>
+
           <div className="gap-1 bg-[#e3e3e3] flex flex-row items-center mt-6">
             <button
               className={`${
@@ -385,28 +386,33 @@ function Header() {
                         // setIsModalOpen(false);
                       }}
                     >
-                      Register
+                      Login
                     </Button>
                   </Form.Item>
                 </div>
-                <p
-                  className={`text-secondaryBlack text-sm font-merri font-normal mt-4 text-center`}
-                >
-                  By continuing you are agree with our Privacy Policy, Terms &
-                  Conditions
-                </p>
+                <div className="flex flex-row justify-end">
+                  <p
+                    className={`text-sm text-secondaryBlack font-merri font-normal underline cursor-pointer`}
+                    onClick={() => {
+                      setIsForgetPassModalOpen(true);
+                      setIsSignInModalOpen(false);
+                    }}
+                  >
+                    Forgot Password?
+                  </p>
+                </div>
                 <p
                   className={`text-offBlack text-sm font-normall font-merri text-center mt-4`}
                 >
-                  Already Registered?{" "}
+                  have an account?{" "}
                   <span
                     className={`text-primary7 cursor-pointer`}
                     onClick={() => {
-                      setIsModalOpen(false);
-                      setIsSignInModalOpen(true);
+                      setIsModalOpen(true);
+                      setIsSignInModalOpen(false);
                     }}
                   >
-                    Sign In
+                    Sign up
                   </span>
                 </p>
               </Form>
@@ -414,17 +420,18 @@ function Header() {
           </div>
         </div>
       </Modal>
-
+      {/* =========================forget modal =================== */}
       <Modal
         open={isForgetPassModalOpen}
         onCancel={handleForgetPassCancel}
         footer={null}
         maskClosable={false}
+        centered
         width={"50%"}
         closeIcon={<span style={{ color: "red", fontSize: "24px" }}>×</span>}
       >
         <div className="flex flex-col items-center justify-center p-4">
-          <Image src={bigLogo} alt="logo" />
+          {/* <Image src={bigLogo} alt="logo" /> */}
 
           <div className=" w-full mt-8">
             <h1
@@ -470,17 +477,18 @@ function Header() {
         </div>
       </Modal>
 
-      {/* otp modal */}
+      {/*======================== otp modal ===================*/}
       <Modal
         open={isOtpModalOpen}
         onCancel={handleOtpModalCancel}
         footer={null}
         maskClosable={false}
+        centered
         width={"50%"}
         closeIcon={<span style={{ color: "red", fontSize: "24px" }}>×</span>}
       >
         <div className="flex flex-col items-center justify-center p-4">
-          <Image src={bigLogo} alt="logo" />
+          {/* <Image src={bigLogo} alt="logo" /> */}
 
           <div className=" w-full mt-8">
             <h1
@@ -534,6 +542,7 @@ function Header() {
         footer={null}
         maskClosable={false}
         width={"50%"}
+        centered
         closeIcon={<span style={{ color: "red", fontSize: "24px" }}>×</span>}
       >
         <div className="flex flex-col items-center justify-center p-4">
