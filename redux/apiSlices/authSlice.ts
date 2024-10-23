@@ -116,16 +116,18 @@ const authSlice = api.injectEndpoints({
       invalidatesTags: ["user"],
     }),
     login: builder.mutation({
-      query: () => ({
+      query: (data) => ({
         url: `/users/auth/login`,
         method: "POST",
+        body: data,
       }),
       invalidatesTags: ["user"],
     }),
     loginDoctor: builder.mutation({
-      query: () => ({
+      query: (data) => ({
         url: `/users/auth/login-as-doctor`,
         method: "POST",
+        body: data,
       }),
       invalidatesTags: ["user"],
     }),

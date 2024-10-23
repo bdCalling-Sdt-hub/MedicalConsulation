@@ -19,14 +19,16 @@ function Step3({ selectedItem, setDateTime, dateTime }) {
             <div
               key={index}
               className={`h-36 flex-col flex justify-center items-center gap-y-2 cursor-pointer ${
-                dateTime?.dayOfWeek === extractDateTimeParts(item).day
+                dateTime?.dayOfWeek ===
+                extractDateTimeParts(item).day?.toLocaleLowerCase()
                   ? "bg-primary6"
                   : "bg-white"
               }`}
               onClick={() => {
                 setDateTime({
                   ...dateTime,
-                  dayOfWeek: extractDateTimeParts(item).day,
+                  dayOfWeek:
+                    extractDateTimeParts(item).day?.toLocaleLowerCase(),
                 });
               }}
             >

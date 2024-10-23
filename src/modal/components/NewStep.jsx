@@ -1,7 +1,7 @@
 import { Input } from "antd";
 import TextArea from "antd/es/input/TextArea";
 
-function NewStep({ setExtraInfo, extraInfo }) {
+function NewStep({ setExtraInfo, extraInfo, user }) {
   return (
     <div className={`   gap-4`}>
       <div className={`col-span-2`}>
@@ -12,6 +12,7 @@ function NewStep({ setExtraInfo, extraInfo }) {
           <Input
             type="number"
             value={extraInfo?.nhsNumber}
+            defaultValue={user?.nhsNumber}
             onChange={(e) => {
               setExtraInfo({ ...extraInfo, nhsNumber: e.target.value });
             }}

@@ -6,6 +6,7 @@ import { useCallback, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
 import { Modal } from "antd";
+import { useSelector } from "react-redux";
 import IconRightArrow from "../../public/icons/IconRightArrow";
 import { useBookCreateAppointmentMutation } from "../../redux/apiSlices/appointmentsSlices";
 import Services from "../components/Services";
@@ -15,6 +16,7 @@ import Step4 from "./components/Step4";
 import Step5 from "./components/Step5";
 
 function BookAppointment() {
+  const user = useSelector((state) => state.user.user);
   const [createAppointment] = useBookCreateAppointmentMutation({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
@@ -24,6 +26,7 @@ function BookAppointment() {
     dayOfWeek: null,
   }); // State to store only one selected item
   const [extraInfo, setExtraInfo] = useState(null); // State to store only one selected item
+  const [createdAppointment, setCreatedAppointment] = useState(null); // State to store only one selected item
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -53,7 +56,7 @@ function BookAppointment() {
         ...extraInfo,
         serviceId: selectedItem?._id,
         type: selectedItem?.consultationType,
-        patientId: "671495c5627c9d7a21b040b0",
+        patientId: user._id,
       });
     } else if (currentStep < 5) {
       setCurrentStep(currentStep + 1);
@@ -66,14 +69,30 @@ function BookAppointment() {
     }
   };
 
-  const handleCreateAppointment = useCallback(async (data) => {
-    try {
-      const response = await createAppointment(data).unwrap();
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+  const handleCreateAppointment = useCallback(
+    async (UData) => {
+      try {
+        if (!UData?.nhsNumber) {
+          UData.nhsNumber = user.nhsNumber;
+        }
+
+        const response = await createAppointment(UData);
+        // console.log(response);
+        if (response?.data) {
+          setCreatedAppointment(response?.data?.data?.appointment);
+          setCurrentStep(4);
+        }
+        if (response?.error) {
+          toast.error(response?.error?.data?.message);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [user]
+  );
+
+  // console.log(createdAppointment);
 
   return (
     <>
@@ -172,10 +191,17 @@ function BookAppointment() {
             )}
             {/* Now step 2 */}
             {currentStep === 3 && (
-              <NewStep setExtraInfo={setExtraInfo} extraInfo={extraInfo} />
+              <NewStep
+                setExtraInfo={setExtraInfo}
+                extraInfo={extraInfo}
+                user={user}
+              />
             )}{" "}
             {/* Now step 4 */}
-            {currentStep === 4 && <Step4 />} {/* Now step 3 */}
+            {currentStep === 4 && (
+              <Step4 appointmentId={createdAppointment?._id} />
+            )}{" "}
+            {/* Now step 3 */}
             {currentStep === 5 && <Step5 />} {/* Now step 5 */}
           </div>
         </div>
