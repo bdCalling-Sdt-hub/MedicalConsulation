@@ -1,14 +1,15 @@
 "use client";
 
 import { useGetAllServicesQuery } from "../../redux/apiSlices/servicesSlices";
-import { useState } from "react";
 
-function Services({ title, titleStyle, containerBg }) {
-  const [selectedItem, setSelectedItem] = useState(null); // State to store only one selected item
-
-  const { data, isError, error } = useGetAllServicesQuery();
-
-  console.log(data, error);
+function Services({
+  title,
+  titleStyle,
+  containerBg,
+  selectedItem,
+  setSelectedItem,
+}) {
+  const { data, isError, error } = useGetAllServicesQuery({});
 
   const services = [
     "10 Minutes Telephone Consultation",
@@ -38,7 +39,7 @@ function Services({ title, titleStyle, containerBg }) {
         </h1>
 
         <div className="grid grid-cols-4 gap-4 items-center">
-          {services.map((service, index) => (
+          {data?.data.map((service, index) => (
             <div
               key={index}
               onClick={() => handleSelectItem(service)}
@@ -49,8 +50,12 @@ function Services({ title, titleStyle, containerBg }) {
                     : "bg-white border border-neutral4"
                 }`} // Conditional styles for the selected item
             >
-              <h1 className={`text-lg font-roboto font-bold`}>{service}</h1>
-              <p className={`text-base font-roboto font-medium`}>$ 5.00</p>
+              <h1 className={`text-lg font-roboto font-bold`}>
+                {service?.title}
+              </h1>
+              <p className={`text-base font-roboto font-medium`}>
+                $ {service?.price}
+              </p>
             </div>
           ))}
         </div>

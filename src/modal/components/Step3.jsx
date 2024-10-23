@@ -1,29 +1,11 @@
-import React, { useState } from "react";
+import { extractDateTimeParts } from "@/utils/extractDateTimeParts";
 
-const dates = [
-  { date: "01 Jan", day: "Sunday" },
-  { date: "02 Jan", day: "Monday" },
-  { date: "03 Jan", day: "Tuesday" },
-  { date: "04 Jan", day: "Wednesday" },
-  { date: "05 Jan", day: "Thursday" },
-  { date: "06 Jan", day: "Friday" },
-  { date: "07 Jan", day: "Saturday" },
-];
-
-const times = [
-  { label: "Morning", time: "11:00 am" },
-  { label: "Afternoon", time: "02:00 pm" },
-  { label: "Evening", time: "06:00 pm" },
-  { label: "Night", time: "09:00 pm" },
-];
-
-function Step3() {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
-
+function Step3({ selectedItem, setDateTime, dateTime }) {
   return (
     <div>
-      <h1 className={`text-secondaryBlack text-[20px] font-merri font-normal mb-6`}>
+      <h1
+        className={`text-secondaryBlack text-[20px] font-merri font-normal mb-6`}
+      >
         Schedule
       </h1>
 
@@ -33,21 +15,28 @@ function Step3() {
           Pick a Date
         </h1>
         <div className="grid grid-cols-7 gap-3">
-          {dates.map((item, index) => (
+          {selectedItem?.dateTimes?.map((item, index) => (
             <div
               key={index}
               className={`h-36 flex-col flex justify-center items-center gap-y-2 cursor-pointer ${
-                selectedDate === index ? "bg-primary6" : "bg-white"
+                dateTime?.dayOfWeek === extractDateTimeParts(item).day
+                  ? "bg-primary6"
+                  : "bg-white"
               }`}
-              onClick={() => setSelectedDate(index)}
+              onClick={() => {
+                setDateTime({
+                  ...dateTime,
+                  dayOfWeek: extractDateTimeParts(item).day,
+                });
+              }}
             >
               <h3 className={`text-sm text-offBlack font-merri font-normal`}>
-                {item.date}
+                {extractDateTimeParts(item).date}
               </h3>
               <h1
                 className={`text-[20px] text-secodaryBlack font-normal font-merri`}
               >
-                {item.day}
+                {extractDateTimeParts(item).day}
               </h1>
             </div>
           ))}
@@ -60,21 +49,23 @@ function Step3() {
           Pick your Time
         </h1>
         <div className="grid grid-cols-7 gap-3">
-          {times.map((item, index) => (
+          {selectedItem?.dateTimes?.map((item, index) => (
             <div
               key={index}
               className={`h-36 flex-col flex justify-center items-center gap-y-2 cursor-pointer ${
-                selectedTime === index ? "bg-primary6" : "bg-white"
+                dateTime?.dateTime === item ? "bg-primary6" : "bg-white"
               }`}
-              onClick={() => setSelectedTime(index)}
+              onClick={() => {
+                setDateTime({ ...dateTime, dateTime: item });
+              }}
             >
               <h3 className={`text-sm text-offBlack font-merri font-normal`}>
-                {item.label}
+                {extractDateTimeParts(item).period}
               </h3>
               <h1
                 className={`text-[20px] text-secodaryBlack font-normal font-merri`}
               >
-                {item.time}
+                {extractDateTimeParts(item).time}
               </h1>
             </div>
           ))}

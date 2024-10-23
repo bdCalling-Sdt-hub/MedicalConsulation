@@ -2,11 +2,12 @@
 
 import "react-toastify/dist/ReactToastify.css";
 
+import { useCallback, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
 import { Modal } from "antd";
-import { useState } from "react";
 import IconRightArrow from "../../public/icons/IconRightArrow";
+import { useBookCreateAppointmentMutation } from "../../redux/apiSlices/appointmentsSlices";
 import Services from "../components/Services";
 import NewStep from "./components/NewStep";
 import Step3 from "./components/Step3";
@@ -14,8 +15,15 @@ import Step4 from "./components/Step4";
 import Step5 from "./components/Step5";
 
 function BookAppointment() {
+  const [createAppointment] = useBookCreateAppointmentMutation({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [selectedItem, setSelectedItem] = useState(null); // State to store only one selected item
+  const [dateTime, setDateTime] = useState({
+    dateTime: null,
+    dayOfWeek: null,
+  }); // State to store only one selected item
+  const [extraInfo, setExtraInfo] = useState(null); // State to store only one selected item
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -39,6 +47,14 @@ function BookAppointment() {
         autoClose: 2000,
       });
       handleCancel();
+    } else if (currentStep === 3) {
+      handleCreateAppointment({
+        ...dateTime,
+        ...extraInfo,
+        serviceId: selectedItem?._id,
+        type: selectedItem?.consultationType,
+        patientId: "671495c5627c9d7a21b040b0",
+      });
     } else if (currentStep < 5) {
       setCurrentStep(currentStep + 1);
     }
@@ -49,6 +65,15 @@ function BookAppointment() {
       setCurrentStep(currentStep - 1);
     }
   };
+
+  const handleCreateAppointment = useCallback(async (data) => {
+    try {
+      const response = await createAppointment(data).unwrap();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   return (
     <>
@@ -131,14 +156,26 @@ function BookAppointment() {
           <div className="mt-4">
             {currentStep === 1 && (
               <Services
+                selectedItem={selectedItem}
+                setSelectedItem={setSelectedItem}
                 containerBg={`bg-transparent`}
                 title="Choose Consultation Type"
                 titleStyle={`text-secondaryBlack text-[20px] font-merri font-normal mb-6`}
               />
             )}
-            {currentStep === 2 && <Step3 />} {/* Now step 2 */}
-            {currentStep === 3 && <Step4 />} {/* Now step 3 */}
-            {currentStep === 4 && <NewStep />} {/* Now step 4 */}
+            {currentStep === 2 && (
+              <Step3
+                selectedItem={selectedItem}
+                setDateTime={setDateTime}
+                dateTime={dateTime}
+              />
+            )}
+            {/* Now step 2 */}
+            {currentStep === 3 && (
+              <NewStep setExtraInfo={setExtraInfo} extraInfo={extraInfo} />
+            )}{" "}
+            {/* Now step 4 */}
+            {currentStep === 4 && <Step4 />} {/* Now step 3 */}
             {currentStep === 5 && <Step5 />} {/* Now step 5 */}
           </div>
         </div>
