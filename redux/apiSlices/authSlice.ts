@@ -48,7 +48,7 @@ const authSlice = api.injectEndpoints({
       }),
       providesTags: ["user"],
     }),
-    signupPatient: builder.mutation({
+    signUpPatient: builder.mutation({
       query: (data) => ({
         url: `/users/auth/signup`,
         method: "POST",
@@ -56,7 +56,7 @@ const authSlice = api.injectEndpoints({
       }),
       invalidatesTags: ["user"],
     }),
-    signupDoctor: builder.mutation({
+    signUpDoctor: builder.mutation({
       query: (data) => ({
         url: `/users/auth/signup-as-doctor`,
         method: "POST",
@@ -155,8 +155,8 @@ export const {
   useLoginMutation,
   useLoginDoctorMutation,
   useLoginOutMutation,
-  useSignupPatientMutation,
-  useSignupDoctorMutation,
+  useSignUpPatientMutation,
+  useSignUpDoctorMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
   useChangePasswordMutation,

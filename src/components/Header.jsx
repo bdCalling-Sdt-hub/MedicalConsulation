@@ -1,23 +1,27 @@
 "use client";
 
-import { Checkbox, Flex, Input, Modal } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { Button, Checkbox, Flex, Form, Input, Modal } from "antd";
 import { useEffect, useState } from "react";
+import {
+  useSignUpDoctorMutation,
+  useSignUpPatientMutation,
+} from "../../redux/apiSlices/authSlice";
 
-import IconColoredFb from "../../public/icons/IconColoredFb";
-import IconColoredGoogle from "../../public/icons/IconColoredGoogle";
-import IconColoredTwitter from "../../public/icons/IconColoredTwitter";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import bigLogo from "../../public/images/big-logo.png";
 import logo from "../../public/images/logo.png";
-import { usePathname } from "next/navigation";
 
 function Header() {
   const currentLocationPath = usePathname();
+  const [singUpDoctor] = useSignUpDoctorMutation({});
+  const [signUpPatient] = useSignUpPatientMutation({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
   const [isForgetPassModalOpen, setIsForgetPassModalOpen] = useState(false);
+  const [isDoctorRegistered, setIsDoctorRegistered] = useState(false);
   const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
   const [isCreateNewPassModalOpen, setIsCreateNewPassModalOpen] =
     useState(false);
@@ -79,6 +83,13 @@ function Header() {
     };
   }, []);
 
+  const onFinish = (values) => {
+    console.log("Success:", values);
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
   return (
     <>
       <section
@@ -113,7 +124,9 @@ function Header() {
             <button
               className={`text-secondaryBlack font-merri text-sm py-2 px-6 rounded-sm font-normal`}
               onClick={(e) => {
-                setIsSignInModalOpen(true);
+                setIsSignInModalOpen(!isSignInModalOpen);
+                setIsModalOpen(false);
+
                 e.preventDefault();
               }}
             >
@@ -122,7 +135,8 @@ function Header() {
             <button
               className={`text-white bg-black font-merri text-sm py-2 px-6 rounded-sm font-normal`}
               onClick={(e) => {
-                setIsModalOpen(true);
+                setIsModalOpen(!isModalOpen);
+                setIsSignInModalOpen(false);
                 e.preventDefault();
               }}
             >
@@ -136,7 +150,7 @@ function Header() {
         onCancel={handleCancel}
         footer={null}
         maskClosable={false}
-        width={"70%"}
+        width={"50%"}
         closeIcon={<span style={{ color: "red", fontSize: "24px" }}>×</span>}
       >
         <div className="flex flex-col items-center justify-center p-4">
@@ -144,105 +158,113 @@ function Header() {
           <h1
             className={`text-secondaryblack text-4xl font-bold font-merri mt-8`}
           >
-            Get an Online Dr. Consultant Today!
+            {isDoctorRegistered
+              ? "Join Our Network of Professionals"
+              : "Get an Online Dr. Consultant Today!"}
           </h1>
+
+          <div className="gap-1 bg-[#e3e3e3] flex flex-row items-center mt-6">
+            <button
+              className={`${
+                !isDoctorRegistered ? "bg-white" : ""
+              } px-4 py-2 rounded text-neutral10 text-sm font-merri font-normal`}
+              onClick={() => setIsDoctorRegistered(false)}
+            >
+              I{"'"}m a Patient
+            </button>
+            <button
+              className={`${
+                isDoctorRegistered ? "bg-white" : ""
+              } px-4 py-2 rounded text-neutral10 text-sm font-merri font-normal`}
+              onClick={() => setIsDoctorRegistered(true)}
+            >
+              I{"'"}m a Doctor
+            </button>
+          </div>
           <h1
             className={`text-secondaryblack text-[20px] font-normal font-merri mt-8`}
           >
             Register with your Information or with Social Media
           </h1>
 
-          <div className="grid grid-cols-9 w-full mt-8">
-            <div className="col-span-4">
-              {/* fb */}
-              <div className="flex flex-row justify-center  py-2 items-center gap-2 bg-[#1877F2] border border-[#1877F2]">
-                <IconColoredFb />{" "}
-                <span className={`text-base font-merri font-normal text-white`}>
-                  Continue with Facebook
-                </span>
-              </div>
-              <div className="flex flex-row justify-center  py-2 items-center gap-2 bg-transparent border border-neutral5 my-4">
-                <IconColoredGoogle />
-                <span
-                  className={`text-base font-merri font-normal text-secondaryBlack`}
-                >
-                  Continue with Google
-                </span>
-              </div>
-              <div className="flex flex-row justify-center  py-2 items-center gap-2 bg-black border border-black">
-                <IconColoredTwitter />{" "}
-                <span className={`text-base font-merri font-normal text-white`}>
-                  Continue with X
-                </span>
-              </div>
-            </div>
-            <div className="col-span-1">
-              <div class="flex flex-col items-center justify-center h-full">
-                <div class="border-l border-offBorder h-[46%]"></div>
-                <span class="text-offBlack text-base font-merri font-normal my-2">
-                  or
-                </span>
-                <div class="border-l border-offBorder h-[46%]"></div>
-              </div>
-            </div>
-            <div className="col-span-4">
-              <form action="" className={``}>
+          <div className=" w-full mt-8">
+            <div className="">
+              <Form
+                name="basic"
+                className={``}
+                initialValues={{ remember: true }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                layout="vertical"
+              >
                 <div className={`mb-4`}>
-                  <p
-                    className={`text-sm text-secondaryBlack font-merri font-normal`}
+                  <Form.Item
+                    label="Name"
+                    name="name"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your name!",
+                      },
+                    ]}
                   >
-                    Name
-                  </p>
-                  <Input
-                    className={`py-2 focus:outline-none`}
-                    type="text"
-                    placeholder="Enter your full name"
-                  />
-                </div>
-                <div className={`mb-4`}>
-                  <p
-                    className={`text-sm text-secondaryBlack font-merri font-normal`}
-                  >
-                    Email
-                  </p>
-                  <Input
-                    className={`py-2 focus:outline-none`}
-                    type="email"
-                    placeholder="Enter your e-mail"
-                  />
+                    <Input
+                      className={`py-2 focus:outline-none`}
+                      placeholder="Enter your full name"
+                    />
+                  </Form.Item>
                 </div>
 
                 <div className={`mb-4`}>
-                  <p
-                    className={`text-sm text-secondaryBlack font-merri font-normal`}
+                  <Form.Item
+                    label="Email"
+                    name="email"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your email!",
+                      },
+                    ]}
                   >
-                    Password
-                  </p>
-                  <Input.Password
-                    className={`py-2`}
-                    placeholder="Create your password"
-                    iconRender={(visible) =>
-                      visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                    }
-                  />
+                    <Input
+                      className={`py-2 focus:outline-none`}
+                      placeholder="Enter your email"
+                    />
+                  </Form.Item>
                 </div>
-                <Checkbox checked={true} className={`mt-4`}>
-                  <p
-                    className={`text-sm text-secondaryBlack font-merri font-normal`}
+
+                <div className={`mb-4`}>
+                  <Form.Item
+                    label="Password"
+                    name="password"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your password!",
+                      },
+                    ]}
                   >
-                    Remember me
-                  </p>
-                </Checkbox>
+                    <Input.Password
+                      className={`py-2 focus:outline-none`}
+                      placeholder="**********"
+                    />
+                  </Form.Item>
+                </div>
+                <Form.Item name="remember" valuePropName="checked">
+                  <Checkbox>Remember me</Checkbox>
+                </Form.Item>
                 <div>
-                  <button
-                    className={`bg-primary6 w-full py-2 rounded text-white text-base font-merri font-normal mt-4`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsModalOpen(false);
-                    }}
-                  >
-                    Register
-                  </button>
+                  <Form.Item>
+                    <Button
+                      htmlType="submit"
+                      className={`bg-primary6 w-full h-12 py-2 rounded text-white text-base font-merri font-normal mt-4`}
+                      onClick={(e) => {
+                        // setIsModalOpen(false);
+                      }}
+                    >
+                      Register
+                    </Button>
+                  </Form.Item>
                 </div>
                 <p
                   className={`text-secondaryBlack text-sm font-merri font-normal mt-4 text-center`}
@@ -264,7 +286,7 @@ function Header() {
                     Sign In
                   </span>
                 </p>
-              </form>
+              </Form>
             </div>
           </div>
         </div>
@@ -290,75 +312,104 @@ function Header() {
           >
             Sign In with the data that used while registration
           </h1>
-
+          <div className="gap-1 bg-[#e3e3e3] flex flex-row items-center mt-6">
+            <button
+              className={`${
+                !isDoctorRegistered ? "bg-white" : ""
+              } px-4 py-2 rounded text-neutral10 text-sm font-merri font-normal`}
+              onClick={() => setIsDoctorRegistered(false)}
+            >
+              I{"'"}m a Patient
+            </button>
+            <button
+              className={`${
+                isDoctorRegistered ? "bg-white" : ""
+              } px-4 py-2 rounded text-neutral10 text-sm font-merri font-normal`}
+              onClick={() => setIsDoctorRegistered(true)}
+            >
+              I{"'"}m a Doctor
+            </button>
+          </div>
           <div className=" w-full mt-8">
             <div>
-              <form action="" className={``}>
+              <Form
+                name="basic"
+                className={``}
+                initialValues={{ remember: true }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                layout="vertical"
+              >
                 <div className={`mb-4`}>
-                  <p
-                    className={`text-sm text-secondaryBlack font-merri font-normal`}
+                  <Form.Item
+                    label="Email"
+                    name="email"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your email!",
+                      },
+                    ]}
                   >
-                    Email
-                  </p>
-                  <Input
-                    className={`py-2`}
-                    type="email"
-                    placeholder="Enter your e-mail"
-                  />
+                    <Input
+                      className={`py-2 focus:outline-none`}
+                      placeholder="Enter your email"
+                    />
+                  </Form.Item>
                 </div>
 
                 <div className={`mb-4`}>
-                  <p
-                    className={`text-sm text-secondaryBlack font-merri font-normal`}
+                  <Form.Item
+                    label="Password"
+                    name="password"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your password!",
+                      },
+                    ]}
                   >
-                    Password
-                  </p>
-                  <Input.Password
-                    className={`py-2`}
-                    placeholder="Create your password"
-                    iconRender={(visible) =>
-                      visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                    }
-                  />
+                    <Input.Password
+                      className={`py-2 focus:outline-none`}
+                      placeholder="**********"
+                    />
+                  </Form.Item>
                 </div>
 
-                <div className="flex flex-row justify-end">
-                  <p
-                    className={`text-sm text-secondaryBlack font-merri font-normal underline cursor-pointer`}
-                    onClick={() => {
-                      setIsForgetPassModalOpen(true);
-                      setIsSignInModalOpen(false);
-                    }}
-                  >
-                    Forgot Password?
-                  </p>
-                </div>
                 <div>
-                  <button
-                    className={`bg-primary6 w-full py-2 rounded text-white text-base font-merri font-normal mt-4`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsSignInModalOpen(false);
-                    }}
-                  >
-                    Sign In
-                  </button>
+                  <Form.Item>
+                    <Button
+                      htmlType="submit"
+                      className={`bg-primary6 w-full h-12 py-2 rounded text-white text-base font-merri font-normal mt-4`}
+                      onClick={(e) => {
+                        // setIsModalOpen(false);
+                      }}
+                    >
+                      Register
+                    </Button>
+                  </Form.Item>
                 </div>
+                <p
+                  className={`text-secondaryBlack text-sm font-merri font-normal mt-4 text-center`}
+                >
+                  By continuing you are agree with our Privacy Policy, Terms &
+                  Conditions
+                </p>
                 <p
                   className={`text-offBlack text-sm font-normall font-merri text-center mt-4`}
                 >
-                  Not Registered yet?{" "}
+                  Already Registered?{" "}
                   <span
-                    className={`text-primary7 cursor-pointer `}
+                    className={`text-primary7 cursor-pointer`}
                     onClick={() => {
-                      setIsModalOpen(true);
-                      setIsSignInModalOpen(false);
+                      setIsModalOpen(false);
+                      setIsSignInModalOpen(true);
                     }}
                   >
-                    Register
+                    Sign In
                   </span>
                 </p>
-              </form>
+              </Form>
             </div>
           </div>
         </div>
