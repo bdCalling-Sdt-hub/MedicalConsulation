@@ -130,6 +130,7 @@ function BookAppointment() {
         onCancel={handleCancel}
         footer={null}
         maskClosable={false}
+        centered
         width={"70%"}
         closeIcon={<span style={{ color: "red", fontSize: "24px" }}>×</span>}
       >
@@ -198,8 +199,8 @@ function BookAppointment() {
               />
             )}{" "}
             {/* Now step 4 */}
-            {currentStep === 4 && (
-              <Step4 appointmentId={createdAppointment?._id} />
+            {currentStep === 4 && createdAppointment && (
+              <Step4 createdAppointment={createdAppointment} />
             )}{" "}
             {/* Now step 3 */}
             {currentStep === 5 && <Step5 />} {/* Now step 5 */}

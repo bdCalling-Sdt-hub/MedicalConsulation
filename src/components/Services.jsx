@@ -13,7 +13,7 @@ function Services({
 
   // Function to handle selecting an item
   const handleSelectItem = (item) => {
-    setSelectedItem(item); // Set the clicked item as the selected item
+    setSelectedItem && setSelectedItem(item); // Set the clicked item as the selected item
   };
 
   return (

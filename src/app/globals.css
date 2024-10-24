@@ -16,6 +16,7 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
+    background: #F0F2F5;
   }
 
   .blur-background {
@@ -27,6 +28,27 @@
  
   }
   
+  @media (max-width: 768px) {
+    .sidebar-menu {
+      width: 20px;
+    }
+  
+    .header {
+      left: 85px;
+      width: calc(100% - 80px);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .sidebar-menu {
+      width: 60px;
+    }
+  
+    .header {
+      left: 60px;
+      width: calc(100% - 60px);
+    }
+  }
   
 
   /* ant design customization */

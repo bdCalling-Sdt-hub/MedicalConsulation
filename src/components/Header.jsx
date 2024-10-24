@@ -20,7 +20,6 @@ import logo from "../../public/images/logo.png";
 
 function Header() {
   const user = useSelector((state) => state.user.user);
-  // console.log(user);
 
   const dispatch = useDispatch();
   const [singUpDoctor] = useSignUpDoctorMutation({});
@@ -100,7 +99,7 @@ function Header() {
         toast.success(res.data?.message);
       }
       if (res.error) {
-        toast.error(res.error?.data?.message);
+        toast.error(res.error?.error);
       }
     } else {
       const res = await signUpPatient({ ...values });

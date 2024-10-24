@@ -1,8 +1,5 @@
-import React from "react";
-import Image from "next/image";
-import about from "../../../public/images/about.png";
-import Banner from "@/components/Banner";
 import AboutUs2 from "@/components/AboutUs2";
+import Banner from "@/components/Banner";
 
 const page = () => {
   return (
