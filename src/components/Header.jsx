@@ -83,7 +83,7 @@ function Header() {
       }
     };
     window.addEventListener("scroll", navbarFixed);
-    window.addEventListener("hashchange", handleHashChange);
+    window.addEventListener("scroll", handleHashChange);
 
     window.addEventListener("scroll", handleHashChange);
     return () => {
@@ -142,9 +142,13 @@ function Header() {
       if (res.error) {
         toast.error(res.error?.data?.message);
       }
-    } else {
+    }
+    if (!isDoctorRegistered) {
       const res = await loginPatient(values);
       console.log(res);
+      if (res.error) {
+        toast.error(res.error?.error);
+      }
       if (res?.data) {
         res.data?.data?.token &&
           localStorage.setItem("token", res.data?.data?.token);
@@ -162,16 +166,6 @@ function Header() {
   };
   const onFinishFailedLogin = (errorInfo) => {
     console.log("Failed:", errorInfo);
-    // toast.error("🦄 Wow so easy!", {
-    //   position: "top-right",
-    //   autoClose: 5000,
-    //   hideProgressBar: false,
-    //   closeOnClick: true,
-    //   pauseOnHover: true,
-    //   draggable: true,
-    //   progress: undefined,
-    //   theme: "light",
-    // });
   };
 
   return (

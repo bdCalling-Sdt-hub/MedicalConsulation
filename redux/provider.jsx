@@ -9,19 +9,17 @@ import store from "./store";
 const Providers = ({ children }) => {
   return (
     <Provider store={store}>
-      <ContextApi>
-        {children}
-        <ToastContainer
-          position="top-right"
-          autoClose={2000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
-      </ContextApi>
+      <ContextApi>{children}</ContextApi>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+      />
     </Provider>
   );
 };

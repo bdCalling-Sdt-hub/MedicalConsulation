@@ -3,7 +3,6 @@
 import "react-toastify/dist/ReactToastify.css";
 
 import { useCallback, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
 
 import { Modal } from "antd";
 import { useSelector } from "react-redux";
@@ -75,7 +74,6 @@ function BookAppointment() {
         if (!UData?.nhsNumber) {
           UData.nhsNumber = user.nhsNumber;
         }
-
         const response = await createAppointment(UData);
         // console.log(response);
         if (response?.data) {
@@ -230,8 +228,6 @@ function BookAppointment() {
           </div>
         </div>
       </Modal>
-
-      <ToastContainer position="top-center" />
     </>
   );
 }

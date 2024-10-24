@@ -27,7 +27,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/app/(admin-dashboard)/admin/layout.js", "src/app/(dashboard)/dashboard/edittermsAndConditions/page.js"  ],
+, "src/app/(admin-dashboard)/admin/layout.js", "src/app/(dashboard)/admin/dashboard/edittermsAndConditions/page.js"  ],
   "exclude": [
     "node_modules"
   ]
