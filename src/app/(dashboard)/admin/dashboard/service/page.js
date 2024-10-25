@@ -16,7 +16,6 @@ import {
   DeleteOutlined,
   EditOutlined,
   EyeFilled,
-  MinusCircleOutlined,
   MinusOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
@@ -434,39 +433,41 @@ function CreteServices({ title, titleStyle, containerBg }) {
 
           <Form.List name="dateTimes">
             {(fields, { add, remove }) => (
-              <div className="flex-col gap-4">
+              <div className="flex-col gap-4 ">
                 {fields.map(({ key, name, ...restField }, index) => (
-                  <Form.Item
-                    {...restField}
-                    key={key}
-                    name={[name, "date"]}
-                    label={`Slot ${index + 1}`}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please select a date and time",
-                      },
-                    ]}
-                  >
-                    <DatePicker
-                      value={Slots[index]?.date}
-                      className="w-full bg-white rounded mb-4 border border-primary6"
-                      picker="date"
-                      onChange={(e) => {
-                        console.log({ e });
-                      }}
-                      showTime
-                      timeFormat="HH:mm"
-                      format="YYYY-MM-DD HH:mm"
-                      clearIcon={false}
-                      size="large"
-                    />
-                    {/* remove button for each slot */}
-                    <MinusCircleOutlined
+                  <div key={key} className="flex items-center gap-2">
+                    <Form.Item
+                      {...restField}
+                      name={[name, "date"]}
+                      label={`Slot ${index + 1}`}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select a date and time",
+                        },
+                      ]}
+                    >
+                      <DatePicker
+                        picker="date"
+                        onChange={(e) => {
+                          console.log(e ? e.toISOString() : null);
+                        }}
+                        showTime
+                        timeFormat="HH:mm"
+                        format="YYYY-MM-DD HH:mm"
+                        clearIcon={false}
+                        size="large"
+                      />
+                    </Form.Item>
+                    <Button
+                      type="link"
                       onClick={() => remove(name)}
-                      className="cursor-pointer"
-                    />
-                  </Form.Item>
+                      danger
+                      icon={<MinusOutlined />}
+                    >
+                      Remove
+                    </Button>
+                  </div>
                 ))}
                 <Button
                   onClick={() => add()}
