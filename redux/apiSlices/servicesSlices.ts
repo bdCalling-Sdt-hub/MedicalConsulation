@@ -16,7 +16,7 @@ export const servicesSlices = api.injectEndpoints({
     }),
     updateServiceById: builder.mutation({
       query: ({ id, data }) => ({
-        url: `/service/get-service-by-id/${id}`,
+        url: `/service/update-service-by-id/${id}`,
         method: "PUT",
         body: data,
       }),
@@ -24,7 +24,7 @@ export const servicesSlices = api.injectEndpoints({
     }),
     deletedService: builder.mutation({
       query: (id) => ({
-        url: `/service/get-service-by-id/${id}`,
+        url: `/service/delete-service-by-id/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["services"],
@@ -39,34 +39,30 @@ export const servicesSlices = api.injectEndpoints({
     }),
 
     disableService: builder.mutation({
-      query: ({ id, data }) => ({
+      query: (id) => ({
         url: `/service/disable-service-by-id/${id}`,
         method: "PATCH",
-        body: data,
       }),
       invalidatesTags: ["services"],
     }),
     enableService: builder.mutation({
-      query: ({ id, data }) => ({
+      query: (id) => ({
         url: `/service/enable-service-by-id/${id}`,
         method: "PATCH",
-        body: data,
       }),
       invalidatesTags: ["services"],
     }),
     approvedService: builder.mutation({
-      query: ({ id, data }) => ({
+      query: (id) => ({
         url: `/service/approve-service-by-id/${id}`,
         method: "PATCH",
-        body: data,
       }),
       invalidatesTags: ["services"],
     }),
     cancelServices: builder.mutation({
-      query: ({ id, data }) => ({
+      query: (id) => ({
         url: `service/cancel-service-by-id/${id}`,
         method: "PATCH",
-        body: data,
       }),
       invalidatesTags: ["services"],
     }),

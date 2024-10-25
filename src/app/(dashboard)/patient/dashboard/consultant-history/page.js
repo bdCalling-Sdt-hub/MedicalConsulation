@@ -3,16 +3,16 @@
 import { Button, Modal, Rate } from "antd";
 import { useCallback, useState } from "react";
 
-import { jsPDF } from "jspdf";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
 import IconRightArrow from "../../../../../../public/icons/IconRightArrow";
-import { useBookCreateAppointmentMutation } from "../../../../../../redux/apiSlices/appointmentsSlices";
+import Image from "next/image";
 import NewStep from "../../../../../modal/components/NewStep";
 import Step3 from "../../../../../modal/components/Step3";
 import Step5 from "../../../../../modal/components/Step5";
-import img1 from "../../../../../public/images/dashboard/consultant/consultant1.png";
+import img1 from "../../../../../../public/images/dashboard/consultant/consultant1.png";
+import { jsPDF } from "jspdf";
+import { useBookCreateAppointmentMutation } from "../../../../../../redux/apiSlices/appointmentsSlices";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
 // Consultants data
 const consultants = [

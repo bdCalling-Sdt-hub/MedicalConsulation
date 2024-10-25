@@ -1,12 +1,4 @@
-import {
-  Modal,
-  Button,
-  Select,
-  Radio,
-  Space,
-  Input,
-  RadioChangeEvent,
-} from "antd";
+import { Button, Modal, Radio, RadioChangeEvent, Select, Space } from "antd";
 import React, { useState } from "react";
 
 const { Option } = Select;
@@ -21,6 +13,7 @@ interface ModalComponentProps {
   onCancel?: () => void;
   onConfirm?: () => void;
   children?: React.ReactNode;
+  danger?: boolean;
   role?: string; // The role to display or change
   setRole?: (role: string) => void; // Function to change the role
   showRoleSelect?: boolean; // New prop to conditionally show the Select dropdown
@@ -37,6 +30,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
   confirmLabel = "Confirm",
   onCancel,
   onConfirm,
+  danger,
   children,
   role, // The selected role
   setRole, // Function to set the role dynamically
@@ -75,15 +69,16 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
         left: "35%",
         justifyContent: "center",
         alignItems: "center",
+
         minHeight: "100vh",
         position: "fixed",
       }}
       closable={false}
       centered={true} // Use Ant Design's centered property
     >
-      <div className="text-center mb-4">
-        <h1 className="text-xl font-bold text-black">{title}</h1>
-        <h2 className="text-lg text-gray-600">{subtitle}</h2>
+      <div className="text-center mb-4 ">
+        <h1 className="text-xl font-bold text-black py-4">{title}</h1>
+        <h2 className="text-lg text-gray-600 py-2">{subtitle}</h2>
       </div>
 
       {/* Conditionally display the role selection */}
@@ -141,7 +136,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
         >
           {cancelLabel}
         </Button>
-        <Button type="primary" onClick={handleApprove}>
+        <Button danger={danger} type="primary" onClick={handleApprove}>
           {confirmLabel}
         </Button>
       </div>

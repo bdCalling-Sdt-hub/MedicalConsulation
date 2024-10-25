@@ -2,13 +2,13 @@
 
 import { Input, Table } from "antd";
 
-import { Search } from "lucide-react";
 import Link from "next/link";
+import ModalComponent from "../../../../../components/dashboard/share/ModalComponent";
+import { Search } from "lucide-react";
+import SelectBox from "../../../../../components/dashboard/share/SelectBox";
+import image from "../../../../../../public/images/Notifications/Avatar.png";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import ModalComponent from "../../../../../components/dashboard/share/ModalComponent";
-import SelectBox from "../../../../../components/dashboard/share/SelectBox";
-import image from "../../../../../public/images/Notifications/Avatar.png";
 
 const selectOptions = [
   { value: "1", label: "Last week" },
@@ -24,7 +24,7 @@ const Appointment = () => {
   const [openPrescriptionModal, setOpenPrescriptionModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState();
 
-  const navigate = useRouter(); // Import useNavigate hook
+  const route = useRouter(); // Import useNavigate hook
 
   const pageSize = 10;
 
@@ -62,7 +62,7 @@ const Appointment = () => {
       render: (_, record) => (
         <div className="flex items-center">
           <Link
-            href={`/dashboard/patient-profile/${record.sId}`}
+            href={`/doctor/dashboard/patient-profile/${record.sId}`}
             className="ml-3 text-blue-500 hover:underline"
           >
             {record.name}
@@ -124,7 +124,7 @@ const Appointment = () => {
 
   const handleUser = (action) => {
     // Use the navigate function to redirect to the appointment/patientProfile with the ID
-    navigate.push(`/dashboard/appointment/patientProfile/${action.sId}`);
+    route.push(`/doctor/dashboard/patient-profile/${action.sId}`);
   };
 
   const handlePrescriptionClick = (record) => {

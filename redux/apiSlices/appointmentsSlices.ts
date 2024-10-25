@@ -70,4 +70,5 @@ export const {
   useGetAppointmentByIdQuery,
   useGetAppointmentDoctorByIdQuery,
   useGetAppointmentPatientByIdQuery,
+  useLazyGetAppointmentByIdQuery,
 } = appointmentsSlices;

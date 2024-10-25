@@ -15,7 +15,7 @@ const authSlice = api.injectEndpoints({
       providesTags: ["user"],
     }),
     allPatients: builder.query({
-      query: ({ page = 1, limit = 10, search }) => ({
+      query: ({ page, limit, search }) => ({
         url: `/users/patients?search=${search}&page=${page}&limit=${limit}`,
       }),
       providesTags: ["user"],

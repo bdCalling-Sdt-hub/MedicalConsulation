@@ -4,133 +4,32 @@ import "../../dashboard.css";
 
 import { Avatar, Badge, Layout, Menu, Popover } from "antd";
 import { Bell, LogOut, User, User2Icon } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
 import {
   FaChartPie,
   FaLock,
   FaRegUserCircle,
   FaUserCircle,
 } from "react-icons/fa";
-import { MdMedicalServices, MdOutlineSettings } from "react-icons/md";
+import { usePathname, useRouter } from "next/navigation";
 
-import SubMenu from "antd/es/menu/SubMenu";
+import { BiPieChartAlt2 } from "react-icons/bi";
 import Image from "next/image";
 import Link from "next/link";
-import { BiPieChartAlt2 } from "react-icons/bi";
-import { BsMicrosoftTeams } from "react-icons/bs";
-import { CiCreditCard1 } from "react-icons/ci";
-import { FaTag } from "react-icons/fa6";
-import { IoIosCard } from "react-icons/io";
 import Logo from "../../../../../public/images/LogoFinal.png";
+import { MdOutlineSettings } from "react-icons/md";
+import SubMenu from "antd/es/menu/SubMenu";
 
 const { Header, Sider, Content } = Layout;
 
-const isAdmin = true;
-const isDoctor = false;
-const isUser = !isAdmin && !isDoctor;
-
-const adminMenuItems = [
-  {
-    path: "/admin/dashboard", // For admin, the default route is "/"
-    title: "Admin Dashboard",
-    icon: <BiPieChartAlt2 size={18} color="white" />,
-    activeIcon: <FaChartPie size={18} color="white" />,
-  },
-  {
-    path: "/admin/dashboard/patientManagement",
-    title: "Patients",
-    icon: <FaRegUserCircle size={18} color="white" />,
-    activeIcon: <FaUserCircle size={18} color="white" />,
-  },
-  {
-    path: "/admin/dashboard/service",
-    title: "Create Services",
-    icon: <MdMedicalServices size={18} color="white" />,
-    activeIcon: <MdMedicalServices size={18} color="white" />,
-  },
-  {
-    path: "/admin/dashboard/doctors",
-    title: "Doctors",
-    icon: <BsMicrosoftTeams size={18} color="white" />,
-    activeIcon: <BsMicrosoftTeams size={18} color="white" />,
-  },
-  {
-    path: "/admin/dashboard/upcomingConsultant",
-    title: "Upcoming Consultant",
-    icon: <FaTag size={18} color="white" />,
-    activeIcon: <FaTag size={18} color="white" />,
-  },
-  {
-    path: "/admin/dashboard/settings",
-    title: "Settings",
-    icon: <MdOutlineSettings size={18} color="white" />,
-    activeIcon: <MdOutlineSettings size={18} color="white" />,
-    children: [
-      {
-        path: "/admin/dashboard/settings/personalInformation",
-        title: "Personal Information",
-        icon: <FaRegUserCircle size={18} color="white" />,
-        activeIcon: <FaUserCircle size={18} color="white" />,
-      },
-      {
-        path: "/admin/dashboard/settings/faq",
-        title: "FAQ",
-        icon: <FaLock size={18} color="white" />,
-        activeIcon: <FaLock size={18} color="white" />,
-      },
-      {
-        path: "/admin/dashboard/settings/termsAndCondition",
-        title: "Terms & Conditions",
-        icon: <CiCreditCard1 color="white" size={18} />,
-        activeIcon: <IoIosCard color="white" size={18} />,
-      },
-    ],
-  },
-];
-
-const doctorMenuItems = [
-  {
-    path: "/dashboard", // For users, the default route is "/userDashboard"
-    title: "Doctor Dashboard",
-    icon: <BiPieChartAlt2 size={18} color="white" />,
-    activeIcon: <FaChartPie size={18} color="white" />,
-  },
-  {
-    path: "/dashboard/appointment",
-    title: "Appointment",
-    icon: <FaRegUserCircle size={18} color="white" />,
-    activeIcon: <FaUserCircle size={18} color="white" />,
-  },
-  // {
-  //   path: "/reSchedule",
-  //   title: "Re-Schedule",
-  //   icon: <FaRegUserCircle size={18} color="white" />,
-  //   activeIcon: <FaUserCircle size={18} color="white" />,
-  // },
-  {
-    path: "/dashboard/settings",
-    title: "Settings",
-    icon: <MdOutlineSettings size={18} color="white" />,
-    activeIcon: <MdOutlineSettings size={18} color="white" />,
-    children: [
-      {
-        path: "/dashboard/settings/personalInformation",
-        title: "Personal Information",
-        icon: <FaRegUserCircle size={18} color="white" />,
-        activeIcon: <FaUserCircle size={18} color="white" />,
-      },
-    ],
-  },
-];
 const userMenuItems = [
   {
-    path: "/dashboard", // For users, the default route is "/userDashboard"
+    path: "/patient/dashboard", // For users, the default route is "/userDashboard"
     title: "User Dashboard",
     icon: <BiPieChartAlt2 size={18} color="white" />,
     activeIcon: <FaChartPie size={18} color="white" />,
   },
   {
-    path: "/dashboard/consultant-history",
+    path: "/patient/dashboard/consultant-history",
     title: "Consultant History",
     icon: <FaRegUserCircle size={18} color="white" />,
     activeIcon: <FaUserCircle size={18} color="white" />,
@@ -142,13 +41,13 @@ const userMenuItems = [
   //   activeIcon: <FaUserCircle size={18} color="white" />,
   // },
   {
-    path: "/dashboard/settings",
+    path: "/patient/dashboard/settings",
     title: "Settings",
     icon: <MdOutlineSettings size={18} color="white" />,
     activeIcon: <MdOutlineSettings size={18} color="white" />,
     children: [
       {
-        path: "/dashboard/settings/personalInformation",
+        path: "/patient/dashboard/settings/personalInformation",
         title: "Personal Information",
         icon: <FaRegUserCircle size={18} color="white" />,
         activeIcon: <FaUserCircle size={18} color="white" />,
@@ -156,12 +55,6 @@ const userMenuItems = [
     ],
   },
 ];
-
-const getMenuItems = () => {
-  if (isAdmin) return adminMenuItems;
-  if (isDoctor) return doctorMenuItems;
-  return userMenuItems;
-};
 
 const content = (
   <div className="w-40">
@@ -201,8 +94,6 @@ const Dashboard = ({ children }) => {
     return isActive ? activeIcon : icon;
   };
 
-  const menuItems = getMenuItems();
-
   return (
     <main className="bg-white">
       <Layout>
@@ -236,7 +127,7 @@ const Dashboard = ({ children }) => {
           >
             <div className="flex flex-col justify-between h-[90vh]">
               <div className="px-4">
-                {menuItems.map((item, index) => {
+                {userMenuItems.map((item, index) => {
                   const isActive = pathname === item.path;
                   if (item.children) {
                     return (

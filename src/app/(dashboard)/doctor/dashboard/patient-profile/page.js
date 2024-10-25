@@ -3,12 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 
 import { Button } from "antd";
-import JoditEditor from "jodit-react";
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import JoditEditor from "jodit-react";
 import Swal from "sweetalert2";
-import image from "../../../../../public/images/Notifications/Avatar.png";
+import image from "../../../../../../public/images/Notifications/Avatar.png";
+import { useRouter } from "next/navigation";
 
 const DoctorPatientProfile = (props) => {
   const [currentPage, setCurrentPage] = useState(1);

@@ -1,26 +1,27 @@
 "use client";
 
+import { Button, Checkbox, Flex, Form, Input, Modal, Tooltip } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
-import { Button, Checkbox, Flex, Form, Input, Modal } from "antd";
-import { useEffect, useState } from "react";
+import { clearUser, setUser } from "../../redux/apiSlices/userSlices";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import {
   useLoginDoctorMutation,
   useLoginMutation,
   useSignUpDoctorMutation,
   useSignUpPatientMutation,
 } from "../../redux/apiSlices/authSlice";
-import { clearUser, setUser } from "../../redux/apiSlices/userSlices";
 
 import Image from "next/image";
 import Link from "next/link";
-import { toast } from "react-toastify";
 import bigLogo from "../../public/images/big-logo.png";
 import logo from "../../public/images/logo.png";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 function Header() {
   const user = useSelector((state) => state.user.user);
-
+  const route = useRouter();
   const dispatch = useDispatch();
   const [singUpDoctor] = useSignUpDoctorMutation({});
   const [signUpPatient] = useSignUpPatientMutation({});
@@ -223,8 +224,25 @@ function Header() {
                   />
                 </svg>
               </div>
-              <div className="flex flex-row items-center gap-2 cursor-pointer hover:text-blue-500  ">
-                <p className="cal">{user?.name} </p>
+              <div
+                onClick={() => {
+                  if (user?.role === "admin") {
+                    route.push("/admin/dashboard");
+                  } else if (user?.role === "doctor") {
+                    route.push("/doctor/dashboard");
+                  } else if (user?.role === "patient") {
+                    route.push("/patient/dashboard");
+                  }
+                }}
+                className="flex flex-row items-center gap-2 cursor-pointer hover:text-blue-500  "
+              >
+                <Tooltip
+                  placement="bottom"
+                  title={(user?.name || user?.email) + " go on dashboard"}
+                  color="cyan"
+                >
+                  <p className="cal">{user?.name || user?.email} </p>
+                </Tooltip>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

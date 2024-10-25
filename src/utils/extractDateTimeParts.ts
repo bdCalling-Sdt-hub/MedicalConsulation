@@ -1,7 +1,18 @@
-export function extractDateTimeParts(dateTimeStr) {
+export function extractDateTimeParts(
+  dateTimeStr,
+  format24Hour = false,
+  toLocal = false
+) {
   const dateObj = new Date(dateTimeStr);
 
-  // Extract the day (e.g., "Sunday", "Monday", etc.)
+  // If local time is requested, convert to local date-time parts
+  const dayIndex = toLocal ? dateObj.getDay() : dateObj.getUTCDay();
+  const hours = toLocal ? dateObj.getHours() : dateObj.getUTCHours();
+  const minutes = (toLocal ? dateObj.getMinutes() : dateObj.getUTCMinutes())
+    .toString()
+    .padStart(2, "0");
+
+  // Days and months arrays for display
   const daysOfWeek = [
     "Sunday",
     "Monday",
@@ -11,16 +22,6 @@ export function extractDateTimeParts(dateTimeStr) {
     "Friday",
     "Saturday",
   ];
-  const day = daysOfWeek[dateObj.getUTCDay()];
-
-  // Extract the time in HH:MM format
-  let hours = dateObj.getUTCHours();
-  const minutes = dateObj.getUTCMinutes().toString().padStart(2, "0");
-
-  // Determine AM or PM
-  const period = hours >= 12 ? "PM" : "AM";
-
-  //date  04 or month name like (jan) extract on date
   const monthNames = [
     "Jan",
     "Feb",
@@ -35,21 +36,27 @@ export function extractDateTimeParts(dateTimeStr) {
     "Nov",
     "Dec",
   ];
-  // Extract the date (e.g., "01", "02", etc.)
-  const date = `${dateObj.getUTCDate()} ${monthNames[dateObj.getUTCMonth()]}`;
+  const day = daysOfWeek[dayIndex];
 
-  // Convert to 12-hour format
-  hours = hours % 12 || 12;
+  // Determine AM or PM and adjust to 12-hour format if needed
+  const period = hours >= 12 ? "PM" : "AM";
+  const displayHours = format24Hour ? hours : hours % 12 || 12;
+  const time = format24Hour
+    ? `${hours.toString().padStart(2, "0")}:${minutes}`
+    : `${displayHours}:${minutes} ${period}`;
 
-  const time = `${hours}:${minutes} ${period}`;
+  // Date display as "DD Mon"
+  const date = `${toLocal ? dateObj.getDate() : dateObj.getUTCDate()} ${
+    monthNames[toLocal ? dateObj.getMonth() : dateObj.getUTCMonth()]
+  }`;
 
-  // Determine morning, evening, or night
+  // Determine time of day
   let timeOfDay = "";
-  if (hours >= 5 && hours < 12 && period === "AM") {
+  if (hours >= 5 && hours < 12) {
     timeOfDay = "Morning";
-  } else if (hours >= 12 && period === "PM" && hours < 6) {
+  } else if (hours >= 12 && hours < 18) {
     timeOfDay = "Afternoon";
-  } else if (hours >= 6 && period === "PM") {
+  } else if (hours >= 18 && hours < 24) {
     timeOfDay = "Evening";
   } else {
     timeOfDay = "Night";
@@ -65,10 +72,17 @@ export function extractDateTimeParts(dateTimeStr) {
 }
 
 // Example usage:
-const dateTimeStr = "2024-10-20T05:31:49.350+00:00";
-const dateTimeParts = extractDateTimeParts(dateTimeStr);
+// const dateTimeStr = "2024-10-20T05:31:49.350+00:00";
+// const dateTimeParts12Local = extractDateTimeParts(
+//   new Date().toISOString(),
+//   false,
+//   true
+// ); // 12-hour local time format
+// const dateTimeParts24Local = extractDateTimeParts(
+//   new Date().toISOString(),
+//   true,
+//   true
+// ); // 24-hour local time format
 
-console.log("Day:", dateTimeParts.day);
-console.log("Time:", dateTimeParts.time);
-console.log("Period (AM/PM):", dateTimeParts.period);
-console.log("Time of Day:", dateTimeParts.timeOfDay);
+// console.log("12-hour local format:", dateTimeParts12Local);
+// console.log("24-hour local format:", dateTimeParts24Local);

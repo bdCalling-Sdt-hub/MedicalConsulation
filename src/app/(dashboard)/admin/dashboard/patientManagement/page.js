@@ -1,11 +1,14 @@
 "use client";
 
-import { Button, Input, Table } from "antd";
-import { Link, Search } from "lucide-react";
+import { Button, Input, Table, Typography } from "antd";
 
-import { useState } from "react";
-import image from "../../../../../../public/images/Notifications/Avatar.png";
 import ModalComponent from "../../../../../components/dashboard/share/ModalComponent";
+import { Search } from "lucide-react";
+import { useAllPatientsQuery } from "../../../../../../redux/apiSlices/authSlice";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+const { Text } = Typography;
 
 const PatientsManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,46 +20,30 @@ const PatientsManagement = () => {
 
   const pageSize = 10;
 
-  const data = [...Array(9).keys()].map((item, index) => ({
-    sId: index + 1,
-    image: <img src={image} className="w-9 h-9 rounded" alt="avatar" />,
-    name: "Richardo Mathew " + (index + 1),
-    email: "richardoa@padel.com",
-    dateAndTime: "01 Jan, 2024 at 10:00 am",
-    consultant: "Dr. Jhonathon Swift",
-    prescription: "Details",
-    division: "Cardiology",
+  const { data: patient } = useAllPatientsQuery({
+    page: 1,
+    limit: 10,
+    search: "",
+  });
+
+  const data = patient?.data?.result.map((item, index) => ({
+    sId: item?._id,
+    name: item?.name,
+    email: item?.email,
+    dateAndTime: new Date(item?.createdAt).toLocaleString(),
+    nhsNumber: item?.nhsNumber,
+    details: "Details",
+    totalConsultationHistory: item?.consultationHistory?.length,
     // rating: index % 5 + 1, // Generate rating between 1 and 5
-    role: index % 2 === 0 ? "Admin" : "Member", // Dynamic role for each user
-    action: {
-      sId: index + 1,
-      image: <img src={image} className="w-9 h-9 rounded" alt="" />,
-      name: "Richardo Mathew " + (index + 1),
-      dateAndTime: "01 Jan, 2024 at 10:00 am",
-      consultant: "Dr. Jhonathon Swift",
-      prescription: "Details",
-      division: "Cardiology",
-      dateOfBirth: "24-05-2024",
-      // rating: index % 5 + 1, // Rating as a number (1 to 5)
-      contact: "0521545861520",
-      role: index % 2 === 0 ? "Admin" : "Member", // Assign role dynamically
-    },
   }));
 
   const columns = [
     {
       title: "Name",
-      dataIndex: "image",
-      key: "image",
+      dataIndex: "name",
+      key: "name",
       render: (_, record) => (
-        <div className="flex items-center">
-          <Link
-            href={`patientProfile/${record.sId}`}
-            className="ml-3 text-blue-500 hover:underline"
-          >
-            {record.name}
-          </Link>
-        </div>
+        <div className="flex items-center">{record.name}</div>
       ),
     },
     {
@@ -70,19 +57,19 @@ const PatientsManagement = () => {
       key: "dateAndTime",
     },
     {
-      title: "Division",
-      dataIndex: "division",
-      key: "division",
+      title: "Total Consultation History",
+      dataIndex: "totalConsultationHistory",
+      key: "totalConsultationHistory",
     },
     {
-      title: "Consultant",
-      dataIndex: "consultant",
-      key: "consultant",
+      title: "NHS Number",
+      dataIndex: "nhsNumber",
+      key: "nhsNumber",
     },
     {
       title: "Prescription",
-      dataIndex: "prescription",
-      key: "prescription",
+      dataIndex: "details",
+      key: "details",
       render: (_, record) => (
         <Button
           onClick={() => handlePrescriptionClick(record)}
@@ -99,6 +86,8 @@ const PatientsManagement = () => {
     //   render: (rating) => <Rate className="custom-rate" disabled value={rating} />, // Display stars
     // }
   ];
+
+  const route = useRouter();
 
   const handlePage = (page) => {
     setCurrentPage(page);
@@ -130,15 +119,20 @@ const PatientsManagement = () => {
 
   return (
     <div>
-      <Input
-        prefix={<Search />}
-        className="w-full rounded-2xl h-12 bg-base border-0 text-primary placeholder:text-gray-200"
-        placeholder="Search by email"
-        style={{
-          backgroundColor: "#f0f0f0",
-          color: "#333333",
-        }}
-      />
+      <div className="flex items-center justify-between gap-4">
+        {/* <Text className="text-2xl font-bold font-merri">
+          Patients Management
+        </Text> */}
+        <Input
+          prefix={<Search />}
+          className="flex-1 rounded-2xl h-12 bg-base border-0 text-primary placeholder:text-gray-200"
+          placeholder="Search by email"
+          style={{
+            backgroundColor: "#f0f0f0",
+            color: "#333333",
+          }}
+        />
+      </div>
       <div className="py-8">
         <Table
           dataSource={data}
