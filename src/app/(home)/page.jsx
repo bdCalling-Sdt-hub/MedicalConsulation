@@ -1,14 +1,13 @@
 "use client";
 
-import AboutUs from "@/components/AboutUs";
-import AboutUs2 from "@/components/AboutUs2";
-import Banner from "@/components/Banner";
-import FAQ from "@/components/FAQ";
-import HealthyTips from "@/components/HealthyTips";
-import Services from "@/components/Services";
-import Testimonials from "@/components/Testimonials";
-import BookAppointment from "@/modal/BookAppointment";
-import { ToastContainer } from "react-toastify";
+import AboutUs from "../../components/AboutUs";
+import AboutUs2 from "../../components/AboutUs2";
+import Banner from "../../components/Banner";
+import FAQ from "../../components/FAQ";
+import HealthyTips from "../../components/HealthyTips";
+import Services from "../../components/Services";
+import Testimonials from "../../components/Testimonials";
+import BookAppointment from "../../modal/BookAppointment";
 
 function Page() {
   return (
@@ -35,7 +34,6 @@ function Page() {
 
       {/* healthy section */}
       <HealthyTips />
-      <ToastContainer />
     </>
   );
 }

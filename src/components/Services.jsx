@@ -11,19 +11,9 @@ function Services({
 }) {
   const { data, isError, error } = useGetAllServicesQuery({});
 
-  const services = [
-    "10 Minutes Telephone Consultation",
-    "15 Minutes Video Consultation",
-    "20 Minutes Video Consultation",
-    "Medication Reviews",
-    "Peadiatric Reviews",
-    "Geriatric Reviews",
-    "20 point comprehensive medical assessment with detailed report",
-  ];
-
   // Function to handle selecting an item
   const handleSelectItem = (item) => {
-    setSelectedItem(item); // Set the clicked item as the selected item
+    setSelectedItem && setSelectedItem(item); // Set the clicked item as the selected item
   };
 
   return (
@@ -39,7 +29,7 @@ function Services({
         </h1>
 
         <div className="grid grid-cols-4 gap-4 items-center">
-          {data?.data.map((service, index) => (
+          {data?.data?.result?.map((service, index) => (
             <div
               key={index}
               onClick={() => handleSelectItem(service)}

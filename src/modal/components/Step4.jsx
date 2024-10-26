@@ -1,15 +1,30 @@
 "use client";
-import { Checkbox, Radio } from "antd";
-import Image from "next/image";
-import React, { useState } from "react";
-import doctorImage from "../../../public/images/doctorCover.png";
 
-function Step4() {
-  const [value, setValue] = useState(1);
-  const onChange = (e) => {
-    console.log("radio checked", e.target.value);
-    setValue(e.target.value);
+import {
+  Elements,
+  PaymentElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
+import {
+  useConfirmPaymentIntentMutation,
+  usePaymentIntentMutation,
+} from "../../../redux/apiSlices/paymnetSlices";
+
+import { loadStripe } from "@stripe/stripe-js";
+import { toast } from "react-toastify";
+import { useState } from "react";
+
+const stripePromise = loadStripe(
+  "pk_test_51Q51euIE7z8j8FQDRAixwTBcDJS0zyz8wjvgZVn64nZKzjxyVSdzEPIccMiD3hND02GAHRU8y2eB92YO1tcL1PQk00M6ydxlfZ"
+);
+function Step4({ createdAppointment }) {
+  const options = {
+    mode: "payment",
+    amount: createdAppointment?.serviceId.price * 100,
+    currency: "usd",
   };
+  // console.log(createdAppointment, "createdAppointment");
 
   return (
     <div>
@@ -23,84 +38,10 @@ function Step4() {
           <h1 className={`text-black text-[20px] font-merri font-normal mb-6`}>
             Pay With
           </h1>
-          <Radio.Group onChange={onChange} value={value}>
-            <Radio
-              value={1}
-              className={`text-sm font-merri font-normal text-secondaryBlack`}
-            >
-              Card
-            </Radio>
-            <Radio
-              value={2}
-              className={`text-sm font-merri font-normal text-secondaryBlack`}
-            >
-              Bank
-            </Radio>
-          </Radio.Group>
 
-          <form action="" className={`mt-6`}>
-            <div className={`mb-4`}>
-              <p
-                className={`text-sm text-secondaryBlack font-merri font-normal`}
-              >
-                Card Number
-              </p>
-              <input
-                type="text"
-                id="cardNumber"
-                placeholder="1234 1234 1234 1234"
-                className={`border border-neutral5 p-2 rounded w-full mt-1 text-base text-offBlack font-merri font-normal focus:outline-none`}
-              />
-            </div>
-
-            <div className={`flex gap-4`}>
-              <div>
-                <p
-                  className={`text-sm text-secondaryBlack font-merri font-normal`}
-                >
-                  Expiration Date
-                </p>
-                <input
-                  type="text"
-                  id="cardNumber"
-                  placeholder="MM/YY"
-                  className={`border border-neutral5 p-2 rounded w-full mt-1 text-base text-offBlack font-merri font-normal focus:outline-none`}
-                />
-              </div>
-              <div>
-                <p
-                  className={`text-sm text-secondaryBlack font-merri font-normal`}
-                >
-                  CVC
-                </p>
-                <input
-                  type="text"
-                  id="cardNumber"
-                  placeholder="123"
-                  className={`border border-neutral5 p-2 rounded w-full mt-1 text-base text-offBlack font-merri font-normal focus:outline-none`}
-                />
-              </div>
-            </div>
-            <Checkbox checked={false} className={`mt-4`}>
-              <p
-                className={`text-sm text-secondaryBlack font-merri font-normal`}
-              >
-                Save my card
-              </p>
-            </Checkbox>
-            <div>
-              <button
-                className={`bg-primary6 w-full py-2 rounded text-white text-base font-merri font-normal mt-4`}
-              >
-                Pay $20.00
-              </button>
-            </div>
-            <p className={`text-sm text-gray50 font-roboto font-normal mt-4`}>
-              Your personal data will be used to process your order, support
-              your experience throughout this website, and for other purposes
-              described in our privacy policy.
-            </p>
-          </form>
+          <Elements stripe={stripePromise} options={options}>
+            <CheckoutForm createdAppointment={createdAppointment} />
+          </Elements>
         </div>
         <div className="col-span-3 bg-transparent">
           <h1
@@ -108,7 +49,6 @@ function Step4() {
           >
             Consultation Summary
           </h1>
-          
 
           <div
             className={`flex flex-row items-center justify-between py-2 border-t border-t-offBorder`}
@@ -136,7 +76,7 @@ function Step4() {
             <h1
               className={`text-base text-secondaryBlack font-roboto font-semibold`}
             >
-              $20.00
+              ${createdAppointment?.serviceId?.price}
             </h1>
           </div>
 
@@ -151,7 +91,7 @@ function Step4() {
             <h1
               className={`text-base text-secondaryBlack font-roboto font-semibold`}
             >
-              $20.00
+              ${createdAppointment?.serviceId?.price}
             </h1>
           </div>
         </div>
@@ -161,3 +101,84 @@ function Step4() {
 }
 
 export default Step4;
+
+export const CheckoutForm = ({ createdAppointment }) => {
+  // console.log(appointmentId);
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [processing, setProcessing] = useState(false);
+
+  const [createIntent] = usePaymentIntentMutation();
+  const [confirmPaymentIntent] = useConfirmPaymentIntentMutation();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setProcessing(true);
+    if (elements == null) {
+      return;
+    }
+
+    // Trigger form validation and wallet collection
+    const { error: submitError } = await elements.submit();
+    if (submitError) {
+      // Show error to your customer
+      setErrorMessage(submitError.message);
+      return;
+    }
+
+    // Create the PaymentIntent and obtain clientSecret from your server endpoint
+
+    const res = await createIntent({
+      paymentMethodId: "pm_card_visa",
+      amount: createdAppointment?.serviceId.price,
+      appointmentId: createdAppointment?._id,
+    });
+    const clientSecret = res?.data?.data?.client_secret;
+
+    console.log(res, "res");
+
+    if (!clientSecret) return setErrorMessage("Client Secret not found");
+    const paymentIntent = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: res.data.data._id,
+    });
+
+    if (paymentIntent?.paymentIntent.status === "succeeded") {
+      confirmPaymentIntent({
+        appointmentId: createdAppointment?._id,
+        paymentIntent: paymentIntent?.paymentIntent,
+      });
+      toast.success("Payment Successful");
+      console.log(paymentIntent, "paymentIntent");
+    }
+    setProcessing(false);
+    if (paymentIntent.error) {
+      setErrorMessage(error.message);
+      setProcessing(false);
+    } else {
+      setProcessing(false);
+      // Your customer will be redirected to your `return_url`. For some payment
+      // methods like iDEAL, your customer will be redirected to an intermediate
+      // site first to authorize the payment, then redirected to the `return_url`.
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <PaymentElement />
+
+      <div>
+        <button
+          type="submit"
+          disabled={!stripe || !elements || processing}
+          className={`bg-primary6 w-full py-2 rounded text-white text-base font-merri font-normal mt-4`}
+        >
+          Pay ${createdAppointment?.serviceId?.price}
+        </button>
+      </div>
+      {processing && <div className="text-center">Processing...</div>}
+      {/* Show error message to your customers */}
+      {errorMessage && <div>{errorMessage}</div>}
+    </form>
+  );
+};

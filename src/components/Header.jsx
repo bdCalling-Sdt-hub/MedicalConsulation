@@ -1,23 +1,32 @@
 "use client";
 
+import { Button, Checkbox, Flex, Form, Input, Modal, Tooltip } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
-import { Button, Checkbox, Flex, Form, Input, Modal } from "antd";
+import { clearUser, setUser } from "../../redux/apiSlices/userSlices";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import {
+  useLoginDoctorMutation,
+  useLoginMutation,
   useSignUpDoctorMutation,
   useSignUpPatientMutation,
 } from "../../redux/apiSlices/authSlice";
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import bigLogo from "../../public/images/big-logo.png";
 import logo from "../../public/images/logo.png";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 function Header() {
-  const currentLocationPath = usePathname();
+  const user = useSelector((state) => state.user.user);
+  const route = useRouter();
+  const dispatch = useDispatch();
   const [singUpDoctor] = useSignUpDoctorMutation({});
   const [signUpPatient] = useSignUpPatientMutation({});
+  const [loginPatient] = useLoginMutation({});
+  const [loginDoctor] = useLoginDoctorMutation({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
   const [isForgetPassModalOpen, setIsForgetPassModalOpen] = useState(false);
@@ -75,7 +84,7 @@ function Header() {
       }
     };
     window.addEventListener("scroll", navbarFixed);
-    window.addEventListener("hashchange", handleHashChange);
+    window.addEventListener("scroll", handleHashChange);
 
     window.addEventListener("scroll", handleHashChange);
     return () => {
@@ -83,10 +92,80 @@ function Header() {
     };
   }, []);
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const onFinishSignUp = async (values) => {
+    if (isDoctorRegistered) {
+      const res = await singUpDoctor({ ...values });
+      console.log(res);
+      if (res?.data) {
+        toast.success(res.data?.message);
+      }
+      if (res.error) {
+        toast.error(res.error?.error);
+      }
+    } else {
+      const res = await signUpPatient({ ...values });
+      console.log(res);
+      if (res?.data) {
+        res.data?.data?.token &&
+          localStorage.setItem("token", res.data?.data?.token);
+        console.log(res.data?.data?.newUser);
+        dispatch(setUser(res.data?.data?.newUser));
+        toast.success(res.data?.message);
+        setIsModalOpen(false);
+      }
+      if (res.error) {
+        toast.error(res.error?.data?.message);
+      }
+    }
+    // console.log("Success:", values);
   };
-  const onFinishFailed = (errorInfo) => {
+  const onFinishFailedSignUp = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+    // toast.error("🦄 Wow so easy!", {
+    //   position: "top-right",
+    //   autoClose: 5000,
+    //   hideProgressBar: false,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    //   progress: undefined,
+    //   theme: "light",
+    // });
+  };
+  const onFinishLogin = async (values) => {
+    console.log(values);
+    if (isDoctorRegistered) {
+      const res = await loginDoctor(values);
+      console.log(res);
+      if (res?.data) {
+        toast.success(res.data?.message);
+      }
+      if (res.error) {
+        toast.error(res.error?.data?.message);
+      }
+    }
+    if (!isDoctorRegistered) {
+      const res = await loginPatient(values);
+      console.log(res);
+      if (res.error) {
+        toast.error(res.error?.error);
+      }
+      if (res?.data) {
+        res.data?.data?.token &&
+          localStorage.setItem("token", res.data?.data?.token);
+        console.log(res.data?.data?.user);
+        dispatch(setUser(res.data?.data?.user));
+        toast.success(res.data?.message);
+
+        setIsSignInModalOpen(!isSignInModalOpen);
+      }
+      if (res.error) {
+        toast.error(res.error?.data?.message);
+      }
+    }
+    // console.log("Success:", values);
+  };
+  const onFinishFailedLogin = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
@@ -95,7 +174,7 @@ function Header() {
       <section
         className={`${
           navbarFixed ? "blur-background" : "bg-primary6"
-        } z-[9999] fixed w-full shadow-xl`}
+        } z-50 fixed w-full shadow-xl`}
       >
         <div className="container mx-auto py-4 flex flex-row justify-between items-center">
           <div>
@@ -108,7 +187,7 @@ function Header() {
               {navItems.map((item) => (
                 <Link key={item.path} href={item.path}>
                   <li
-                    className={`font-normal  ${
+                    className={`font-normal hover:text-secondaryBlack ${
                       (activeHash || "#home") === `${item.path}`
                         ? "text-secondaryBlack"
                         : "text-offBlack"
@@ -120,41 +199,107 @@ function Header() {
               ))}
             </ul>
           </div>
-          <div className="flex flex-row items-center gap-4">
-            <button
-              className={`text-secondaryBlack font-merri text-sm py-2 px-6 rounded-sm font-normal`}
-              onClick={(e) => {
-                setIsSignInModalOpen(!isSignInModalOpen);
-                setIsModalOpen(false);
+          {user?._id ? (
+            <div className="flex flex-row items-center gap-4">
+              <div
+                onClick={async () => {
+                  localStorage.removeItem("token");
+                  dispatch(clearUser());
+                }}
+                className="flex flex-row items-center gap-2  cursor-pointer text-offBlack hover:text-red-500 "
+              >
+                <p className="">Logout </p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
+                  />
+                </svg>
+              </div>
+              <div
+                onClick={() => {
+                  if (user?.role === "admin") {
+                    route.push("/admin/dashboard");
+                  } else if (user?.role === "doctor") {
+                    route.push("/doctor/dashboard");
+                  } else if (user?.role === "patient") {
+                    route.push("/patient/dashboard");
+                  }
+                }}
+                className="flex flex-row items-center gap-2 cursor-pointer hover:text-blue-500  "
+              >
+                <Tooltip
+                  placement="bottom"
+                  title={(user?.name || user?.email) + " go on dashboard"}
+                  color="cyan"
+                >
+                  <p className="cal">{user?.name || user?.email} </p>
+                </Tooltip>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                  />
+                </svg>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-row items-center gap-4">
+              <button
+                className={`text-secondaryBlack font-merri text-sm py-2 px-6 rounded-sm font-normal`}
+                onClick={(e) => {
+                  setIsSignInModalOpen(!isSignInModalOpen);
+                  setIsModalOpen(false);
 
-                e.preventDefault();
-              }}
-            >
-              Sign In
-            </button>
-            <button
-              className={`text-white bg-black font-merri text-sm py-2 px-6 rounded-sm font-normal`}
-              onClick={(e) => {
-                setIsModalOpen(!isModalOpen);
-                setIsSignInModalOpen(false);
-                e.preventDefault();
-              }}
-            >
-              Register
-            </button>
-          </div>
+                  e.preventDefault();
+                }}
+              >
+                Sign In
+              </button>
+              <button
+                className={`text-white bg-black font-merri text-sm py-2 px-6 rounded-sm font-normal`}
+                onClick={(e) => {
+                  setIsModalOpen(!isModalOpen);
+                  setIsSignInModalOpen(false);
+                  e.preventDefault();
+                }}
+              >
+                Register
+              </button>
+            </div>
+          )}
         </div>
       </section>
+
+      {/* ===================== register modal ================ */}
+
       <Modal
         open={isModalOpen}
         onCancel={handleCancel}
         footer={null}
         maskClosable={false}
+        centered
         width={"50%"}
         closeIcon={<span style={{ color: "red", fontSize: "24px" }}>×</span>}
       >
         <div className="flex flex-col items-center justify-center p-4">
-          <Image src={bigLogo} alt="logo" />
+          {/* <Image src={bigLogo} alt="logo" /> */}
           <h1
             className={`text-secondaryblack text-4xl font-bold font-merri mt-8`}
           >
@@ -193,8 +338,8 @@ function Header() {
                 name="basic"
                 className={``}
                 initialValues={{ remember: true }}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
+                onFinish={onFinishSignUp}
+                onFinishFailed={onFinishFailedSignUp}
                 layout="vertical"
               >
                 <div className={`mb-4`}>
@@ -291,27 +436,24 @@ function Header() {
           </div>
         </div>
       </Modal>
-
+      {/*==================== Login modal ================== */}
       <Modal
         open={isSignInModalOpen}
         onCancel={handleSignInCancel}
         footer={null}
         maskClosable={false}
+        centered
         width={"50%"}
         closeIcon={<span style={{ color: "red", fontSize: "24px" }}>×</span>}
       >
         <div className="flex flex-col items-center justify-center p-4">
-          <Image src={bigLogo} alt="logo" />
+          {/* <Image src={bigLogo} alt="logo" /> */}
           <h1
             className={`text-secondaryblack text-4xl font-bold font-merri mt-8`}
           >
             Welcome back!
           </h1>
-          <h1
-            className={`text-secondaryblack text-[20px] font-normal font-merri mt-8`}
-          >
-            Sign In with the data that used while registration
-          </h1>
+
           <div className="gap-1 bg-[#e3e3e3] flex flex-row items-center mt-6">
             <button
               className={`${
@@ -336,8 +478,8 @@ function Header() {
                 name="basic"
                 className={``}
                 initialValues={{ remember: true }}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
+                onFinish={onFinishLogin}
+                onFinishFailed={onFinishFailedLogin}
                 layout="vertical"
               >
                 <div className={`mb-4`}>
@@ -385,28 +527,33 @@ function Header() {
                         // setIsModalOpen(false);
                       }}
                     >
-                      Register
+                      Login
                     </Button>
                   </Form.Item>
                 </div>
-                <p
-                  className={`text-secondaryBlack text-sm font-merri font-normal mt-4 text-center`}
-                >
-                  By continuing you are agree with our Privacy Policy, Terms &
-                  Conditions
-                </p>
+                <div className="flex flex-row justify-end">
+                  <p
+                    className={`text-sm text-secondaryBlack font-merri font-normal underline cursor-pointer`}
+                    onClick={() => {
+                      setIsForgetPassModalOpen(true);
+                      setIsSignInModalOpen(false);
+                    }}
+                  >
+                    Forgot Password?
+                  </p>
+                </div>
                 <p
                   className={`text-offBlack text-sm font-normall font-merri text-center mt-4`}
                 >
-                  Already Registered?{" "}
+                  have an account?{" "}
                   <span
                     className={`text-primary7 cursor-pointer`}
                     onClick={() => {
-                      setIsModalOpen(false);
-                      setIsSignInModalOpen(true);
+                      setIsModalOpen(true);
+                      setIsSignInModalOpen(false);
                     }}
                   >
-                    Sign In
+                    Sign up
                   </span>
                 </p>
               </Form>
@@ -414,17 +561,18 @@ function Header() {
           </div>
         </div>
       </Modal>
-
+      {/* =========================forget modal =================== */}
       <Modal
         open={isForgetPassModalOpen}
         onCancel={handleForgetPassCancel}
         footer={null}
         maskClosable={false}
+        centered
         width={"50%"}
         closeIcon={<span style={{ color: "red", fontSize: "24px" }}>×</span>}
       >
         <div className="flex flex-col items-center justify-center p-4">
-          <Image src={bigLogo} alt="logo" />
+          {/* <Image src={bigLogo} alt="logo" /> */}
 
           <div className=" w-full mt-8">
             <h1
@@ -470,17 +618,18 @@ function Header() {
         </div>
       </Modal>
 
-      {/* otp modal */}
+      {/*======================== otp modal ===================*/}
       <Modal
         open={isOtpModalOpen}
         onCancel={handleOtpModalCancel}
         footer={null}
         maskClosable={false}
+        centered
         width={"50%"}
         closeIcon={<span style={{ color: "red", fontSize: "24px" }}>×</span>}
       >
         <div className="flex flex-col items-center justify-center p-4">
-          <Image src={bigLogo} alt="logo" />
+          {/* <Image src={bigLogo} alt="logo" /> */}
 
           <div className=" w-full mt-8">
             <h1
@@ -534,6 +683,7 @@ function Header() {
         footer={null}
         maskClosable={false}
         width={"50%"}
+        centered
         closeIcon={<span style={{ color: "red", fontSize: "24px" }}>×</span>}
       >
         <div className="flex flex-col items-center justify-center p-4">

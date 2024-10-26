@@ -25,8 +25,19 @@ export const paymentSlices = api.injectEndpoints({
       }),
       invalidatesTags: ["payment"],
     }),
+    confirmPaymentIntent: builder.mutation({
+      query: (data) => ({
+        url: `/payment/confirm-payment`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["payment"],
+    }),
   }),
 });
 
-export const { useGetPaymentRecordsQuery, usePaymentIntentMutation } =
-  paymentSlices;
+export const {
+  useGetPaymentRecordsQuery,
+  usePaymentIntentMutation,
+  useConfirmPaymentIntentMutation,
+} = paymentSlices;

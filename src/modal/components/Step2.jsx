@@ -1,9 +1,10 @@
 "use client";
+
 import Image from "next/image";
-import React, { useState } from "react";
 import { Rate } from "antd";
-import doctors from "../../utils/json/doctors.json";
 import doctorImage from "../../../public/images/doctor.png";
+import doctors from "../../utils/json/doctors.json";
+import { useState } from "react";
 
 function Doctors() {
   const [selectedDoctor, setSelectedDoctor] = useState(null);

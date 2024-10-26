@@ -10,10 +10,10 @@ export const tramsAndConditionSlices = api.injectEndpoints({
     }),
 
     addTermsAndCondition: builder.mutation({
-      query: (id) => ({
+      query: (data) => ({
         url: `/terms-of-service/add-terms-of-service`,
         method: "POST",
-        body: id,
+        body: data,
       }),
       invalidatesTags: ["payment"],
     }),
