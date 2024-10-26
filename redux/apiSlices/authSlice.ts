@@ -40,13 +40,13 @@ const authSlice = api.injectEndpoints({
       }),
       providesTags: ["user"],
     }),
-    updateUserProfile: builder.query({
+    updateUserProfile: builder.mutation({
       query: (data) => ({
         url: `/users/update-profile-by-user`,
         method: "PATCH",
         body: data,
       }),
-      providesTags: ["user"],
+      invalidatesTags: ["user"],
     }),
     signUpPatient: builder.mutation({
       query: (data) => ({
@@ -95,9 +95,10 @@ const authSlice = api.injectEndpoints({
       invalidatesTags: ["user"],
     }),
     changePassword: builder.mutation({
-      query: () => ({
+      query: (data) => ({
         url: `/users/auth/change-password`,
         method: "POST",
+        body: data,
       }),
       invalidatesTags: ["user"],
     }),
@@ -170,5 +171,5 @@ export const {
   useAllDoctorQuery,
   useGetUserByIdQuery,
   useUpdatedUserByIdQuery,
-  useUpdateUserProfileQuery,
+  useUpdateUserProfileMutation,
 } = authSlice;

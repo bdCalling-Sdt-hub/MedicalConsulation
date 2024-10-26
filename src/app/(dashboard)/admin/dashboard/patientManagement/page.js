@@ -2,8 +2,10 @@
 
 import { Button, Input, Table, Typography } from "antd";
 
+import Image from "next/image";
 import ModalComponent from "../../../../../components/dashboard/share/ModalComponent";
 import { Search } from "lucide-react";
+import { imageUrl } from "../../../../../../redux/api/baseApi";
 import { useAllPatientsQuery } from "../../../../../../redux/apiSlices/authSlice";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -28,6 +30,7 @@ const PatientsManagement = () => {
 
   const data = patient?.data?.result.map((item, index) => ({
     sId: item?._id,
+    image: item?.image,
     name: item?.name,
     email: item?.email,
     dateAndTime: new Date(item?.createdAt).toLocaleString(),
@@ -47,6 +50,23 @@ const PatientsManagement = () => {
       ),
     },
     {
+      title: "Image",
+      dataIndex: "image",
+      key: "image",
+      render: (_, record) => (
+        <div className="flex items-center">
+          <Image
+            // loader={() => imageUrl + record.image}
+            width={100}
+            height={100}
+            src={imageUrl + record.image}
+            className="w-9 h-9 rounded"
+            alt="avatar"
+          />
+        </div>
+      ),
+    },
+    {
       title: "Email",
       dataIndex: "email",
       key: "email",
@@ -61,6 +81,7 @@ const PatientsManagement = () => {
       dataIndex: "totalConsultationHistory",
       key: "totalConsultationHistory",
     },
+
     {
       title: "NHS Number",
       dataIndex: "nhsNumber",

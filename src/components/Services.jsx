@@ -29,7 +29,7 @@ function Services({
         </h1>
 
         <div className="grid grid-cols-4 gap-4 items-center">
-          {data?.data.map((service, index) => (
+          {data?.data?.result?.map((service, index) => (
             <div
               key={index}
               onClick={() => handleSelectItem(service)}

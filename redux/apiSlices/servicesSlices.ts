@@ -4,7 +4,7 @@ export const servicesSlices = api.injectEndpoints({
   endpoints: (builder) => ({
     getAllServices: builder.query({
       query: ({ id, page, limit }) => ({
-        url: `/service/get-all-services`,
+        url: `service/get-all-services?page=${page}&limit=${limit}`,
       }),
       providesTags: ["services"],
     }),
@@ -76,6 +76,7 @@ export const {
   useDisableServiceMutation,
   useEnableServiceMutation,
   useGetAllServicesQuery,
+  useLazyGetAllServicesQuery,
   useGetServiceByIdQuery,
   useUpdateServiceByIdMutation,
   useDeletedServiceMutation,

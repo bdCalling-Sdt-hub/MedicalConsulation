@@ -1,41 +1,41 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {
+  useAddTermsAndConditionMutation,
+  useGetTermsAndConditionQuery,
+} from "../../../../../../../../redux/apiSlices/tramsAndConditionsSlices";
+import { useRef, useState } from "react";
 
 import { Button } from "antd";
 import JoditEditor from "jodit-react";
-import { useRouter } from "next/navigation";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 // Mock data for content (replace this with real data fetching logic)
-const data = {
-  data: {
-    attributes: {
-      content: "Initial terms and conditions content.",
-    },
-  },
-};
 
 const EditTermsAndCondition = () => {
   const route = useRouter();
   const editor = useRef(null);
   const [content, setContent] = useState("");
-
-  useEffect(() => {
-    setContent(data?.data?.attributes?.content || "");
-  }, []);
+  const { data: termsAndCondition } = useGetTermsAndConditionQuery();
+  const [createTermsAndCondition] = useAddTermsAndConditionMutation();
 
   const handleUpdate = async () => {
     console.log(content);
-    Swal.fire({
-      title: "Good job!",
-      text: "You clicked the button!",
-      icon: "success",
-      showConfirmButton: true,
-    }).then(() => {
-      route.push("/admin/dashboard/settings/termsAndCondition");
-    });
+
+    const res = await createTermsAndCondition({ content });
+    if (res?.data) {
+      // console.log(res);
+      Swal.fire({
+        title: "Good job!",
+        text: "You clicked the button!",
+        icon: "success",
+        showConfirmButton: true,
+      }).then(() => {
+        route.push("/admin/dashboard/settings/termsAndCondition");
+      });
+    }
   };
 
   const handleBackTermsAndCondition = () => {
@@ -54,7 +54,7 @@ const EditTermsAndCondition = () => {
       <div className="text-justify mt-[24px] relative">
         <JoditEditor
           ref={editor}
-          value={content}
+          value={termsAndCondition?.data?.content}
           onChange={(newContent) => setContent(newContent)}
           className="text-wrap bg-red-900"
         />

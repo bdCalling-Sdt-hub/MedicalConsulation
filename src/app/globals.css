@@ -80,15 +80,35 @@
   background-color: #D9C771!important;
   border-color: #D9C771!important;
 }
-.ant-input, .ant-input-affix-wrapper{
+:where(.css-dev-only-do-not-override-vryruh) .ant-input-number-input {
+  border-color: #D9C771!important; 
+}
+.ant-input, .ant-input-affix-wrapper , .ant-input-number-input{
   border-color: #D9C771!important;
 }
-.ant-input:hover, .ant-input-affix-wrapper:hover{
+.ant-input:hover, .ant-input-number .ant-input-number-input .ant-input-affix-wrapper:hover{
   border-color: #D9C771!important;
 }
-.ant-input:focus, .ant-input-affix-wrapper:focus{
-  border-color: #D9C771!important;
+
+/* Add this to your CSS file */
+.ant-radio-button-wrapper-checked {
+  background-color: #D9C771 !important; /* Set your desired background color */
+  border-color: #D9C771 !important; /* Optional: matches border with background */
+  color: #fff !important; /* Optional: set text color */
+
 }
-.ant-input-affix-wrapper:focus{
-  border-color: #D9C771!important;
+
+
+.ant-radio-button-wrapper{
+  border-color: #D9C771 !important;
+  
+}
+.ant-radio-button-wrapper:hover{
+  background-color: #D9C771 !important;
+  color: #f0f0f0;
+
+}
+.ant-radio-button-wrapper-checked:hover {
+ background-color: #D9C771 !important;
+  color: #f0f0f0; /* Change text color on hover if needed */
 }

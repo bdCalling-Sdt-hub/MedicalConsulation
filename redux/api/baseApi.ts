@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+import Swal from "sweetalert2";
 import { clearToken } from "../apiSlices/tokenSlice";
 
 const baseQuery = fetchBaseQuery({
@@ -26,10 +27,39 @@ const baseQueryWithRath: typeof baseQuery = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
   // console.log(result);
 
+  if (result?.error?.status) {
+    if (result?.error?.status === 403) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Session Expired. Please Login Again",
+        confirmButtonText: "Ok",
+      });
+    }
+
+    if (result?.error?.status === 404) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text:
+          result.error.data.message ||
+          result?.error?.error ||
+          "An error occurred",
+        confirmButtonText: "Ok",
+      });
+    }
+  }
+
   if (result?.error?.status === 401) {
     // Handle token refresh logic here if needed
     // For now, we'll log out the user
     // removeStorageRole();
+    // Swal.fire({
+    //   icon: "error",
+    //   title: "Oops...",
+    //   text: "Session Expired. Please Login Again",
+    //   confirmButtonText: "Ok",
+    // });
 
     api.dispatch(clearToken());
     // result = await baseQuery(args, api, extraOptions);
@@ -58,4 +88,4 @@ export const api = createApi({
   ],
 });
 
-export const imageUrl = "http://192.168.11.161:5000/";
+export const imageUrl = "http://192.168.12.158:3000/";

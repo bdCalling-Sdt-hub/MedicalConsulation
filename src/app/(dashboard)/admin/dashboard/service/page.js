@@ -13,11 +13,13 @@ import {
   Typography,
 } from "antd";
 import {
+  CheckCircleOutlined,
   DeleteOutlined,
   EditOutlined,
   EyeFilled,
   MinusOutlined,
   PlusOutlined,
+  StopFilled,
 } from "@ant-design/icons";
 import {
   useAddServiceMutation,
@@ -62,23 +64,13 @@ function CreteServices({ title, titleStyle, containerBg }) {
   const pageSize = 10;
 
   const { data: Services } = useGetAllServicesQuery({
-    page: 1,
-    limit: 10,
+    page: currentPage,
+    limit: pageSize,
     search: "",
   });
 
-  const data = Services?.data?.map((item, index) => ({
-    sId: item?._id,
-    title: item?.title,
-    daysOfWeek: item?.daysOfWeek,
-    dateTimes: item?.dateTimes,
-    consultationType: item?.consultationType,
-    price: item?.price,
-    status: item?.status,
-    duration: item?.duration,
-    details: "Details",
-    // rating: index % 5 + 1, // Generate rating between 1 and 5
-  }));
+  console.log(Services, "services");
+  console.log("Current Page", currentPage);
 
   const columns = [
     {
@@ -138,7 +130,26 @@ function CreteServices({ title, titleStyle, containerBg }) {
       key: "status",
     },
     {
-      title: "Prescription",
+      title: "Public Status",
+      dataIndex: "isDisabled",
+      key: "isDisabled",
+      render: (_, record) => (
+        <div className="w-24">
+          <Button
+            icon={record?.isDisabled ? <StopFilled /> : <CheckCircleOutlined />}
+            variant="text"
+            type="default"
+            color={record?.isDisabled ? "danger" : "default"}
+            className="text-green-500"
+          >
+            {record?.isDisabled ? "Disabled" : "Enabled"}
+          </Button>
+        </div>
+      ),
+    },
+
+    {
+      title: "Action",
       dataIndex: "details",
       key: "details",
       render: (_, record) => (
@@ -214,7 +225,7 @@ function CreteServices({ title, titleStyle, containerBg }) {
     };
 
     const res = await updateService({
-      id: values?.sId,
+      id: values?._id,
       data: submissionData,
     });
     if (res.data) {
@@ -254,12 +265,14 @@ function CreteServices({ title, titleStyle, containerBg }) {
   };
 
   const handleUpdated = (recoded) => {
-    console.log(recoded);
-    recoded.dateTimes = recoded?.dateTimes?.map((slot) => ({
+    const dateTimes = recoded?.dateTimes?.map((slot) => ({
       ...slot,
       date: dayjs(slot), // Convert from ISO string to Date object
     }));
-    form.setFieldsValue(recoded);
+
+    let Recoded = { ...recoded, dateTimes };
+
+    form.setFieldsValue(Recoded);
     setOpenUpdatedModal(true);
   };
 
@@ -275,7 +288,7 @@ function CreteServices({ title, titleStyle, containerBg }) {
 
   const confirmDelete = () => {
     console.log("Deleted:", selectedItem);
-    deleteService(selectedItem?.sId).then((res) => {
+    deleteService(selectedItem?._id).then((res) => {
       console.log(res);
       if (res?.data) {
         Swal.fire({
@@ -301,7 +314,7 @@ function CreteServices({ title, titleStyle, containerBg }) {
   const handleStatusChange = (status) => {
     console.log(selectedItem);
     if (status === "approved") {
-      approveService(selectedItem?.sId).then((res) => {
+      approveService(selectedItem?._id).then((res) => {
         console.log(res);
         if (res?.data) {
           Swal.fire({
@@ -314,7 +327,7 @@ function CreteServices({ title, titleStyle, containerBg }) {
         }
       });
     } else if (status === "disabled") {
-      disableService(selectedItem?.sId).then((res) => {
+      disableService(selectedItem?._id).then((res) => {
         console.log(res);
         if (res?.data) {
           Swal.fire({
@@ -327,7 +340,7 @@ function CreteServices({ title, titleStyle, containerBg }) {
         }
       });
     } else if (status === "enabled") {
-      enableService(selectedItem?.sId).then((res) => {
+      enableService(selectedItem?._id).then((res) => {
         console.log(res);
         if (res?.data) {
           Swal.fire({
@@ -340,7 +353,7 @@ function CreteServices({ title, titleStyle, containerBg }) {
         }
       });
     } else if (status === "cancelled") {
-      cancelService(selectedItem?.sId).then((res) => {
+      cancelService(selectedItem?._id).then((res) => {
         console.log(res);
         if (res?.data) {
           Swal.fire({
@@ -360,8 +373,10 @@ function CreteServices({ title, titleStyle, containerBg }) {
       {/* Add Service Button */}
       <div className="flex flex-col items-end py-2">
         <Button
+          icon={<PlusOutlined />}
           type="text"
-          className="h-12 bg-primary6 text-white"
+          size="small"
+          className="h-10 bg-primary6 text-white"
           onClick={showModal}
         >
           Add Service
@@ -499,7 +514,7 @@ function CreteServices({ title, titleStyle, containerBg }) {
         footer={null}
       >
         <Form form={form} layout="vertical" onFinish={handleUpdateService}>
-          <Form.Item name="sId" label="sId" style={{ display: "none" }}>
+          <Form.Item name="_id" label="_id" style={{ display: "none" }}>
             <Input placeholder="Enter service name" />
           </Form.Item>
           <Form.Item
@@ -688,19 +703,21 @@ function CreteServices({ title, titleStyle, containerBg }) {
             <Button onClick={handleCancel}>Cancel</Button>
             <Button
               onClick={() => handleStatusChange("disabled")}
+              icon={<StopFilled />}
               variant="solid"
               type="default"
+              color={"danger"}
             >
               Disable
             </Button>
             <Button
               onClick={() => handleStatusChange("enabled")}
-              variant="solid"
-              type="default"
+              icon={<CheckCircleOutlined />}
+              className="text-green-500"
             >
               Enable
             </Button>
-            <Button
+            {/* <Button
               onClick={() => handleStatusChange("approved")}
               variant="solid"
               type="default"
@@ -713,19 +730,19 @@ function CreteServices({ title, titleStyle, containerBg }) {
               type="default"
             >
               Decline
-            </Button>
+            </Button> */}
           </div>
         </div>
       </Modal>
 
       <div className="py-8">
         <Table
-          dataSource={data}
+          dataSource={Services?.data?.result}
           sortDirections="descend"
           columns={columns}
           pagination={{
             pageSize,
-            total: 50,
+            total: Services?.data?.count,
             current: currentPage,
             onChange: handlePage,
           }}

@@ -1,119 +1,228 @@
 "use client";
 
-import { Button, Collapse, Input } from "antd";
+import { Button, Form, Input } from "antd";
+import { Plus, Trash2 } from "lucide-react";
+import {
+  useAddFaqsMutation,
+  useDeleteFaqsMutation,
+  useGetFaqsQuery,
+  useUpdateFaqsMutation,
+} from "../../../../../../../redux/apiSlices/faqsSlices";
+import { useEffect, useState } from "react";
 
-import { useState } from "react";
+import { EditOutlined } from "@ant-design/icons";
+import Swal from "sweetalert2";
 
 const SettingsFaq = () => {
   // State to manage the content and label of each panel
-  const [panelData, setPanelData] = useState({
-    1: {
-      label: "This is panel header 1",
-      content:
-        "A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.",
-    },
-    2: {
-      label: "This is panel header 2",
-      content:
-        "Cats are known for their independence, but they are also great companions for people who like more relaxed pets.",
-    },
-    3: {
-      label: "This is panel header 3",
-      content:
-        "Birds are incredible creatures that come in a variety of species. Some birds can even mimic human speech!",
-    },
-  });
 
   // State to manage which panel is being edited (for both label and content)
-  const [editingPanel, setEditingPanel] = useState(null);
+  const [addNew, setNewOne] = useState(null);
+  const [createNewFaq] = useAddFaqsMutation();
+  const { data: faqs } = useGetFaqsQuery();
 
-  // State to manage temporary content and label when editing
-  const [tempContent, setTempContent] = useState("");
-  const [tempLabel, setTempLabel] = useState("");
+  console.log(faqs);
 
-  // Handle panel change (accordion open/close event)
-  const onChange = (key) => {
-    console.log("Accordion panels changed: ", key);
-  };
+  const [form] = Form.useForm();
 
-  // Enter edit mode for both label and content
-  const handleEdit = (key) => {
-    setEditingPanel(key);
-    setTempLabel(panelData[panelData]?.label); // Load the current label
-    setTempContent(panelData[panelData]?.content); // Load the current content
+  const handleCreateService = async (values) => {
+    console.log(values);
+    const res = await createNewFaq(values);
+    if (res.data) {
+      Swal.fire({
+        title: "Good job!",
+        text: "Faqs new added successfully!",
+        icon: "success",
+      });
+      setNewOne(false);
+      form.resetFields(); // Reset form fields after submission
+    }
   };
 
   // Save the edited label and content
-  const handleSave = (key) => {
-    // Update panelData state with new label and content
-    setPanelData((prevState) => ({
-      ...prevState,
-      [key]: {
-        label: tempLabel,
-        content: tempContent,
-      },
-    }));
-    setEditingPanel(null); // Exit edit mode
-
-    // Log the updated state
-    console.log("Updated panelData:", panelData);
-  };
-
-  // Cancel editing (reset editing mode)
-  const handleCancel = () => {
-    setEditingPanel(null); // Exit edit mode without saving
-  };
-
-  // Render the Collapse items with editable headers and content
-  const items = Object.keys(panelData).map((key) => ({
-    key,
-    label:
-      editingPanel === key ? (
-        <div>
-          <Input
-            value={tempLabel}
-            onChange={(e) => setTempLabel(e.target.value)}
-            placeholder="Edit label"
-          />
-        </div>
-      ) : (
-        <div className="items-center">
-          <span>{panelData[panelData]?.label}</span>
-          <Button onClick={() => handleEdit(key)} type="link" className="ml-2">
-            Edit
-          </Button>
-        </div>
-      ),
-    children:
-      editingPanel === key ? (
-        <div>
-          <Input.TextArea
-            value={tempContent}
-            onChange={(e) => setTempContent(e.target.value)}
-            rows={4}
-            placeholder="Edit content"
-          />
-          <Button
-            onClick={() => handleSave(key)}
-            type="primary"
-            className="mt-2"
-          >
-            Save
-          </Button>
-          <Button onClick={handleCancel} className="mt-2 ml-2">
-            Cancel
-          </Button>
-        </div>
-      ) : (
-        <div>
-          <p>{panelData[panelData]?.content}</p>
-        </div>
-      ),
-  }));
 
   return (
-    <Collapse items={items} defaultActiveKey={["1"]} onChange={onChange} />
+    <div className="pb-20">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold py-3">FAQs</h1>
+        <Button
+          icon={<Plus />}
+          onClick={() => setNewOne(true)}
+          type="secondary"
+        >
+          Add New
+        </Button>
+      </div>
+
+      {addNew && (
+        <div className="mt-3 mb-6">
+          <Form
+            form={form}
+            className="flex1 w-full "
+            onFinish={handleCreateService}
+            layout="vertical"
+          >
+            <Form.Item
+              name="question"
+              label="Question"
+              className="w-full"
+              rules={[{ required: true, message: "Please enter the question" }]}
+            >
+              <Input className="h-12 flex-1" placeholder="Enter question" />
+            </Form.Item>
+            <Form.Item
+              name="answer"
+              label="Answer"
+              rules={[{ required: true, message: "Please enter the answer" }]}
+            >
+              <Input.TextArea
+                className="h-16 flex-1"
+                placeholder="Enter answer"
+              />
+            </Form.Item>
+            <div className="flex gap-4">
+              <Button
+                onClick={() => setNewOne(false)}
+                type="secondary"
+                className="bg-white border border-primary6 text-primary6"
+              >
+                Cancel
+              </Button>
+              <Button htmlType="submit" type="primary" className="bg-primary6">
+                Submit
+              </Button>
+            </div>
+          </Form>
+        </div>
+      )}
+
+      {faqs?.data?.map((faq) => (
+        <FaqsComponent key={faq?._id} faq={faq} />
+      ))}
+    </div>
   );
 };
 
 export default SettingsFaq;
+
+export const FaqsComponent = ({ faq }) => {
+  const [form] = Form.useForm();
+
+  const [updatedFaq] = useUpdateFaqsMutation();
+  const [deletedFaq] = useDeleteFaqsMutation();
+  const [edit, setEdit] = useState(false);
+
+  const handleCreateService = async (values) => {
+    console.log(values);
+    const res = await updatedFaq({ id: faq?._id, data: values });
+    if (res.data) {
+      Swal.fire({
+        title: "Good job!",
+        text: "You clicked the button!",
+        icon: "success",
+      });
+      setEdit(false);
+      form.resetFields(); // Reset form fields after submission
+    }
+  };
+
+  const handleDeleteService = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await deletedFaq(faq?._id);
+        if (res.data) {
+          Swal.fire({
+            title: "Good job!",
+            text: "You clicked the button!",
+            icon: "success",
+          });
+        }
+      }
+    });
+  };
+
+  useEffect(() => {
+    form.setFieldsValue(faq);
+  }, [edit]);
+
+  return (
+    <div className=" border border-primary6 bg-primary2 rounded-lg p-3 mb-3 flex justify-between items-start">
+      {edit ? (
+        <>
+          <Form
+            form={form}
+            className="flex1 w-full"
+            onFinish={handleCreateService}
+            layout="vertical"
+          >
+            <Form.Item
+              name="question"
+              label="Question"
+              className="w-full"
+              rules={[{ required: true, message: "Please enter the question" }]}
+            >
+              <Input className="h-12 flex-1" placeholder="Enter question" />
+            </Form.Item>
+            <Form.Item
+              name="answer"
+              label="Answer"
+              rules={[{ required: true, message: "Please enter the answer" }]}
+            >
+              <Input.TextArea
+                className="h-12 flex-1"
+                placeholder="Enter answer"
+              />
+            </Form.Item>
+            <Button icon={<EditOutlined />} htmlType="submit" type="secondary">
+              Updated
+            </Button>
+          </Form>
+        </>
+      ) : (
+        <>
+          <div className="">
+            <p className=" text-lg flex gap-3 items-center">
+              <span className="text-gray-500 text-sm font-medium">
+                Question:
+              </span>
+              <span className=" text-lg">{faq?.question}</span>
+            </p>
+            <p className="text-gray-500 text-base flex gap-3 items-center">
+              <span className="text-gray-500 text-sm">Answer:</span>
+              <span className=" text-md"> {faq?.answer}</span>
+            </p>
+          </div>
+          <div>
+            <Button
+              icon={<EditOutlined />}
+              type="secondary"
+              onClick={() => {
+                setEdit(!edit);
+              }}
+            >
+              Edit
+            </Button>
+            <Button
+              icon={<Trash2 />}
+              type="primary"
+              danger
+              onClick={() => {
+                handleDeleteService();
+              }}
+            >
+              Deleted
+            </Button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};

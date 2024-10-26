@@ -59,11 +59,11 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
       open={openModel}
       onCancel={hideModal}
       footer={null}
-      bodyStyle={{
-        backgroundColor: "white",
-        padding: "20px",
-        textAlign: "center",
-      }}
+      // bodyStyle={{
+      //   backgroundColor: "white",
+      //   padding: "20px",
+      //   textAlign: "center",
+      // }}
       style={{
         top: "35%", // Flexbox to center
         left: "35%",
