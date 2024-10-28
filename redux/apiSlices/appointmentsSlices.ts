@@ -3,7 +3,8 @@ import { api } from "../api/baseApi";
 export const appointmentsSlices = api.injectEndpoints({
   endpoints: (builder) => ({
     getAllAppointment: builder.query({
-      query: () => "/appointment/get-all-appointments",
+      query: ({ status, page, limit }) =>
+        `/appointment/get-all-appointments?status=${status}&page=${page}&limit=${limit}`,
       providesTags: ["appointments"],
     }),
     getAppointmentById: builder.query({

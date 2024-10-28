@@ -1,6 +1,15 @@
 "use client";
 
 import {
+  CheckCircleOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  EyeFilled,
+  MinusOutlined,
+  PlusOutlined,
+  StopFilled,
+} from "@ant-design/icons";
+import {
   Button,
   DatePicker,
   Divider,
@@ -13,15 +22,6 @@ import {
   Typography,
 } from "antd";
 import {
-  CheckCircleOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  EyeFilled,
-  MinusOutlined,
-  PlusOutlined,
-  StopFilled,
-} from "@ant-design/icons";
-import {
   useAddServiceMutation,
   useApprovedServiceMutation,
   useCancelServicesMutation,
@@ -32,12 +32,12 @@ import {
   useUpdateServiceByIdMutation,
 } from "../../../../../../redux/apiSlices/servicesSlices";
 
-import ModalComponent from "../../../../../components/dashboard/share/ModalComponent";
-import Swal from "sweetalert2";
 import dayjs from "dayjs";
-import { extractDateTimeParts } from "../../../../../utils/extractDateTimeParts";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Swal from "sweetalert2";
+import ModalComponent from "../../../../../components/dashboard/share/ModalComponent";
+import { extractDateTimeParts } from "../../../../../utils/extractDateTimeParts";
 
 const { Text } = Typography;
 
@@ -61,7 +61,7 @@ function CreteServices({ title, titleStyle, containerBg }) {
 
   const [openPrescriptionModal, setOpenPrescriptionModal] = useState(false);
 
-  const pageSize = 10;
+  const pageSize = 5;
 
   const { data: Services } = useGetAllServicesQuery({
     page: currentPage,
@@ -371,16 +371,32 @@ function CreteServices({ title, titleStyle, containerBg }) {
   return (
     <>
       {/* Add Service Button */}
-      <div className="flex flex-col items-end py-2">
-        <Button
-          icon={<PlusOutlined />}
-          type="text"
-          size="small"
-          className="h-10 bg-primary6 text-white"
-          onClick={showModal}
-        >
-          Add Service
-        </Button>
+      <div className="flex justify-between">
+        <h1 className="p-4 ">
+          <span className="text-xl font-bold">All Doctor</span>
+        </h1>
+        {/* <div>
+          <Input
+            prefix={<Search />}
+            className="flex-1 rounded-2xl h-12 bg-base border-0 text-primary placeholder:text-gray-200"
+            placeholder="Search by email"
+            style={{
+              backgroundColor: "#f0f0f0",
+              color: "#333333",
+            }}
+          />
+        </div> */}
+        <div className="flex flex-col items-end py-2">
+          <Button
+            icon={<PlusOutlined />}
+            type="text"
+            size="small"
+            className="h-10 bg-primary6 text-white"
+            onClick={showModal}
+          >
+            Add Service
+          </Button>
+        </div>
       </div>
 
       {/* Modal for creating a new service */}

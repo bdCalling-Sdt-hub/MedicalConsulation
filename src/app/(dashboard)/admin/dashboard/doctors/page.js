@@ -1,14 +1,14 @@
 "use client";
 
-import { Button, Input, Table, Typography } from "antd";
+import { Input, Table, Typography } from "antd";
 
-import Image from "next/image";
-import ModalComponent from "../../../../../components/dashboard/share/ModalComponent";
 import { Search } from "lucide-react";
-import { imageUrl } from "../../../../../../redux/api/baseApi";
-import { useAllDoctorQuery } from "../../../../../../redux/apiSlices/authSlice";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { imageUrl } from "../../../../../../redux/api/baseApi";
+import { useAllDoctorQuery } from "../../../../../../redux/apiSlices/authSlice";
+import ModalComponent from "../../../../../components/dashboard/share/ModalComponent";
 
 const { Text } = Typography;
 
@@ -95,19 +95,19 @@ const Doctor = () => {
       dataIndex: "nhsNumber",
       key: "nhsNumber",
     },
-    {
-      title: "Prescription",
-      dataIndex: "details",
-      key: "details",
-      render: (_, record) => (
-        <Button
-          onClick={() => handlePrescriptionClick(record)}
-          type="secondary"
-        >
-          Details
-        </Button>
-      ),
-    },
+    // {
+    //   title: "Prescription",
+    //   dataIndex: "details",
+    //   key: "details",
+    //   render: (_, record) => (
+    //     <Button
+    //       onClick={() => handlePrescriptionClick(record)}
+    //       type="secondary"
+    //     >
+    //       Details
+    //     </Button>
+    //   ),
+    // },
     // {
     //   title: "Ratings",
     //   dataIndex: "rating", // Use "rating" data field (numeric value)
@@ -148,6 +148,22 @@ const Doctor = () => {
 
   return (
     <div>
+      <div className="flex justify-between">
+        <h1 className="p-4 ">
+          <span className="text-xl font-bold">All Doctor</span>
+        </h1>
+        {/* <div>
+          <Input
+            prefix={<Search />}
+            className="flex-1 rounded-2xl h-12 bg-base border-0 text-primary placeholder:text-gray-200"
+            placeholder="Search by email"
+            style={{
+              backgroundColor: "#f0f0f0",
+              color: "#333333",
+            }}
+          />
+        </div> */}
+      </div>
       <div className="flex items-center justify-between gap-4">
         {/* <Text className="text-2xl font-bold font-merri">
           Patients Management
@@ -168,7 +184,7 @@ const Doctor = () => {
           columns={columns}
           pagination={{
             pageSize,
-            total: 50,
+            total: doctor?.data?.total,
             current: currentPage,
             onChange: handlePage,
           }}

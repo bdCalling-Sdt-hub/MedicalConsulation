@@ -1,23 +1,24 @@
 "use client";
 
-import { Button, Checkbox, Flex, Form, Input, Modal, Tooltip } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
-import { clearUser, setUser } from "../../redux/apiSlices/userSlices";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, Checkbox, Flex, Form, Input, Modal, Tooltip } from "antd";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   useLoginDoctorMutation,
   useLoginMutation,
   useSignUpDoctorMutation,
   useSignUpPatientMutation,
 } from "../../redux/apiSlices/authSlice";
+import { clearUser, setUser } from "../../redux/apiSlices/userSlices";
 
+import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import bigLogo from "../../public/images/big-logo.png";
 import logo from "../../public/images/logo.png";
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
 
 function Header() {
   const user = useSelector((state) => state.user.user);
@@ -139,6 +140,7 @@ function Header() {
       console.log(res);
       if (res?.data) {
         toast.success(res.data?.message);
+        window.location.reload();
       }
       if (res.error) {
         toast.error(res.error?.data?.message);
@@ -158,6 +160,7 @@ function Header() {
         toast.success(res.data?.message);
 
         setIsSignInModalOpen(!isSignInModalOpen);
+        window.location.reload();
       }
       if (res.error) {
         toast.error(res.error?.data?.message);
@@ -167,6 +170,23 @@ function Header() {
   };
   const onFinishFailedLogin = (errorInfo) => {
     console.log("Failed:", errorInfo);
+  };
+
+  const handleLogout = () => {
+    // Remove token from local storage
+    localStorage.removeItem("token");
+
+    // Dispatch action to clear user state in Redux
+    dispatch(clearUser());
+
+    // Remove cookies for token and role
+    Cookies.remove("token");
+    Cookies.remove("userRole");
+
+    window.location.reload();
+
+    // Optionally redirect or update UI
+    // For example, you can use next/router for navigation
   };
 
   return (
@@ -203,8 +223,8 @@ function Header() {
             <div className="flex flex-row items-center gap-4">
               <div
                 onClick={async () => {
-                  localStorage.removeItem("token");
-                  dispatch(clearUser());
+                  handleLogout();
+                  // remove cookie token or role
                 }}
                 className="flex flex-row items-center gap-2  cursor-pointer text-offBlack hover:text-red-500 "
               >
@@ -226,13 +246,7 @@ function Header() {
               </div>
               <div
                 onClick={() => {
-                  if (user?.role === "admin") {
-                    route.push("/admin/dashboard");
-                  } else if (user?.role === "doctor") {
-                    route.push("/doctor/dashboard");
-                  } else if (user?.role === "patient") {
-                    route.push("/patient/dashboard");
-                  }
+                  route.push("/patient/dashboard");
                 }}
                 className="flex flex-row items-center gap-2 cursor-pointer hover:text-blue-500  "
               >

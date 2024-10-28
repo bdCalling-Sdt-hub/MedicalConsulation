@@ -4,20 +4,21 @@ import "../../dashboard.css";
 
 import { Avatar, Badge, Layout, Menu, Popover } from "antd";
 import { Bell, LogOut, User, User2Icon } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 import {
   FaChartPie,
   FaLock,
   FaRegUserCircle,
   FaUserCircle,
 } from "react-icons/fa";
-import { usePathname, useRouter } from "next/navigation";
 
-import { BiPieChartAlt2 } from "react-icons/bi";
+import SubMenu from "antd/es/menu/SubMenu";
 import Image from "next/image";
 import Link from "next/link";
-import Logo from "../../../../../public/images/LogoFinal.png";
+import { BiPieChartAlt2 } from "react-icons/bi";
 import { MdOutlineSettings } from "react-icons/md";
-import SubMenu from "antd/es/menu/SubMenu";
+import { useSelector } from "react-redux";
+import Logo from "../../../../../public/images/LogoFinal.png";
 
 const { Header, Sider, Content } = Layout;
 
@@ -93,6 +94,8 @@ const Dashboard = ({ children }) => {
   const getMenuIcon = (icon, activeIcon, isActive) => {
     return isActive ? activeIcon : icon;
   };
+
+  const userProfile = useSelector((state) => state.user?.user);
 
   return (
     <main className="bg-white">

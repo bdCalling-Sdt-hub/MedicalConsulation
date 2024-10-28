@@ -2,7 +2,7 @@ import { api } from "../api/baseApi";
 
 export const faqsSlices = api.injectEndpoints({
   endpoints: (builder) => ({
-    getFaqs: builder.query<null, unknown>({
+    getFaqs: builder.query({
       query: () => ({
         url: `/faq/get-all-faqs`,
       }),
@@ -18,8 +18,8 @@ export const faqsSlices = api.injectEndpoints({
       invalidatesTags: ["faqs"],
     }),
     updateFaqs: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `/faq/update-faq?id=${id}`,
+      query: (data) => ({
+        url: `/faq/update-faq`,
         method: "PUT",
         body: data,
       }),

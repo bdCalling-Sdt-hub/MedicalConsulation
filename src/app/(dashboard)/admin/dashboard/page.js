@@ -16,6 +16,7 @@ const Home = (props) => {
     setSelectedValue(value);
     console.log("Selected", value);
   };
+
   return (
     <>
       <Status />

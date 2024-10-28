@@ -2,6 +2,7 @@
 
 import { createContext, useEffect } from "react";
 
+import Cookies from "js-cookie"; // Import js-cookie
 import { useDispatch } from "react-redux";
 import { useGetUserProfileQuery } from "../redux/apiSlices/authSlice";
 import { setUser } from "../redux/apiSlices/userSlices";
@@ -24,6 +25,10 @@ const ContextApi = ({ children }) => {
   useEffect(() => {
     if (user) {
       dispatch(setUser(user?.data));
+
+      // Set the token in a cookie
+      Cookies.set("token", token, { expires: 1, path: "/" }); // Expires in 1 day
+      Cookies.set("userRole", user?.data?.role, { expires: 1, path: "/" }); // Optional: Set user role
     }
   }, [user]);
 

@@ -1,14 +1,15 @@
 "use client";
 
-import { Button, Form, Input, Radio } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { Button, Form, Input, Radio, Upload, message } from "antd";
+import { useEffect, useState } from "react";
 import {
   useChangePasswordMutation,
   useGetUserProfileQuery,
   useUpdateUserProfileMutation,
 } from "../../../../../../../redux/apiSlices/authSlice";
-import { useEffect, useState } from "react";
 
+import ImgCrop from "antd-img-crop";
 import Swal from "sweetalert2";
 import { imageUrl } from "../../../../../../../redux/api/baseApi";
 
@@ -49,22 +50,62 @@ const Settings_personalInformation = () => {
     },
   ];
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      console.log("Please upload a valid image file.");
+  const [fileList, setFileList] = useState([]); // State to hold the list of uploaded files
+
+  const handleChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList); // Update the state with the new file list
+  };
+
+  const customRequest = async ({ file, onSuccess, onError }) => {
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+      "image/jpg",
+    ]; // Allowed file types
+
+    if (!allowedTypes.includes(file.type)) {
+      message.error("You can only upload JPG/PNG/GIF files!");
+      onError(new Error("Invalid file type"));
+      return;
     }
+
+    // Simulate a file upload
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      await new Promise((resolve, reject) => {
+        setTimeout(() => {
+          if (Math.random() > 0.5) {
+            // Simulate success/failure
+            resolve();
+            onSuccess(file);
+            message.success(`${file.name} file uploaded successfully`); // Show success message
+          } else {
+            reject(new Error("Upload failed")); // Simulate an error
+          }
+        }, 1000);
+      });
+    } catch (error) {
+      onError(error);
+      message.error(`Upload failed: ${error.message}`);
+    }
+  };
+
+  const beforeUpload = (file) => {
+    const isValid = file.size / 1024 / 1024 < 2; // Limit to 2 MB
+    if (!isValid) {
+      message.error("File must be smaller than 2MB!");
+    }
+    return isValid;
   };
 
   const [userUpdate] = useUpdateUserProfileMutation();
 
   const handleUserUpdate = (values) => {
+    console.log(values);
     const formData = new FormData();
 
     if (image) {
@@ -72,6 +113,7 @@ const Settings_personalInformation = () => {
     }
     formData.append("name", values.name);
     formData.append("phone", values.phone);
+    fileList && formData.append("image", fileList[0]?.originFileObj);
     userUpdate(formData).then((res) => {
       console.log(res);
       if (res.data) {
@@ -120,7 +162,17 @@ const Settings_personalInformation = () => {
       form.setFieldsValue({
         name: userProfile?.data?.name,
         phone: userProfile?.data?.phone,
+        image: imageUrl + userProfile?.data?.image,
       });
+      console.log(userProfile?.data?.image);
+      setFileList([
+        {
+          uid: "-1",
+          name: "image.png",
+          status: "done",
+          url: imageUrl + userProfile?.data?.image,
+        },
+      ]);
     }
     if (value4 === "password") {
       form.setFieldsValue({
@@ -144,30 +196,6 @@ const Settings_personalInformation = () => {
         <>
           {/* user updated Form */}
 
-          <label htmlFor="uploadimage" className="upload-label ">
-            <div className="bg-white rounded-2xl">
-              {image || userProfile?.data?.image ? (
-                <img
-                  src={image || imageUrl + userProfile?.data?.image}
-                  alt="Uploaded"
-                  className="uploaded-image h-24 w-24 border border-dashed border-gray-300 rounded-2xl flex items-center justify-center"
-                />
-              ) : (
-                <>
-                  <div className="upload-text h-24 w-24 border border-dashed border-gray-300 rounded-2xl flex items-center justify-center">
-                    Upload
-                  </div>
-                </>
-              )}
-            </div>
-            <input
-              type="file"
-              accept="image/*"
-              id="uploadimage"
-              onChange={handleImageChange}
-              style={{ display: "none" }}
-            />
-          </label>
           <Form
             name="basic"
             layout="vertical"
@@ -177,6 +205,26 @@ const Settings_personalInformation = () => {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
+            <Form.Item
+              name="image"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                padding: "20px 0px 0px 0px",
+              }}
+            >
+              <ImgCrop rotationSlider>
+                <Upload
+                  listType="picture-card"
+                  fileList={fileList}
+                  customRequest={customRequest}
+                  onChange={handleChange}
+                  beforeUpload={beforeUpload}
+                >
+                  {fileList.length < 1 && "+ Upload"}
+                </Upload>
+              </ImgCrop>
+            </Form.Item>
             <Form.Item
               label="Name"
               name="name"

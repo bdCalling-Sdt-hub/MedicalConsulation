@@ -153,6 +153,7 @@ const authSlice = api.injectEndpoints({
 
 export const {
   useGetUserProfileQuery,
+  useLazyGetUserProfileQuery,
   useCreateUserMutation,
   useSendCodeAgainMutation,
   useLoginMutation,

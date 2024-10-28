@@ -2,13 +2,13 @@
 
 import { Button, Form, Input } from "antd";
 import { Plus, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
 import {
   useAddFaqsMutation,
   useDeleteFaqsMutation,
   useGetFaqsQuery,
   useUpdateFaqsMutation,
 } from "../../../../../../../redux/apiSlices/faqsSlices";
-import { useEffect, useState } from "react";
 
 import { EditOutlined } from "@ant-design/icons";
 import Swal from "sweetalert2";
@@ -112,9 +112,10 @@ export const FaqsComponent = ({ faq }) => {
   const [deletedFaq] = useDeleteFaqsMutation();
   const [edit, setEdit] = useState(false);
 
-  const handleCreateService = async (values) => {
+  const handleUpdatedService = async (values) => {
     console.log(values);
-    const res = await updatedFaq({ id: faq?._id, data: values });
+    values.faqId = faq?._id;
+    const res = await updatedFaq(values);
     if (res.data) {
       Swal.fire({
         title: "Good job!",
@@ -154,13 +155,13 @@ export const FaqsComponent = ({ faq }) => {
   }, [edit]);
 
   return (
-    <div className=" border border-primary6 bg-primary2 rounded-lg p-3 mb-3 flex justify-between items-start">
+    <div className=" border border-bg-primary1 bg-primary2 rounded-lg p-3 mb-3 flex justify-between items-start">
       {edit ? (
         <>
           <Form
             form={form}
             className="flex1 w-full"
-            onFinish={handleCreateService}
+            onFinish={handleUpdatedService}
             layout="vertical"
           >
             <Form.Item
@@ -183,6 +184,14 @@ export const FaqsComponent = ({ faq }) => {
             </Form.Item>
             <Button icon={<EditOutlined />} htmlType="submit" type="secondary">
               Updated
+            </Button>
+            <Button
+              danger
+              icon={<EditOutlined />}
+              onClick={() => setEdit(false)}
+              type="secondary"
+            >
+              Cancel
             </Button>
           </Form>
         </>

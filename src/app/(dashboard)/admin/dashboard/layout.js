@@ -21,6 +21,7 @@ import { BsMicrosoftTeams } from "react-icons/bs";
 import { CiCreditCard1 } from "react-icons/ci";
 import { FaTag } from "react-icons/fa6";
 import { IoIosCard } from "react-icons/io";
+import { useSelector } from "react-redux";
 import Logo from "../../../../../public/images/LogoFinal.png";
 
 const { Header, Sider, Content } = Layout;
@@ -52,7 +53,7 @@ const adminMenuItems = [
   },
   {
     path: "/admin/dashboard/upcomingConsultant",
-    title: "Upcoming Consultant",
+    title: "Consultations",
     icon: <FaTag size={18} color="white" />,
     activeIcon: <FaTag size={18} color="white" />,
   },
@@ -121,6 +122,8 @@ const Dashboard = ({ children }) => {
   const getMenuIcon = (icon, activeIcon, isActive) => {
     return isActive ? activeIcon : icon;
   };
+
+  const userProfile = useSelector((state) => state.user?.user);
 
   return (
     <main className="bg-white">
@@ -231,8 +234,8 @@ const Dashboard = ({ children }) => {
                     />
                   </Popover>
                   <div className="space-y-4">
-                    <h1 className="text-white">John</h1>
-                    <h1 className="text-white">ex@ample.com</h1>
+                    <h1 className="text-white">{userProfile?.name}</h1>
+                    <h1 className="text-white">{userProfile?.email}</h1>
                   </div>
                 </div>
                 <Menu.Item

@@ -53,7 +53,7 @@
 
   /* ant design customization */
   :where(.css-dev-only-do-not-override-vryruh).ant-modal .ant-modal-content {
-    background-color: #F0F2F5;
+    background-color: #ffffff;
   }
 /* CustomRadio.css */
 :where(.css-dev-only-do-not-override-vryruh) .ant-radio-wrapper .ant-radio-checked .ant-radio-inner {
