@@ -12,8 +12,10 @@ import {
   FaUserCircle,
 } from "react-icons/fa";
 import { MdMedicalServices, MdOutlineSettings } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 
 import SubMenu from "antd/es/menu/SubMenu";
+import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
 import { BiPieChartAlt2 } from "react-icons/bi";
@@ -21,8 +23,8 @@ import { BsMicrosoftTeams } from "react-icons/bs";
 import { CiCreditCard1 } from "react-icons/ci";
 import { FaTag } from "react-icons/fa6";
 import { IoIosCard } from "react-icons/io";
-import { useSelector } from "react-redux";
 import Logo from "../../../../../public/images/LogoFinal.png";
+import { clearUser } from "../../../../../redux/apiSlices/userSlices";
 
 const { Header, Sider, Content } = Layout;
 
@@ -107,9 +109,7 @@ const Dashboard = ({ children }) => {
   const pathname = usePathname();
   console.log(pathname);
 
-  const handleLogout = () => {
-    route.push("/");
-  };
+  const dispatch = useDispatch();
 
   const handleNotifications = () => {
     route.push("/admin/dashboard/notifications");
@@ -124,7 +124,22 @@ const Dashboard = ({ children }) => {
   };
 
   const userProfile = useSelector((state) => state.user?.user);
+  const handleLogout = () => {
+    // Remove token from local storage
+    localStorage.removeItem("token");
 
+    // Dispatch action to clear user state in Redux
+    dispatch(clearUser());
+
+    // Remove cookies for token and role
+    Cookies.remove("token");
+    Cookies.remove("userRole");
+
+    route.push("/");
+
+    // Optionally redirect or update UI
+    // For example, you can use next/router for navigation
+  };
   return (
     <main className="bg-white">
       <Layout>

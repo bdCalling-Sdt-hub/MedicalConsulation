@@ -16,20 +16,30 @@ export const appointmentsSlices = api.injectEndpoints({
       providesTags: ["appointments"],
     }),
     getAppointmentDoctorById: builder.query({
-      query: (id) => `/appointment/get-appointment-by-doctorId/${id}`,
+      query: (id) => ({
+        url: `/appointment/get-appointment-by-doctorId/${id}`,
+      }),
       providesTags: ["appointments"],
     }),
     cancelAppointment: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `/appointment/cancel-appointment-by-id/${id}`,
+      query: (data) => ({
+        url: `/appointment/cancel-appointment-by-id`,
         method: "PATCH",
         body: data,
       }),
       invalidatesTags: ["appointments"],
     }),
     completeAppointment: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `/appointment/complete-appointment-by-id/${id}`,
+      query: (data) => ({
+        url: `/appointment/complete-appointment-by-id`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["appointments"],
+    }),
+    assignDoctorToAppointment: builder.mutation({
+      query: (data) => ({
+        url: `/appointment/assign-doctor-to-appointment`,
         method: "PATCH",
         body: data,
       }),
@@ -72,4 +82,5 @@ export const {
   useGetAppointmentDoctorByIdQuery,
   useGetAppointmentPatientByIdQuery,
   useLazyGetAppointmentByIdQuery,
+  useAssignDoctorToAppointmentMutation,
 } = appointmentsSlices;

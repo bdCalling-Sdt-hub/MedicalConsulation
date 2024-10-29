@@ -19,6 +19,7 @@ import {
   Modal,
   Select,
   Table,
+  Tag,
   Typography,
 } from "antd";
 import {
@@ -36,6 +37,7 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { useAllDoctorQuery } from "../../../../../../redux/apiSlices/authSlice";
 import ModalComponent from "../../../../../components/dashboard/share/ModalComponent";
 import { extractDateTimeParts } from "../../../../../utils/extractDateTimeParts";
 
@@ -63,14 +65,23 @@ function CreteServices({ title, titleStyle, containerBg }) {
 
   const pageSize = 5;
 
+  const { data: doctor } = useAllDoctorQuery({
+    limit: 500,
+  });
+
+  const doctorSelectOptions = doctor?.data?.result?.map((item) => ({
+    label: item?.name + " - " + item?.email,
+    value: item?._id,
+  }));
+
   const { data: Services } = useGetAllServicesQuery({
     page: currentPage,
     limit: pageSize,
     search: "",
   });
 
-  console.log(Services, "services");
-  console.log("Current Page", currentPage);
+  // console.log(Services, "services");
+  // console.log("Current Page", currentPage);
 
   const columns = [
     {
@@ -85,12 +96,17 @@ function CreteServices({ title, titleStyle, containerBg }) {
       render: (_, record) => (
         <div className="flex-col flex w-40 gap-4">
           {record?.dateTimes?.map((item, index) => (
-            <Text type="warning" keyboard key={index}>
+            <Tag
+              className="text-center"
+              color="blue"
+              type="secondary"
+              key={index}
+            >
               <span className=" ">
                 {extractDateTimeParts(item, true, true).time}{" "}
                 {extractDateTimeParts(item, true, true).timeOfDay}
               </span>
-            </Text>
+            </Tag>
           ))}
         </div>
       ),
@@ -102,9 +118,9 @@ function CreteServices({ title, titleStyle, containerBg }) {
       render: (_, record) => (
         <div className="flex gap-2 flex-wrap">
           {record?.daysOfWeek?.map((item, index) => (
-            <Text keyboard type="secondary" key={index}>
+            <Tag type="secondary" color="success" key={index}>
               {item?.toUpperCase()}
-            </Text>
+            </Tag>
           ))}
         </div>
       ),
@@ -190,17 +206,16 @@ function CreteServices({ title, titleStyle, containerBg }) {
   const route = useRouter();
 
   const handleCreateService = async (values) => {
-    console.log(values);
-    const submissionData = {
-      title: values.title,
-      price: values.price.toString(), // Ensure price is in string format
-      dateTimes: values?.dateTimes?.map((slot) =>
-        new Date(slot?.date?.toISOString()).toISOString()
-      ), // Map slot dates to ISO format
-      consultationType: values.serviceType, // Rename serviceType if needed
-      duration: values.duration, // Static value if needed, or fetch from form if dynamic
-    };
+    // Ensure price is in string format
+    const dateTimes = values?.dateTimes?.map((slot) =>
+      new Date(slot?.date?.toISOString()).toISOString()
+    );
 
+    const submissionData = {
+      ...values,
+      dateTimes,
+    };
+    // console.log(submissionData);
     const res = await createService(submissionData);
     if (res.data) {
       Swal.fire({
@@ -211,19 +226,26 @@ function CreteServices({ title, titleStyle, containerBg }) {
       setIsModalOpen(false);
       form.resetFields(); // Reset form fields after submission
     }
+    if (res.error) {
+      Swal.fire({
+        title: "Error",
+        text: res?.error?.data?.message,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   };
   const handleUpdateService = async (values) => {
     console.log(values);
-    const submissionData = {
-      title: values.title,
-      price: values.price.toString(), // Ensure price is in string format
-      dateTimes: values?.dateTimes?.map((slot) =>
-        new Date(slot?.date?.toISOString()).toISOString()
-      ), // Map slot dates to ISO format
-      consultationType: values.serviceType, // Rename serviceType if needed
-      duration: values.duration, // Static value if needed, or fetch from form if dynamic
-    };
+    const dateTimes = values?.dateTimes?.map((slot) =>
+      new Date(slot?.date?.toISOString()).toISOString()
+    );
 
+    const submissionData = {
+      ...values,
+      dateTimes,
+    };
+    // console.log(submissionData, "submissionData updated");
     const res = await updateService({
       id: values?._id,
       data: submissionData,
@@ -270,7 +292,7 @@ function CreteServices({ title, titleStyle, containerBg }) {
       date: dayjs(slot), // Convert from ISO string to Date object
     }));
 
-    let Recoded = { ...recoded, dateTimes };
+    let Recoded = { ...recoded, doctorId: recoded?.doctor?._id, dateTimes };
 
     form.setFieldsValue(Recoded);
     setOpenUpdatedModal(true);
@@ -373,7 +395,7 @@ function CreteServices({ title, titleStyle, containerBg }) {
       {/* Add Service Button */}
       <div className="flex justify-between">
         <h1 className="p-4 ">
-          <span className="text-xl font-bold">All Doctor</span>
+          <span className="text-xl font-bold">All Services</span>
         </h1>
         {/* <div>
           <Input
@@ -461,6 +483,21 @@ function CreteServices({ title, titleStyle, containerBg }) {
               ]}
             />
           </Form.Item>
+          <Form.Item name="doctorId" label="Assign Doctor">
+            <Select
+              showSearch
+              placeholder="doctor"
+              style={{ flex: 1 }}
+              className="w-full bg-white rounded mb-4 border border-primary6"
+              optionFilterProp="label"
+              filterSort={(optionA, optionB) =>
+                (optionA?.label ?? "")
+                  .toLowerCase()
+                  .localeCompare((optionB?.label ?? "").toLowerCase())
+              }
+              options={doctorSelectOptions}
+            />
+          </Form.Item>
 
           <Form.List name="dateTimes">
             {(fields, { add, remove }) => (
@@ -524,7 +561,7 @@ function CreteServices({ title, titleStyle, containerBg }) {
 
       {/* Modal for updating a service */}
       <Modal
-        title="Create New Service"
+        title="Update Service"
         open={openUpdatedModal}
         onCancel={handleUpdateCancel}
         footer={null}
@@ -585,6 +622,22 @@ function CreteServices({ title, titleStyle, containerBg }) {
                 { value: "video", label: "Video" },
                 { value: "audio", label: "Audio" },
               ]}
+            />
+          </Form.Item>
+
+          <Form.Item name="doctorId" label="Assign Doctor">
+            <Select
+              showSearch
+              placeholder="doctor"
+              style={{ flex: 1 }}
+              className="w-full bg-white rounded mb-4 border border-primary6"
+              optionFilterProp="label"
+              filterSort={(optionA, optionB) =>
+                (optionA?.label ?? "")
+                  .toLowerCase()
+                  .localeCompare((optionB?.label ?? "").toLowerCase())
+              }
+              options={doctorSelectOptions}
             />
           </Form.Item>
 

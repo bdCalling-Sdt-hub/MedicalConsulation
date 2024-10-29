@@ -21,8 +21,8 @@ const authSlice = api.injectEndpoints({
       providesTags: ["user"],
     }),
     allDoctor: builder.query({
-      query: (token) => ({
-        url: `/users/doctors`,
+      query: ({ page, limit, filter }) => ({
+        url: `/users/doctors?page=${page}&limit=${limit}&filter=${filter}`,
       }),
       providesTags: ["user"],
     }),
@@ -103,16 +103,22 @@ const authSlice = api.injectEndpoints({
       invalidatesTags: ["user"],
     }),
     approvedDoctor: builder.mutation({
-      query: () => ({
+      query: (id) => ({
         url: `/users/auth/approve-doctor`,
         method: "POST",
+        body: {
+          doctorId: id,
+        },
       }),
       invalidatesTags: ["user"],
     }),
     cancelDoctor: builder.mutation({
-      query: () => ({
+      query: (id) => ({
         url: `/users/auth/cancel-doctor`,
         method: "POST",
+        body: {
+          doctorId: id,
+        },
       }),
       invalidatesTags: ["user"],
     }),

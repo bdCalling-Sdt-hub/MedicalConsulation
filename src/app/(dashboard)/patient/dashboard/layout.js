@@ -4,20 +4,21 @@ import "../../dashboard.css";
 
 import { Avatar, Badge, Layout, Menu, Popover } from "antd";
 import { Bell, LogOut, User, User2Icon } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 import {
   FaChartPie,
   FaLock,
   FaRegUserCircle,
   FaUserCircle,
 } from "react-icons/fa";
-import { usePathname, useRouter } from "next/navigation";
 
-import { BiPieChartAlt2 } from "react-icons/bi";
+import SubMenu from "antd/es/menu/SubMenu";
 import Image from "next/image";
 import Link from "next/link";
-import Logo from "../../../../../public/images/LogoFinal.png";
+import { BiPieChartAlt2 } from "react-icons/bi";
 import { MdOutlineSettings } from "react-icons/md";
-import SubMenu from "antd/es/menu/SubMenu";
+import { useDispatch } from "react-redux";
+import Logo from "../../../../../public/images/LogoFinal.png";
 
 const { Header, Sider, Content } = Layout;
 
@@ -74,13 +75,9 @@ const content = (
 const Dashboard = ({ children }) => {
   const route = useRouter();
   // Redirect to the correct route when the component loads
-
+  const dispatch = useDispatch();
   const pathname = usePathname();
   console.log(pathname);
-
-  const handleLogout = () => {
-    route.push("/");
-  };
 
   const handleNotifications = () => {
     route.push("/admin/dashboard/notifications");
@@ -88,6 +85,22 @@ const Dashboard = ({ children }) => {
 
   const getTitle = () => {
     // your title logic
+  };
+  const handleLogout = () => {
+    // Remove token from local storage
+    localStorage.removeItem("token");
+
+    // Dispatch action to clear user state in Redux
+    dispatch(clearUser());
+
+    // Remove cookies for token and role
+    Cookies.remove("token");
+    Cookies.remove("userRole");
+
+    window.location.reload();
+    route.push("/");
+    // Optionally redirect or update UI
+    // For example, you can use next/router for navigation
   };
 
   const getMenuIcon = (icon, activeIcon, isActive) => {

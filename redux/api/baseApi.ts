@@ -37,17 +37,17 @@ const baseQueryWithRath: typeof baseQuery = async (args, api, extraOptions) => {
       });
     }
 
-    if (result?.error?.status === 404) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text:
-          result.error.data.message ||
-          result?.error?.error ||
-          "An error occurred",
-        confirmButtonText: "Ok",
-      });
-    }
+    // if (result?.error?.status === 404) {
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "Oops...",
+    //     text:
+    //       result.error.data.message ||
+    //       result?.error?.error ||
+    //       "An error occurred",
+    //     confirmButtonText: "Ok",
+    //   });
+    // }
   }
 
   if (result?.error?.status === 401) {

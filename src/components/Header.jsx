@@ -325,7 +325,7 @@ function Header() {
           <div className="gap-1 bg-[#e3e3e3] flex flex-row items-center mt-6">
             <button
               className={`${
-                !isDoctorRegistered ? "bg-white" : ""
+                !isDoctorRegistered ? "bg-primary6 text-white" : ""
               } px-4 py-2 rounded text-neutral10 text-sm font-merri font-normal`}
               onClick={() => setIsDoctorRegistered(false)}
             >
@@ -333,7 +333,7 @@ function Header() {
             </button>
             <button
               className={`${
-                isDoctorRegistered ? "bg-white" : ""
+                isDoctorRegistered ? "bg-primary6 text-white" : ""
               } px-4 py-2 rounded text-neutral10 text-sm font-merri font-normal`}
               onClick={() => setIsDoctorRegistered(true)}
             >
@@ -471,7 +471,7 @@ function Header() {
           <div className="gap-1 bg-[#e3e3e3] flex flex-row items-center mt-6">
             <button
               className={`${
-                !isDoctorRegistered ? "bg-white" : ""
+                !isDoctorRegistered ? "bg-primary6 text-white" : ""
               } px-4 py-2 rounded text-neutral10 text-sm font-merri font-normal`}
               onClick={() => setIsDoctorRegistered(false)}
             >
@@ -479,7 +479,7 @@ function Header() {
             </button>
             <button
               className={`${
-                isDoctorRegistered ? "bg-white" : ""
+                isDoctorRegistered ? "bg-primary6 text-white" : ""
               } px-4 py-2 rounded text-neutral10 text-sm font-merri font-normal`}
               onClick={() => setIsDoctorRegistered(true)}
             >

@@ -1,19 +1,22 @@
 "use client";
 
-import { Input, Table } from "antd";
+import { CheckCircleOutlined, StopFilled } from "@ant-design/icons";
+import { Button, Input, Table, Tag } from "antd";
 
-import Link from "next/link";
-import ModalComponent from "../../../../../components/dashboard/share/ModalComponent";
 import { Search } from "lucide-react";
-import SelectBox from "../../../../../components/dashboard/share/SelectBox";
-import image from "../../../../../../public/images/Notifications/Avatar.png";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useGetAppointmentDoctorByIdQuery } from "../../../../../../redux/apiSlices/appointmentsSlices";
+import ModalComponent from "../../../../../components/dashboard/share/ModalComponent";
+import SelectBox from "../../../../../components/dashboard/share/SelectBox";
+import { extractDateTimeParts } from "../../../../../utils/extractDateTimeParts";
 
 const selectOptions = [
-  { value: "1", label: "Last week" },
-  { value: "2", label: "Last Month" },
-  { value: "3", label: "Last Year" },
+  { value: "all", label: "All" },
+  { value: "upcoming", label: "Upcoming" },
+  { value: "completed", label: "Completed" },
+  { value: "cancelled", label: "Cancelled" },
 ];
 const Appointment = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,107 +27,108 @@ const Appointment = () => {
   const [openPrescriptionModal, setOpenPrescriptionModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState();
 
+  const user = useSelector((state) => state.user.user);
+  console.log(user?._id);
+  const { data: doctorAppointments } = useGetAppointmentDoctorByIdQuery(
+    user._id
+  );
+  console.log(doctorAppointments);
+
   const route = useRouter(); // Import useNavigate hook
 
   const pageSize = 10;
 
-  const data = [...Array(9).keys()].map((item, index) => ({
-    sId: index + 1,
-    image: <img src={image} className="w-9 h-9 rounded" alt="avatar" />,
-    name: "Richardo Mathew " + (index + 1),
-    email: "richardoa@padel.com",
-    dateAndTime: "01 Jan, 2024 at 10:00 am",
-    prescription: "Details",
-    status: "Upcoming",
-    rating: (index % 5) + 1,
-    role: index % 2 === 0 ? "Admin" : "Member",
-    action: {
-      sId: index + 1,
-      image: <img src={image} className="w-9 h-9 rounded" alt="" />,
-      name: "Richardo Mathew " + (index + 1),
-      dateAndTime: "01 Jan, 2024 at 10:00 am",
-      consultant: "Dr. Jhonathon Swift",
-      prescription: "Details",
-      status: "Upcoming",
-      division: "Cardiology",
-      dateOfBirth: "24-05-2024",
-      rating: (index % 5) + 1,
-      contact: "0521545861520",
-      role: index % 2 === 0 ? "Admin" : "Member",
-    },
-  }));
+  const handleView = (recoded) => {
+    console.log(recoded);
+    route.push(`/doctor/dashboard/appointment-details/${recoded?._id}`);
+  };
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "image",
-      key: "image",
+      title: "Slots",
+      dataIndex: "dateTimes",
+      key: "dateTimes",
       render: (_, record) => (
-        <div className="flex items-center">
-          <Link
-            href={`/doctor/dashboard/patient-profile/${record.sId}`}
-            className="ml-3 text-blue-500 hover:underline"
-          >
-            {record.name}
-          </Link>
+        <div className="flex-col flex w-40 gap-4">
+          <Tag className="text-center" color="blue" type="secondary">
+            <span className=" ">
+              {extractDateTimeParts(record?.dateTime, true, true).time}{" "}
+              {extractDateTimeParts(record?.dateTime, true, true).timeOfDay}
+            </span>
+          </Tag>
         </div>
       ),
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: "Days Of Week",
+      dataIndex: "daysOfWeek",
+      key: "daysOfWeek",
+      render: (_, record) => (
+        <div className="flex gap-2 flex-wrap">
+          <Tag type="secondary" color="success">
+            {record?.dayOfWeek?.toUpperCase()}
+          </Tag>
+        </div>
+      ),
+    },
+
+    {
+      title: "Payment Status",
+      dataIndex: "paymentStatus",
+      key: "paymentStatus",
     },
     {
-      title: "Date and Time",
-      dataIndex: "dateAndTime",
-      key: "dateAndTime",
-    },
-    {
-      title: "Status",
+      title: "Public Status",
       dataIndex: "status",
       key: "status",
-    },
-    // {
-    //   title: "Prescription",
-    //   dataIndex: "Create",
-    //   key: "prescription",
-    //   render: (_: any, record: UserData) => (
-    //     <Button onClick={() => handlePrescriptionClick(record)} type="secondary">
-    //       Create
-    //     </Button>
-    //   ),
-    // },
-    // {
-    //   title: "Ratings",
-    //   dataIndex: "rating",
-    //   key: "rating",
-    //   render: (rating) => <Rate className="custom-rate" disabled value={rating} />,
-    // },
-    {
-      title: "Actions",
-      dataIndex: "action",
-      key: "action",
       render: (_, record) => (
-        <div className="flex items-center justify-end gap-3">
-          <button
-            onClick={() => handleUser(record.action)} // Calls handleUser for navigation
-            className="hover:bg-primary p-1 rounded bg-blue border border-gray p-2"
+        <div className="w-24">
+          <Button
+            icon={
+              record?.status !== "completed" ? (
+                <StopFilled />
+              ) : (
+                <CheckCircleOutlined />
+              )
+            }
+            variant="text"
+            type="default"
+            color={record?.status !== "completed" ? "danger" : "default"}
+            className="text-green-500"
           >
-            View
-          </button>
+            {record?.status}
+          </Button>
         </div>
       ),
     },
+
+    {
+      title: "Action",
+      dataIndex: "details",
+      key: "details",
+      render: (_, record) => (
+        <div>
+          <Button onClick={() => handleView(record)} type="default">
+            View
+          </Button>
+        </div>
+      ),
+    },
+    // {
+    //   title: "Ratings",
+    //   dataIndex: "rating", // Use "rating" data field (numeric value)
+    //   key: "rating",
+    //   render: (rating) => <Rate className="custom-rate" disabled value={rating} />, // Display stars
+    // }
   ];
 
   const handlePage = (page) => {
     setCurrentPage(page);
   };
 
-  const handleUser = (action) => {
+  const handleUser = (record) => {
     // Use the navigate function to redirect to the appointment/patientProfile with the ID
-    route.push(`/doctor/dashboard/patient-profile/${action.sId}`);
+    route.push(`/doctor/dashboard/patient-profile/${record?._id}`);
   };
 
   const handlePrescriptionClick = (record) => {
@@ -159,7 +163,7 @@ const Appointment = () => {
       </div>
       <div className="py-6">
         <Table
-          dataSource={data}
+          dataSource={doctorAppointments?.data}
           columns={columns}
           pagination={{
             pageSize,
