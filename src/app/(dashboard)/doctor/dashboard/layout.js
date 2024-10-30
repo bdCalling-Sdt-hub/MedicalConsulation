@@ -11,14 +11,16 @@ import {
   FaRegUserCircle,
   FaUserCircle,
 } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 
 import SubMenu from "antd/es/menu/SubMenu";
+import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
 import { BiPieChartAlt2 } from "react-icons/bi";
 import { MdOutlineSettings } from "react-icons/md";
-import { useSelector } from "react-redux";
 import Logo from "../../../../../public/images/LogoFinal.png";
+import { clearUser } from "../../../../../redux/apiSlices/userSlices";
 
 const { Header, Sider, Content } = Layout;
 
@@ -79,10 +81,6 @@ const Dashboard = ({ children }) => {
   const pathname = usePathname();
   console.log(pathname);
 
-  const handleLogout = () => {
-    route.push("/");
-  };
-
   const handleNotifications = () => {
     route.push("/admin/dashboard/notifications");
   };
@@ -97,6 +95,24 @@ const Dashboard = ({ children }) => {
 
   const userProfile = useSelector((state) => state.user?.user);
 
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    // Remove token from local storage
+    localStorage.removeItem("token");
+
+    // Dispatch action to clear user state in Redux
+    dispatch(clearUser());
+
+    // Remove cookies for token and role
+    Cookies.remove("token");
+    Cookies.remove("userRole");
+
+    route.push("/");
+
+    // Optionally redirect or update UI
+    // For example, you can use next/router for navigation
+  };
   return (
     <main className="bg-white">
       <Layout>
@@ -206,8 +222,8 @@ const Dashboard = ({ children }) => {
                     />
                   </Popover>
                   <div className="space-y-4">
-                    <h1 className="text-white">John</h1>
-                    <h1 className="text-white">ex@ample.com</h1>
+                    <h1 className="text-white">{userProfile?.name}</h1>
+                    <h1 className="text-white">{userProfile?.email}</h1>
                   </div>
                 </div>
                 <Menu.Item

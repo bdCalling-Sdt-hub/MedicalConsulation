@@ -37,7 +37,7 @@ function Services({
                 ${
                   selectedItem === service
                     ? "bg-primary6 text-white"
-                    : "bg-white border border-neutral4"
+                    : "bg-white border text-secondaryBlack border-neutral4"
                 }`} // Conditional styles for the selected item
             >
               <h1 className={`text-lg font-roboto font-bold`}>

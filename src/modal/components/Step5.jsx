@@ -1,6 +1,4 @@
-import React from "react";
-
-function Step5() {
+function Step5({ email, setExtraUserEmail }) {
   return (
     <div className={`grid grid-cols-5 gap-4`}>
       <div className={`col-span-2`}>
@@ -19,6 +17,10 @@ function Step5() {
           <input
             type="text"
             id="cardNumber"
+            defaultValue={email}
+            onChange={(e) => {
+              setExtraUserEmail(e.target.value);
+            }}
             placeholder="Enter your E-mail"
             className={`border border-neutral5 p-2 rounded w-full mt-1 text-base text-offBlack font-merri font-normal focus:outline-none`}
           />

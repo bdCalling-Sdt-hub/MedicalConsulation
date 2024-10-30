@@ -23,6 +23,7 @@ import {
 } from "../../../../../../redux/apiSlices/appointmentsSlices";
 
 import { CloseCircleFilled } from "@ant-design/icons";
+import Link from "next/link";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { useAllDoctorQuery } from "../../../../../../redux/apiSlices/authSlice";
@@ -81,6 +82,7 @@ const UpcomingConsultant = () => {
   const handleZoomLink = (record) => {
     setAppointment(record);
     record?.zoomLink && form.setFieldValue("zoom_link", record?.zoomLink);
+    record?.patientEmail && form.setFieldValue("email", record?.patientEmail);
     console.log(record);
     setOpenZoomModal(true);
   };
@@ -93,7 +95,7 @@ const UpcomingConsultant = () => {
     AddZoomLink({
       appointmentId: selectAppointment?._id,
       zoomLink: values?.zoom_link,
-      email: selectAppointment?.patientEmail,
+      email: values?.email || selectAppointment?.patientEmail,
     }).then((res) => {
       console.log(res);
       if (res?.data) {
@@ -201,7 +203,7 @@ const UpcomingConsultant = () => {
       key: "zoomLink",
       render: (_, record) => (
         <div className="flex flex-col gap-2 items-start w-24">
-          {record?.zoomLink && (
+          {record?.zoomLink ? (
             <Text
               type="secondary"
               copyable={{
@@ -213,8 +215,12 @@ const UpcomingConsultant = () => {
               role="link"
               className="text-[#71717A]"
             >
-              {record?.zoomLink?.slice(0, 20)}
+              <Link href={record?.zoomLink}>
+                {record?.zoomLink?.slice(0, 20)}
+              </Link>
             </Text>
+          ) : (
+            <span className="text-gray-400 text-xs">Empty</span>
           )}
         </div>
       ),
@@ -593,7 +599,13 @@ const UpcomingConsultant = () => {
               { required: true, message: "Please input your zoom link!" },
             ]}
           >
-            <Input />
+            <Input placeholder="Zoom Link" />
+          </Form.Item>
+          <Form.Item
+            name="email"
+            rules={[{ required: true, message: "Please input your email!" }]}
+          >
+            <Input placeholder="Email" />
           </Form.Item>
           <Form.Item className="w-full flex justify-end">
             <Button

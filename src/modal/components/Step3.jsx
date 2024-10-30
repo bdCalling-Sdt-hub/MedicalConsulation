@@ -22,7 +22,7 @@ function Step3({ selectedItem, setDateTime, dateTime }) {
                 dateTime?.dayOfWeek ===
                 extractDateTimeParts(item).day?.toLocaleLowerCase()
                   ? "bg-primary6"
-                  : "bg-white"
+                  : "bg-primary1"
               }`}
               onClick={() => {
                 setDateTime({
@@ -55,7 +55,7 @@ function Step3({ selectedItem, setDateTime, dateTime }) {
             <div
               key={index}
               className={`h-36 flex-col flex justify-center items-center gap-y-2 cursor-pointer ${
-                dateTime?.dateTime === item ? "bg-primary6" : "bg-white"
+                dateTime?.dateTime === item ? "bg-primary6" : "bg-primary1"
               }`}
               onClick={() => {
                 setDateTime({ ...dateTime, dateTime: item });

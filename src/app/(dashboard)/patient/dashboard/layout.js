@@ -2,23 +2,25 @@
 
 import "../../dashboard.css";
 
-import { Avatar, Badge, Layout, Menu, Popover } from "antd";
-import { Bell, LogOut, User, User2Icon } from "lucide-react";
+import { Badge, Layout, Menu } from "antd";
+import { Bell, LogOut, User2Icon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
+import { BiLeftArrow, BiPieChartAlt2 } from "react-icons/bi";
 import {
   FaChartPie,
   FaLock,
   FaRegUserCircle,
   FaUserCircle,
 } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 
 import SubMenu from "antd/es/menu/SubMenu";
+import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
-import { BiPieChartAlt2 } from "react-icons/bi";
 import { MdOutlineSettings } from "react-icons/md";
-import { useDispatch } from "react-redux";
 import Logo from "../../../../../public/images/LogoFinal.png";
+import { clearUser } from "../../../../../redux/apiSlices/userSlices";
 
 const { Header, Sider, Content } = Layout;
 
@@ -30,8 +32,8 @@ const userMenuItems = [
     activeIcon: <FaChartPie size={18} color="white" />,
   },
   {
-    path: "/patient/dashboard/consultant-history",
-    title: "Consultant History",
+    path: "/patient/dashboard/consultant",
+    title: "Consultant",
     icon: <FaRegUserCircle size={18} color="white" />,
     activeIcon: <FaUserCircle size={18} color="white" />,
   },
@@ -86,6 +88,8 @@ const Dashboard = ({ children }) => {
   const getTitle = () => {
     // your title logic
   };
+  const userProfile = useSelector((state) => state.user?.user);
+
   const handleLogout = () => {
     // Remove token from local storage
     localStorage.removeItem("token");
@@ -97,8 +101,8 @@ const Dashboard = ({ children }) => {
     Cookies.remove("token");
     Cookies.remove("userRole");
 
-    window.location.reload();
     route.push("/");
+
     // Optionally redirect or update UI
     // For example, you can use next/router for navigation
   };
@@ -199,33 +203,36 @@ const Dashboard = ({ children }) => {
                   }
                 })}
               </div>
-              <div className="flex gap-8 py-4 mt-16 px-4 w-full">
-                <div className="flex gap-2 w-3/4 items-center">
-                  <Popover
-                    className="cursor-pointer"
-                    placement="top"
-                    content={content}
-                  >
-                    <Avatar
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        backgroundColor: "gray",
-                      }}
-                      icon={<User size={25} />}
-                    />
-                  </Popover>
-                  <div className="space-y-4">
-                    <h1 className="text-white">John</h1>
-                    <h1 className="text-white">ex@ample.com</h1>
+              <div>
+                <div className="flex gap-8 justify-between py-4  px-4 w-full">
+                  <div className="flex gap-2 w-3/4 items-center border-l-2 pl-2 border-l-white">
+                    <div className="space-y-4 ">
+                      <h1 className="text-white">Go to Home</h1>
+                    </div>
                   </div>
+                  <Menu.Item
+                    key="500"
+                    icon={<BiLeftArrow size={20} />}
+                    style={{ color: "white", fontSize: "16px", flex: 1 }}
+                    onClick={() => {
+                      route.push("/");
+                    }}
+                  />
                 </div>
-                <Menu.Item
-                  key="500"
-                  icon={<LogOut size={20} />}
-                  style={{ color: "red", fontSize: "16px" }}
-                  onClick={handleLogout}
-                />
+                <div className="flex gap-8 py-4  px-4 w-full">
+                  <div className="flex gap-2 w-3/4 items-center border-l-2 pl-2 border-l-white">
+                    <div className="space-y-4 ">
+                      <h1 className="text-white">{userProfile?.name}</h1>
+                      <h1 className="text-white">{userProfile?.email}</h1>
+                    </div>
+                  </div>
+                  <Menu.Item
+                    key="500"
+                    icon={<LogOut size={20} />}
+                    style={{ color: "red", fontSize: "16px", flex: 1 }}
+                    onClick={handleLogout}
+                  />
+                </div>
               </div>
             </div>
           </Menu>

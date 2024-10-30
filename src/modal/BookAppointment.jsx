@@ -3,11 +3,15 @@
 import "react-toastify/dist/ReactToastify.css";
 
 import { useCallback, useState } from "react";
+import {
+  useAddEmailForZoomLinkMutation,
+  useBookCreateAppointmentMutation,
+} from "../../redux/apiSlices/appointmentsSlices";
 
 import { Modal } from "antd";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import IconRightArrow from "../../public/icons/IconRightArrow";
-import { useBookCreateAppointmentMutation } from "../../redux/apiSlices/appointmentsSlices";
 import Services from "../components/Services";
 import NewStep from "./components/NewStep";
 import Step3 from "./components/Step3";
@@ -17,9 +21,13 @@ import Step5 from "./components/Step5";
 function BookAppointment() {
   const user = useSelector((state) => state.user.user);
   const [createAppointment] = useBookCreateAppointmentMutation({});
+  const [addEmailForZoomLink] = useAddEmailForZoomLinkMutation({});
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
-  const [selectedItem, setSelectedItem] = useState(null); // State to store only one selected item
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [extraUserEmail, setExtraUserEmail] = useState(null);
+  // State to store only one selected item
   const [dateTime, setDateTime] = useState({
     dateTime: null,
     dayOfWeek: null,
@@ -44,6 +52,10 @@ function BookAppointment() {
 
   const handleNext = () => {
     if (currentStep === 5) {
+      handleAddEmailForZoomLink({
+        email: extraUserEmail || user.email,
+        appointmentId: createdAppointment?._id,
+      });
       setIsModalOpen(false);
       toast.success("Congratulations! Your appointment has been completed!", {
         autoClose: 2000,
@@ -91,6 +103,24 @@ function BookAppointment() {
   );
 
   // console.log(createdAppointment);
+
+  const handleAddEmailForZoomLink = useCallback(
+    async (UData) => {
+      try {
+        const response = await addEmailForZoomLink(UData);
+        console.log(response);
+        if (response?.data) {
+          toast.success(response?.data?.message);
+        }
+        if (response?.error) {
+          toast.error(response?.error?.data?.message);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [createdAppointment]
+  );
 
   return (
     <>
@@ -198,10 +228,19 @@ function BookAppointment() {
             )}{" "}
             {/* Now step 4 */}
             {currentStep === 4 && createdAppointment && (
-              <Step4 createdAppointment={createdAppointment} />
+              <Step4
+                setCurrentStep={setCurrentStep}
+                createdAppointment={createdAppointment}
+              />
             )}{" "}
             {/* Now step 3 */}
-            {currentStep === 5 && <Step5 />} {/* Now step 5 */}
+            {currentStep === 5 && (
+              <Step5
+                setExtraUserEmail={setExtraUserEmail}
+                email={user?.email}
+              />
+            )}{" "}
+            {/* Now step 5 */}
           </div>
         </div>
 
@@ -220,6 +259,17 @@ function BookAppointment() {
 
           <div>
             <button
+              disabled={
+                currentStep === 1 && !selectedItem
+                  ? true
+                  : currentStep === 2 && !dateTime?.dateTime
+                  ? true
+                  : currentStep === 3 && !extraInfo
+                  ? true
+                  : currentStep === 4 && !createdAppointment
+                  ? true
+                  : false
+              }
               className="bg-primary6 text-white py-2 px-4 rounded-sm"
               onClick={handleNext}
             >

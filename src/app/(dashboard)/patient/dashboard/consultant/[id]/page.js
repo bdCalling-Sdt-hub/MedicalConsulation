@@ -1,11 +1,6 @@
 "use client";
 
 import {
-  EditOutlined,
-  InfoCircleOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
-import {
   Button,
   Card,
   Divider,
@@ -25,6 +20,7 @@ import {
   useEditPrescriptionMutation,
 } from "../../../../../../../redux/apiSlices/prescriptionSlices";
 
+import { InfoCircleOutlined } from "@ant-design/icons";
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -65,7 +61,7 @@ const AppointmentDetails = (props) => {
 
   const navigate = useRouter();
   const handleBack = () => {
-    navigate.push("/doctor/dashboard/appointment");
+    navigate.push("/patient/dashboard/consultant");
   };
 
   const [addNote] = useAddNoteMutation();
@@ -95,7 +91,7 @@ const AppointmentDetails = (props) => {
     console.log(values);
 
     const res = await addPrescription({
-      appointmentId: Appointments?.data?._id,
+      appointmentId: Appointments?.data?.patient?._id,
       ...values,
     });
     console.log(res);
@@ -113,8 +109,7 @@ const AppointmentDetails = (props) => {
   const handleEditNoteSubmit = async (values) => {
     console.log(values);
     const res = await editNote({
-      id: values?._id,
-      data: values,
+      ...values,
     });
     console.log(res);
     if (res.data) {
@@ -129,10 +124,8 @@ const AppointmentDetails = (props) => {
   };
 
   const handleEditPrescriptionSubmit = async (values) => {
-    console.log(values);
     const res = await editPrescription({
-      id: values?._id,
-      data: values,
+      ...values,
     });
     console.log(res);
     if (res.data) {
@@ -141,7 +134,7 @@ const AppointmentDetails = (props) => {
         text: "You clicked the button!",
         icon: "success",
       });
-      setEditPrescriptionModalOpen(false);
+      setPrescriptionNoteModalOpen(false);
       prescriptionForm.resetFields();
       // Reset form fields after submission
     }
@@ -182,22 +175,6 @@ const AppointmentDetails = (props) => {
           <ChevronLeft />
           <h1>Back</h1>
         </div>
-        <div>
-          <Button
-            type="text"
-            onClick={noteModalClicked}
-            icon={<PlusCircleOutlined />}
-          >
-            Add Note
-          </Button>
-          <Button
-            type="text"
-            onClick={prescriptionNoteModalClicked}
-            icon={<PlusCircleOutlined />}
-          >
-            Add Prescription
-          </Button>
-        </div>
       </div>
       <div className="flex gap-2  items-center justify-center mt-4">
         <div className="w-1/2 h-80 flex items-center justify-center py-8 bg-white rounded-2xl">
@@ -206,18 +183,18 @@ const AppointmentDetails = (props) => {
               width={100}
               height={100}
               src={
-                Appointments?.data?.patient?.image
-                  ? imageUrl + Appointments?.data?.patient?.image
+                Appointments?.data?.doctor?.image
+                  ? imageUrl + Appointments?.data?.doctor?.image
                   : require("../../../../../../../public/images/avatar.png")
               }
-              className="w-24 h-24 rounded mx-auto"
+              className="w-24 h-24 rounded-full mx-auto"
               alt=""
             />
             <h1 className="text-xl font-bold py-2 text-gray-900">
-              {Appointments?.data?.patient?.name}
+              {Appointments?.data?.doctor?.name}
             </h1>
 
-            <p>{Appointments?.data?.patient?.email}</p>
+            <p>{Appointments?.data?.doctor?.email}</p>
           </div>
         </div>
 
@@ -230,17 +207,17 @@ const AppointmentDetails = (props) => {
               <div>
                 <h1 className="mt-6">Name</h1>
                 <p className=" border-b border-gray-200 font-bold">
-                  {Appointments?.data?.patient?.name}
+                  {Appointments?.data?.doctor?.name}
                 </p>
                 <h1 className="mt-6">Phone Number</h1>
                 <p className="mt-2 border-b border-gray-200 font-bold">
-                  {Appointments?.data?.patient?.phone}
+                  {Appointments?.data?.doctor?.phone}
                 </p>
               </div>
               <div>
                 <h1 className="mt-6">Email</h1>
                 <p className="mt-2 border-b border-gray-200 font-bold">
-                  {Appointments?.data?.patient?.email}
+                  {Appointments?.data?.doctor?.email}
                 </p>
               </div>
             </div>
@@ -275,7 +252,7 @@ const AppointmentDetails = (props) => {
                     bodyStyle={{ padding: 0 }}
                   >
                     {/* Edit button in top-right corner */}
-                    <Button
+                    {/* <Button
                       type="text"
                       icon={<EditOutlined />}
                       style={{
@@ -285,7 +262,7 @@ const AppointmentDetails = (props) => {
                         color: "#1890ff",
                       }}
                       onClick={() => editNoteModalClicked(note)} // Replace with actual edit handler
-                    />
+                    /> */}
                     <Title
                       level={5}
                       style={{
@@ -357,7 +334,7 @@ const AppointmentDetails = (props) => {
                     bodyStyle={{ padding: 10 }}
                   >
                     {/* Edit button in top-right corner */}
-                    <Button
+                    {/* <Button
                       type="text"
                       icon={<EditOutlined />}
                       style={{
@@ -367,7 +344,7 @@ const AppointmentDetails = (props) => {
                         color: "#1890ff",
                       }}
                       onClick={() => prescriptionModalClicked(item)} // Replace with actual edit handler
-                    />
+                    /> */}
                     <Title
                       level={5}
                       style={{

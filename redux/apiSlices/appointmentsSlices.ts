@@ -12,12 +12,12 @@ export const appointmentsSlices = api.injectEndpoints({
       providesTags: ["appointments"],
     }),
     getAppointmentPatientById: builder.query({
-      query: (id) => `/appointment/get-appointment-by-patientId/${id}`,
+      query: (id) => `/appointment/get-appointment-by-patientId/`,
       providesTags: ["appointments"],
     }),
     getAppointmentDoctorById: builder.query({
       query: (id) => ({
-        url: `/appointment/get-appointment-by-doctorId/${id}`,
+        url: `/appointment/get-appointment-by-doctorId/`,
       }),
       providesTags: ["appointments"],
     }),
@@ -60,6 +60,13 @@ export const appointmentsSlices = api.injectEndpoints({
         body: data,
       }),
     }),
+    addEmailForZoomLink: builder.mutation({
+      query: (data) => ({
+        url: `/appointment/add-email-for-zoom-link`,
+        method: "POST",
+        body: data,
+      }),
+    }),
     checkLogin: builder.mutation({
       query: (data) => ({
         url: `/appointment/check-login`,
@@ -83,4 +90,5 @@ export const {
   useGetAppointmentPatientByIdQuery,
   useLazyGetAppointmentByIdQuery,
   useAssignDoctorToAppointmentMutation,
+  useAddEmailForZoomLinkMutation,
 } = appointmentsSlices;

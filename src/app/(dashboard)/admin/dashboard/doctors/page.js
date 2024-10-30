@@ -322,7 +322,7 @@ const Doctor = () => {
                 ? "Approved"
                 : userData?.doctorApplicationStatus === "pending"
                 ? "Approved"
-                : "Cancelled"}
+                : "Cancel"}
             </Button>,
 
             <Button key="back" onClick={() => setOpenPrescriptionModal(false)}>

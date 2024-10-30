@@ -12,13 +12,13 @@ import {
 } from "../../../redux/apiSlices/paymnetSlices";
 
 import { loadStripe } from "@stripe/stripe-js";
-import { toast } from "react-toastify";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const stripePromise = loadStripe(
   "pk_test_51Q51euIE7z8j8FQDRAixwTBcDJS0zyz8wjvgZVn64nZKzjxyVSdzEPIccMiD3hND02GAHRU8y2eB92YO1tcL1PQk00M6ydxlfZ"
 );
-function Step4({ createdAppointment }) {
+function Step4({ createdAppointment, setCurrentStep }) {
   const options = {
     mode: "payment",
     amount: createdAppointment?.serviceId.price * 100,
@@ -40,7 +40,10 @@ function Step4({ createdAppointment }) {
           </h1>
 
           <Elements stripe={stripePromise} options={options}>
-            <CheckoutForm createdAppointment={createdAppointment} />
+            <CheckoutForm
+              createdAppointment={createdAppointment}
+              setCurrentStep={setCurrentStep}
+            />
           </Elements>
         </div>
         <div className="col-span-3 bg-transparent">
@@ -102,7 +105,7 @@ function Step4({ createdAppointment }) {
 
 export default Step4;
 
-export const CheckoutForm = ({ createdAppointment }) => {
+export const CheckoutForm = ({ createdAppointment, setCurrentStep }) => {
   // console.log(appointmentId);
   const stripe = useStripe();
   const elements = useElements();
@@ -150,6 +153,7 @@ export const CheckoutForm = ({ createdAppointment }) => {
       });
       toast.success("Payment Successful");
       console.log(paymentIntent, "paymentIntent");
+      setCurrentStep(5);
     }
     setProcessing(false);
     if (paymentIntent.error) {
