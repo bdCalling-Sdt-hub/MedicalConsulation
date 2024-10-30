@@ -82,15 +82,17 @@ const authSlice = api.injectEndpoints({
     }),
     forgotPassword: builder.mutation({
       query: (email) => ({
-        url: `/users/auth/forgot-password?email=${email}`,
+        url: `/users/auth/forgot-password`,
         method: "POST",
+        body: { email },
       }),
       invalidatesTags: ["user"],
     }),
     resetPassword: builder.mutation({
-      query: () => ({
+      query: (data) => ({
         url: `/users/auth/reset-password`,
         method: "POST",
+        body: data,
       }),
       invalidatesTags: ["user"],
     }),

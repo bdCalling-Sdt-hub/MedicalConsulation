@@ -1,20 +1,20 @@
 "use client";
 
-import { Badge } from "antd";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
-import avg from "../../../../../../public/images/Notifications/Avatar.png";
+import { useGetAllNotificationsQuery } from "../../../../../../redux/apiSlices/notificaitonsSlices";
 
 const Notifications = (props) => {
   const navigate = useRouter();
+  const { data: notifications } = useGetAllNotificationsQuery({});
+  // console.log(notifications);
   const handleBack = () => {
     console.log("click,");
     navigate.push("/dashboard");
   };
 
   return (
-    <div className="px-8">
+    <div className="px-8 pb-5">
       <div onClick={handleBack} className="flex items-center cursor-pointer">
         <IoIosArrowBack />
         <h1> Back</h1>
@@ -22,24 +22,29 @@ const Notifications = (props) => {
       <div className="flex justify-between py-6">
         <div className="flex">
           <h1 className="text-[24px] font-bold">Notifications</h1>
-          <a href="#">
+          {/* <a href="#">
             <sup>
-              <Badge count={2}>{/* <Avatar shape="none" size="" /> */}</Badge>
+              <Badge count={2} />
             </sup>
-          </a>
+          </a> */}
         </div>
-        <h1 className="text-[#5E7FD3]">See All</h1>
+        {/* <h1 className="text-[#5E7FD3]">See All</h1> */}
       </div>
       {/* all Notifications */}
-      <div className="flex justify-between py-2">
-        <div className="flex gap-2 items-center">
-          <Image size={60} src={avg} />
-          <h1>
-            <span className="text-lg font-bold"> Leslie</span> Share a product
-          </h1>
-        </div>
-        <h1>2 minutes ago</h1>
-      </div>
+
+      {notifications?.notifications?.map((item, index) => {
+        return (
+          <div className="flex justify-between p-4 border border-primary2 m-2 rounded-xl bg-primary1">
+            <div className="flex gap-2 items-center">
+              <h1>
+                {/* <span className="text-lg font-bold"> Leslie</span>{" "} */}
+                {item.message}
+              </h1>
+            </div>
+            <h1>{new Date(item?.createdAt).toDateString()}</h1>
+          </div>
+        );
+      })}
     </div>
   );
 };

@@ -5,10 +5,13 @@ import { Button, Checkbox, Flex, Form, Input, Modal, Tooltip } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  useForgotPasswordMutation,
   useLoginDoctorMutation,
   useLoginMutation,
+  useResetPasswordMutation,
   useSignUpDoctorMutation,
   useSignUpPatientMutation,
+  useVerifyEmailMutation,
 } from "../../redux/apiSlices/authSlice";
 import { clearUser, setUser } from "../../redux/apiSlices/userSlices";
 
@@ -17,15 +20,25 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import bigLogo from "../../public/images/big-logo.png";
 import logo from "../../public/images/logo.png";
 
 function Header() {
   const user = useSelector((state) => state.user.user);
   const route = useRouter();
   const dispatch = useDispatch();
+  const [Email, setEmail] = useState("");
+  const [forgatInfo, setForget] = useState({
+    email: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
   const [singUpDoctor] = useSignUpDoctorMutation({});
   const [signUpPatient] = useSignUpPatientMutation({});
+
+  const [forgetPass] = useForgotPasswordMutation({});
+  const [resetPass] = useResetPasswordMutation({});
+  const [verifyEmail] = useVerifyEmailMutation({});
+
   const [loginPatient] = useLoginMutation({});
   const [loginDoctor] = useLoginDoctorMutation({});
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -61,6 +74,18 @@ function Header() {
 
   const onChange = (text) => {
     console.log("onChange:", text);
+    verifyEmail({
+      email: Email,
+      emailVerifyCode: text,
+    }).then((res) => {
+      console.log(res);
+
+      if (res?.data) {
+        setIsCreateNewPassModalOpen(true);
+      } else if (res?.error) {
+        toast.error(res.error?.data?.message);
+      }
+    });
   };
   const sharedProps = {
     onChange,
@@ -189,6 +214,37 @@ function Header() {
     // For example, you can use next/router for navigation
   };
 
+  const handleSendTOtp = () => {
+    forgetPass(Email).then((res) => {
+      console.log(res);
+      if (res?.data) {
+        setIsForgetPassModalOpen(false);
+        setIsOtpModalOpen(true);
+        toast.success(res.data?.message);
+      } else if (res?.error) {
+        toast.error(res.error?.data?.message);
+      }
+    });
+  };
+
+  const handleCreateNewPassword = (values) => {
+    console.log(values);
+    resetPass({
+      email: Email,
+      ...values,
+    }).then((res) => {
+      console.log(res);
+      if (res?.data) {
+        setIsOtpModalOpen(false);
+        setIsCreateNewPassModalOpen(false);
+        setIsSignInModalOpen(true);
+        toast.success(res.data?.message);
+      } else if (res?.error) {
+        toast.error(res.error?.data?.message);
+      }
+    });
+  };
+
   return (
     <>
       <section
@@ -289,9 +345,10 @@ function Header() {
               <button
                 className={`text-white bg-black font-merri text-sm py-2 px-6 rounded-sm font-normal`}
                 onClick={(e) => {
+                  e.preventDefault();
+
                   setIsModalOpen(!isModalOpen);
                   setIsSignInModalOpen(false);
-                  e.preventDefault();
                 }}
               >
                 Register
@@ -597,8 +654,8 @@ function Header() {
             <h3
               className={`text-secondaryblack text-base font-normal font-merri`}
             >
-              We’ll send a 6 digit verification code to{" "}
-              <span className={`text-primary6`}>immi....@gmail.com</span>
+              We’ll send a 6 digit code you email for verification{" "}
+              {/* <span className={`text-primary6`}>immi....@gmail.com</span> */}
             </h3>
             <div>
               <form action="" className={`mt-6`}>
@@ -612,15 +669,17 @@ function Header() {
                     className={`py-2`}
                     type="email"
                     placeholder="Enter your e-mail"
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
                   />
                 </div>
                 <div>
                   <button
                     className={`bg-primary6 w-full py-2 rounded text-white text-base font-merri font-normal mt-4`}
                     onClick={(e) => {
-                      setIsForgetPassModalOpen(false);
                       e.preventDefault();
-                      setIsOtpModalOpen(true);
+                      handleSendTOtp();
                     }}
                   >
                     Submit
@@ -655,7 +714,7 @@ function Header() {
               className={`text-secondaryblack text-base font-normal font-merri`}
             >
               We’ve sent a 6 digit verification code to{" "}
-              <span className={`text-primary6`}>immi....@gmail.com</span>
+              <span className={`text-primary6`}>{Email}</span>
             </h3>
             <div>
               <form action="" className={`mt-6`}>
@@ -671,18 +730,6 @@ function Header() {
                       {...sharedProps}
                     />
                   </Flex>
-                </div>
-                <div>
-                  <button
-                    className={`bg-primary6 w-full py-2 rounded text-white text-base font-merri font-normal mt-4`}
-                    onClick={(e) => {
-                      setIsOtpModalOpen(false);
-                      setIsCreateNewPassModalOpen(true);
-                      e.preventDefault();
-                    }}
-                  >
-                    Submit
-                  </button>
                 </div>
               </form>
             </div>
@@ -701,7 +748,6 @@ function Header() {
         closeIcon={<span style={{ color: "red", fontSize: "24px" }}>×</span>}
       >
         <div className="flex flex-col items-center justify-center p-4">
-          <Image src={bigLogo} alt="logo" />
           <h1
             className={`text-[20px] font-normal font-merri text-secondaryBlack`}
           >
@@ -710,47 +756,74 @@ function Header() {
 
           <div className=" w-full mt-8">
             <div>
-              <form action="" className={`mt-6`}>
+              <Form
+                onFinish={handleCreateNewPassword}
+                action=""
+                className={`mt-6`}
+              >
                 <div className={`mb-4`}>
-                  <p
-                    className={`text-sm text-secondaryBlack font-merri font-normal`}
+                  <Form.Item
+                    name="newPassword"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your password!",
+                      },
+                    ]}
                   >
-                    New Password
-                  </p>
-                  <Input.Password
-                    className={`py-2`}
-                    placeholder="Create your password"
-                    iconRender={(visible) =>
-                      visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                    }
-                  />
+                    <Input.Password
+                      className={`py-2`}
+                      placeholder="Create your password"
+                      iconRender={(visible) =>
+                        visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                      }
+                    />
+                  </Form.Item>
                 </div>
                 <div className={`mb-4`}>
-                  <p
-                    className={`text-sm text-secondaryBlack font-merri font-normal`}
+                  <Form.Item
+                    name="confirmPassword"
+                    dependencies={["newPassword"]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please confirm your password!",
+                      },
+                      ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          if (
+                            !value ||
+                            getFieldValue("newPassword") === value
+                          ) {
+                            return Promise.resolve();
+                          }
+                          return Promise.reject(
+                            new Error(
+                              "The two passwords that you entered do not match!"
+                            )
+                          );
+                        },
+                      }),
+                    ]}
                   >
-                    Confirm Password
-                  </p>
-                  <Input.Password
-                    className={`py-2`}
-                    placeholder="Create your password"
-                    iconRender={(visible) =>
-                      visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                    }
-                  />
+                    <Input.Password
+                      className={`py-2`}
+                      placeholder="Confirm your password"
+                      iconRender={(visible) =>
+                        visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                      }
+                    />
+                  </Form.Item>
                 </div>
                 <div>
-                  <button
+                  <Button
+                    htmlType="submit"
                     className={`bg-primary6 w-full py-2 rounded text-white text-base font-merri font-normal mt-4`}
-                    onClick={(e) => {
-                      setIsCreateNewPassModalOpen(false);
-                      e.preventDefault();
-                    }}
                   >
                     Done
-                  </button>
+                  </Button>
                 </div>
-              </form>
+              </Form>
             </div>
           </div>
         </div>

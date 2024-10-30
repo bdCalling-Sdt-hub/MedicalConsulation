@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useGetAppointmentDoctorByIdQuery } from "../../../../../../redux/apiSlices/appointmentsSlices";
+import { useGetAppointmentPatientByIdQuery } from "../../../../../../redux/apiSlices/appointmentsSlices";
 import ModalComponent from "../../../../../components/dashboard/share/ModalComponent";
 import SelectBox from "../../../../../components/dashboard/share/SelectBox";
 import { extractDateTimeParts } from "../../../../../utils/extractDateTimeParts";
@@ -37,7 +37,7 @@ const Appointment = () => {
 
   const user = useSelector((state) => state.user.user);
   console.log(user?._id);
-  const { data: doctorAppointments } = useGetAppointmentDoctorByIdQuery({
+  const { data: doctorAppointments } = useGetAppointmentPatientByIdQuery({
     page: currentPage,
     limit: 10,
   });
@@ -49,7 +49,7 @@ const Appointment = () => {
 
   const handleView = (recoded) => {
     console.log(recoded);
-    route.push(`/doctor/dashboard/appointment-details/${recoded?._id}`);
+    route.push(`/patient/dashboard/consultant/${recoded?._id}`);
   };
 
   const columns = [
@@ -59,9 +59,9 @@ const Appointment = () => {
       key: "patientEmail",
       render: (_, record) => (
         <div className="flex gap-2  justify-center items-center">
-          {record?.patientEmail ? (
+          {record?.doctorId?.email ? (
             <Text copyable className="flex gap-2 flex-wrap text-center">
-              {record?.patientEmail}
+              {record?.doctorId?.email}
             </Text>
           ) : (
             <Text className="text-gray-400 text-xs">Empty</Text>

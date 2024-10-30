@@ -2,7 +2,7 @@
 
 import "../../dashboard.css";
 
-import { Avatar, Badge, Layout, Menu, Popover } from "antd";
+import { Avatar, Layout, Menu, Popover } from "antd";
 import { Bell, LogOut, User, User2Icon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -287,9 +287,9 @@ const Dashboard = ({ children }) => {
                 className="cursor-pointer"
                 style={{ zIndex: 11 }}
               >
-                <Badge count={5}>
-                  <Bell size={30} color="gray" />
-                </Badge>
+                <Bell size={30} color="gray" />
+                {/* <Badge count={5}>
+                </Badge> */}
               </div>
             </div>
           </Header>

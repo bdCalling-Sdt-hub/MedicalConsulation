@@ -2,8 +2,8 @@
 
 import "../../dashboard.css";
 
-import { Badge, Layout, Menu } from "antd";
-import { Bell, LogOut, User2Icon } from "lucide-react";
+import { Layout, Menu } from "antd";
+import { LogOut, User2Icon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { BiLeftArrow, BiPieChartAlt2 } from "react-icons/bi";
 import {
@@ -261,9 +261,9 @@ const Dashboard = ({ children }) => {
                 className="cursor-pointer"
                 style={{ zIndex: 11 }}
               >
-                <Badge count={5}>
+                {/* <Badge count={5}>
                   <Bell size={30} color="gray" />
-                </Badge>
+                </Badge> */}
               </div>
             </div>
           </Header>
