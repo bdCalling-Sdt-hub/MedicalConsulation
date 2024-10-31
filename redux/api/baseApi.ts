@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import { clearToken } from "../apiSlices/tokenSlice";
 
@@ -7,7 +8,8 @@ const baseQuery = fetchBaseQuery({
   baseUrl: "http://192.168.12.158:3000",
   timeout: 10000,
   prepareHeaders: async (headers, { getState }) => {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     // console.log(token);
     if (token) {
       // console.log(token);

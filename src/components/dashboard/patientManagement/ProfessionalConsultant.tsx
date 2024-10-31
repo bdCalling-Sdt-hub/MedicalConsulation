@@ -6,7 +6,7 @@ import img1 from "/images/dashboard/consultant/consultant1.png";
 // Define Props type
 type Props = {
   id: number;
-  img: string;
+  img: any;
   name: string;
   division: string;
   dayAndTime: string;

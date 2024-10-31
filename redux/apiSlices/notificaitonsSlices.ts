@@ -3,8 +3,8 @@ import { api } from "../api/baseApi";
 export const notificationsSlices = api.injectEndpoints({
   endpoints: (builder) => ({
     getNotificationByUserId: builder.query({
-      query: () => ({
-        url: `/users/notifications-by-user`,
+      query: (id) => ({
+        url: `/notification/get-notifications-by-user/${id}`,
       }),
       providesTags: ["notifications"],
     }),

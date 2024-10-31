@@ -2,9 +2,10 @@
 
 import "../../dashboard.css";
 
-import { Avatar, Badge, Layout, Menu, Popover } from "antd";
-import { Bell, LogOut, User, User2Icon } from "lucide-react";
+import { Layout, Menu } from "antd";
+import { Bell, LogOut, User2Icon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
+import { BiLeftArrow, BiPieChartAlt2 } from "react-icons/bi";
 import {
   FaChartPie,
   FaLock,
@@ -17,7 +18,6 @@ import SubMenu from "antd/es/menu/SubMenu";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
-import { BiPieChartAlt2 } from "react-icons/bi";
 import { MdOutlineSettings } from "react-icons/md";
 import Logo from "../../../../../public/images/LogoFinal.png";
 import { clearUser } from "../../../../../redux/apiSlices/userSlices";
@@ -82,7 +82,7 @@ const Dashboard = ({ children }) => {
   console.log(pathname);
 
   const handleNotifications = () => {
-    route.push("/admin/dashboard/notifications");
+    route.push("/doctor/dashboard/notifications");
   };
 
   const getTitle = () => {
@@ -205,33 +205,36 @@ const Dashboard = ({ children }) => {
                   }
                 })}
               </div>
-              <div className="flex gap-8 py-4 mt-16 px-4 w-full">
-                <div className="flex gap-2 w-3/4 items-center">
-                  <Popover
-                    className="cursor-pointer"
-                    placement="top"
-                    content={content}
-                  >
-                    <Avatar
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        backgroundColor: "gray",
-                      }}
-                      icon={<User size={25} />}
-                    />
-                  </Popover>
-                  <div className="space-y-4">
-                    <h1 className="text-white">{userProfile?.name}</h1>
-                    <h1 className="text-white">{userProfile?.email}</h1>
+              <div>
+                <div className="flex gap-8 justify-between py-4  px-4 w-full">
+                  <div className="flex gap-2 w-3/4 items-center border-l-2 pl-2 border-l-white">
+                    <div className="space-y-4 ">
+                      <h1 className="text-white">Go to Home</h1>
+                    </div>
                   </div>
+                  <Menu.Item
+                    key="500"
+                    icon={<BiLeftArrow size={20} />}
+                    style={{ color: "white", fontSize: "16px", flex: 1 }}
+                    onClick={() => {
+                      route.push("/");
+                    }}
+                  />
                 </div>
-                <Menu.Item
-                  key="500"
-                  icon={<LogOut size={20} />}
-                  style={{ color: "red", fontSize: "16px" }}
-                  onClick={handleLogout}
-                />
+                <div className="flex gap-8 py-4  px-4 w-full">
+                  <div className="flex gap-2 w-3/4 items-center border-l-2 pl-2 border-l-white">
+                    <div className="space-y-4 ">
+                      <h1 className="text-white">{userProfile?.name}</h1>
+                      <h1 className="text-white">{userProfile?.email}</h1>
+                    </div>
+                  </div>
+                  <Menu.Item
+                    key="500"
+                    icon={<LogOut size={20} />}
+                    style={{ color: "red", fontSize: "16px", flex: 1 }}
+                    onClick={handleLogout}
+                  />
+                </div>
               </div>
             </div>
           </Menu>
@@ -260,9 +263,9 @@ const Dashboard = ({ children }) => {
                 className="cursor-pointer"
                 style={{ zIndex: 11 }}
               >
-                <Badge count={5}>
-                  <Bell size={30} color="gray" />
-                </Badge>
+                <Bell size={30} color="gray" />
+                {/* <Badge count={5}>
+                </Badge> */}
               </div>
             </div>
           </Header>

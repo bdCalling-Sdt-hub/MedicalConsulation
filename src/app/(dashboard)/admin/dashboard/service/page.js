@@ -43,7 +43,7 @@ import { extractDateTimeParts } from "../../../../../utils/extractDateTimeParts"
 
 const { Text } = Typography;
 
-function CreteServices({ title, titleStyle, containerBg }) {
+function CreteServices() {
   const [selectedItem, setSelectedItem] = useState(null); // State to store only one selected item
   const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
   const [form] = Form.useForm(); // Ant Design form instance

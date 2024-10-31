@@ -165,15 +165,15 @@ const Status: React.FC = () => {
             </div>  */}
               <div className="flex items-center gap-2">
                 <h1 className="text-secondary py-4 text-[34px] font-bold">
-                  {card.value}
+                  {card?.value}
                 </h1>
                 <FaArrowTrendUp
                   color={selectedCard === index ? "white" : "#28A745"}
                   size={20}
                 />
               </div>
-              <h1 className="text-[16px] font-bold">{card.title}</h1>
-              <p>{card.description}</p>
+              <h1 className="text-[16px] font-bold">{card?.title}</h1>
+              {/* <p>{card?.description}</p> */}
             </div>
           </div>
         ))}

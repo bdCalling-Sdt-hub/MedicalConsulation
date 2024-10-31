@@ -75,19 +75,6 @@ const Settings_personalInformation = () => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-
-      await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          if (Math.random() > 0.5) {
-            // Simulate success/failure
-            resolve();
-            onSuccess(file);
-            message.success(`${file.name} file uploaded successfully`); // Show success message
-          } else {
-            reject(new Error("Upload failed")); // Simulate an error
-          }
-        }, 1000);
-      });
     } catch (error) {
       onError(error);
       message.error(`Upload failed: ${error.message}`);

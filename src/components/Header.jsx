@@ -27,11 +27,7 @@ function Header() {
   const route = useRouter();
   const dispatch = useDispatch();
   const [Email, setEmail] = useState("");
-  const [forgatInfo, setForget] = useState({
-    email: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
+
   const [singUpDoctor] = useSignUpDoctorMutation({});
   const [signUpPatient] = useSignUpPatientMutation({});
 
@@ -208,7 +204,7 @@ function Header() {
     Cookies.remove("token");
     Cookies.remove("userRole");
 
-    window.location.reload();
+    // window.location.reload();
 
     // Optionally redirect or update UI
     // For example, you can use next/router for navigation
@@ -249,7 +245,7 @@ function Header() {
     <>
       <section
         className={`${
-          navbarFixed ? "blur-background" : "bg-primary6"
+          navbarFixed ? "blur-background " : "bg-primary6 "
         } z-50 fixed w-full shadow-xl`}
       >
         <div className="container mx-auto py-4 flex flex-row justify-between items-center">
@@ -311,7 +307,7 @@ function Header() {
                   title={(user?.name || user?.email) + " go on dashboard"}
                   color="cyan"
                 >
-                  <p className="cal">{user?.name || user?.email} </p>
+                  <p className="cal">Dashboard </p>
                 </Tooltip>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -334,10 +330,11 @@ function Header() {
               <button
                 className={`text-secondaryBlack font-merri text-sm py-2 px-6 rounded-sm font-normal`}
                 onClick={(e) => {
-                  setIsSignInModalOpen(!isSignInModalOpen);
-                  setIsModalOpen(false);
+                  // setIsSignInModalOpen(!isSignInModalOpen);
+                  // setIsModalOpen(false);
 
-                  e.preventDefault();
+                  // e.preventDefault();
+                  route.push("/auth/login");
                 }}
               >
                 Sign In
@@ -345,10 +342,11 @@ function Header() {
               <button
                 className={`text-white bg-black font-merri text-sm py-2 px-6 rounded-sm font-normal`}
                 onClick={(e) => {
-                  e.preventDefault();
+                  // e.preventDefault();
 
-                  setIsModalOpen(!isModalOpen);
-                  setIsSignInModalOpen(false);
+                  // setIsModalOpen(!isModalOpen);
+                  // setIsSignInModalOpen(false);
+                  route.push("/auth/register");
                 }}
               >
                 Register
@@ -357,6 +355,7 @@ function Header() {
           )}
         </div>
       </section>
+      <section className="h-20 bg-gray-600"></section>
 
       {/* ===================== register modal ================ */}
 

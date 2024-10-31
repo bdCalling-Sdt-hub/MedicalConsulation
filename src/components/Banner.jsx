@@ -5,7 +5,7 @@ function Banner() {
     <section id="home">
       <div
         style={{ backgroundImage: "url('/images/banner.png')" }}
-        className="h-[70vh] w-full bg-cover bg-center"
+        className="h-[70vh] w-full bg-cover bg-center "
       >
         <div className="flex flex-col items-center justify-center h-full">
           <h1

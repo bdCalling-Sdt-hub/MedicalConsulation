@@ -9,6 +9,7 @@ import {
 } from "../../redux/apiSlices/appointmentsSlices";
 
 import { Modal } from "antd";
+import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import IconRightArrow from "../../public/icons/IconRightArrow";
@@ -22,7 +23,7 @@ function BookAppointment() {
   const user = useSelector((state) => state.user.user);
   const [createAppointment] = useBookCreateAppointmentMutation({});
   const [addEmailForZoomLink] = useAddEmailForZoomLinkMutation({});
-
+  const route = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -36,6 +37,10 @@ function BookAppointment() {
   const [createdAppointment, setCreatedAppointment] = useState(null); // State to store only one selected item
 
   const showModal = () => {
+    if (!user?.email) {
+      route.push("/auth/login");
+      return;
+    }
     setIsModalOpen(true);
   };
 
@@ -99,7 +104,7 @@ function BookAppointment() {
         console.log(error);
       }
     },
-    [user]
+    [user, createAppointment]
   );
 
   // console.log(createdAppointment);
@@ -119,7 +124,7 @@ function BookAppointment() {
         console.log(error);
       }
     },
-    [createdAppointment]
+    [addEmailForZoomLink]
   );
 
   return (

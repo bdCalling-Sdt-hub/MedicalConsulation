@@ -32,11 +32,11 @@ function Step3({ selectedItem, setDateTime, dateTime }) {
                 });
               }}
             >
-              <h3 className={`text-sm text-offBlack font-merri font-normal`}>
+              <h3 className={`text-sm text-gray-600 font-merri font-normal`}>
                 {extractDateTimeParts(item).date}
               </h3>
               <h1
-                className={`text-[20px] text-secodaryBlack font-normal font-merri`}
+                className={`text-[20px] text-gray-700 font-normal font-merri`}
               >
                 {extractDateTimeParts(item).day}
               </h1>
@@ -61,11 +61,11 @@ function Step3({ selectedItem, setDateTime, dateTime }) {
                 setDateTime({ ...dateTime, dateTime: item });
               }}
             >
-              <h3 className={`text-sm text-offBlack font-merri font-normal`}>
+              <h3 className={`text-sm text-gray-600 font-merri font-normal`}>
                 {extractDateTimeParts(item).period}
               </h3>
               <h1
-                className={`text-[20px] text-secodaryBlack font-normal font-merri`}
+                className={`text-[20px] text-gray-700 font-normal font-merri`}
               >
                 {extractDateTimeParts(item).time}
               </h1>

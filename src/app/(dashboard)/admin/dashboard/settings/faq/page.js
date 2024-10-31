@@ -105,7 +105,7 @@ const SettingsFaq = () => {
 
 export default SettingsFaq;
 
-export const FaqsComponent = ({ faq }) => {
+const FaqsComponent = ({ faq }) => {
   const [form] = Form.useForm();
 
   const [updatedFaq] = useUpdateFaqsMutation();
@@ -152,7 +152,7 @@ export const FaqsComponent = ({ faq }) => {
 
   useEffect(() => {
     form.setFieldsValue(faq);
-  }, [edit]);
+  }, [edit, faq]);
 
   return (
     <div className=" border border-bg-primary1 bg-primary2 rounded-lg p-3 mb-3 flex justify-between items-start">

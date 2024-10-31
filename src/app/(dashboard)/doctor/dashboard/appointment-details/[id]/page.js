@@ -210,7 +210,7 @@ const AppointmentDetails = (props) => {
                   ? imageUrl + Appointments?.data?.patient?.image
                   : require("../../../../../../../public/images/avatar.png")
               }
-              className="w-24 h-24 rounded mx-auto"
+              className="w-24 h-24 rounded-full mx-auto"
               alt=""
             />
             <h1 className="text-xl font-bold py-2 text-gray-900">

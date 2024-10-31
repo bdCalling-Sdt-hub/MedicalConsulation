@@ -34,7 +34,10 @@ const Notifications = (props) => {
 
       {notifications?.notifications?.map((item, index) => {
         return (
-          <div className="flex justify-between p-4 border border-primary2 m-2 rounded-xl bg-primary1">
+          <div
+            key={index}
+            className="flex justify-between p-4 border border-primary2 m-2 rounded-xl bg-primary1"
+          >
             <div className="flex gap-2 items-center">
               <h1>
                 {/* <span className="text-lg font-bold"> Leslie</span>{" "} */}

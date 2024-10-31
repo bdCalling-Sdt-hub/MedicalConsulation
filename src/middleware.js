@@ -6,6 +6,7 @@ export function middleware(request) {
   const role = request.cookies.get("userRole");
   const url = request.nextUrl.clone(); // Access the server-set cookie here
   // console.error(role, url);
+  // console.log(role);
 
   // Protect routes based on the user role
   if (url.pathname.startsWith("/admin")) {

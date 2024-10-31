@@ -3,7 +3,7 @@
 import "../../dashboard.css";
 
 import { Layout, Menu } from "antd";
-import { LogOut, User2Icon } from "lucide-react";
+import { Bell, LogOut, User2Icon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { BiLeftArrow, BiPieChartAlt2 } from "react-icons/bi";
 import {
@@ -82,7 +82,7 @@ const Dashboard = ({ children }) => {
   console.log(pathname);
 
   const handleNotifications = () => {
-    route.push("/admin/dashboard/notifications");
+    route.push("/patient/dashboard/notifications");
   };
 
   const getTitle = () => {
@@ -261,8 +261,8 @@ const Dashboard = ({ children }) => {
                 className="cursor-pointer"
                 style={{ zIndex: 11 }}
               >
+                <Bell size={30} color="gray" />
                 {/* <Badge count={5}>
-                  <Bell size={30} color="gray" />
                 </Badge> */}
               </div>
             </div>

@@ -1,93 +1,94 @@
-import React from "react";
 import {
-  LineChart,
+  CartesianGrid,
+  Legend,
   Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
 } from "recharts";
+
+import React from "react";
 
 type Props = {};
 const data = [
   {
     name: "Jan",
-   User : 40,
+    User: 40,
     Consultant: 24,
     amt: 24,
   },
   {
     name: "Feb",
-   User : 30,
+    User: 30,
     Consultant: 13,
     amt: 22,
   },
   {
     name: "Mar",
-   User : 20,
+    User: 20,
     Consultant: 98,
     amt: 22,
   },
   {
     name: "Apr",
-   User : 27,
+    User: 27,
     Consultant: 39,
     amt: 20,
   },
   {
     name: "May",
-   User : 18,
+    User: 18,
     Consultant: 48,
     amt: 21,
   },
   {
     name: "Jun",
-   User : 23,
+    User: 23,
     Consultant: 38,
     amt: 25,
   },
   {
     name: "Jul",
-   User : 34,
+    User: 34,
     Consultant: 43,
     amt: 10,
   },
   {
     name: "Aug",
-   User : 34,
+    User: 34,
     Consultant: 43,
     amt: 20,
   },
   {
     name: "Sep",
-   User : 34,
+    User: 34,
     Consultant: 43,
     amt: 40,
   },
   {
     name: "Oct",
-   User : 34,
+    User: 34,
     Consultant: 43,
     amt: 60,
   },
   {
     name: "Nov",
-   User : 34,
+    User: 34,
     Consultant: 43,
     amt: 80,
   },
   {
     name: "Dec",
-   User : 34,
+    User: 34,
     Consultant: 43,
     amt: 100,
   },
 ];
 const SellerActivityChart = (props: Props) => {
   const [opacity, setOpacity] = React.useState({
-    User : 1,
+    User: 1,
     Consultant: 1,
   });
 
@@ -119,13 +120,16 @@ const SellerActivityChart = (props: Props) => {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
-          <YAxis dataKey='amt'/>
+          <YAxis dataKey="amt" />
           <Tooltip />
-          <Legend onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
+          <Legend
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          />
           <Line
             type="monotone"
             dataKey="User"
-            strokeOpacity={opacity.Sales}
+            // strokeOpacity={opacity.Sales}
             stroke="#82ca9d"
             activeDot={{ r: 8 }}
           />
