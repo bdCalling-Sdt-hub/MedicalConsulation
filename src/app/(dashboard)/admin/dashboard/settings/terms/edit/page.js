@@ -36,7 +36,7 @@ const EditTermsAndCondition = () => {
         text: "Terms and Conditions updated successfully!",
         icon: "success",
       }).then(() => {
-        route.push("/admin/dashboard/settings/termsAndCondition");
+        route.push("/admin/dashboard/settings/terms");
       });
     }
   };

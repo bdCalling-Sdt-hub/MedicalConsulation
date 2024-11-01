@@ -27,7 +27,7 @@ const SettingsTermsAndConditions = () => {
   };
 
   const handleEdit = () => {
-    router.push("/admin/dashboard/settings/termsAndCondition/edit");
+    router.push("/admin/dashboard/settings/terms/edit");
   };
 
   return (
