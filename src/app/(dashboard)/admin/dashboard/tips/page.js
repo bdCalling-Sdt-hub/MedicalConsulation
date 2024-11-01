@@ -1,19 +1,22 @@
 "use client";
 
-import { Button, Form, Input, Modal } from "antd";
-import { useEffect, useState } from "react";
+import { Button, Form, Input, Modal, Spin } from "antd";
 import {
   useAddTipsMutation,
-  useDeleteTipsMutation,
   useGetAllTipsQuery,
-  useUpdateTipsMutation,
 } from "../../../../../../redux/apiSlices/tips";
 
+import { useState } from "react";
 import Swal from "sweetalert2";
-import metadata from "url-metadata"; // Import url-metadata package
+import TipsCard from "../../../../../components/TipsCard";
+import { fetchPreview } from "../../../../../hook/fetchLink";
 
 function AddTips() {
   const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+  const [link, setLink] = useState("");
+  // State for modal visibility
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm(); // Ant Design form instance
 
   const { data: tips } = useGetAllTipsQuery({});
@@ -44,6 +47,7 @@ function AddTips() {
             icon: "success",
           });
           setIsModalOpen(false);
+          setSelectedItem(null);
           form.resetFields(); // Reset form fields after submission
         }
         if (res.error) {
@@ -58,6 +62,19 @@ function AddTips() {
       })
       .catch((err) => {
         console.log(err);
+      });
+  };
+
+  const handlePreview = (url) => {
+    setLoading(true);
+    fetchPreview(url)
+      .then((data) => {
+        setSelectedItem(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
       });
   };
 
@@ -90,23 +107,95 @@ function AddTips() {
             label="URL Link"
             rules={[{ required: true, message: "Please enter the link " }]}
           >
-            <Input placeholder="Enter the link of tips blog or website, video" />
+            <Input
+              allowClear
+              onChange={(e) => setLink(e.target.value)}
+              placeholder="Enter the link of tips blog or website, video"
+            />
           </Form.Item>
 
           <div className="flex justify-end gap-4">
             <Button onClick={handleCancel}>Cancel</Button>
-            <Button type="primary" htmlType="submit">
+            <Button
+              className="bg-primary6 text-white"
+              type="text"
+              htmlType="submit"
+            >
               Add Tips
+            </Button>
+            <Button
+              className="bg-primary6 text-white"
+              onClick={() => handlePreview(link)}
+              type="text"
+            >
+              Preview
             </Button>
           </div>
         </Form>
+        {loading ? (
+          <div className="flex justify-center items-center h-40">
+            <Spin size="large" /> {/* Ant Design loading spinner */}
+          </div>
+        ) : (
+          <>
+            {selectedItem && (
+              <div className="flex justify-center items-center pb-5">
+                <div className="">
+                  <h1 className="text-black text-[20px] font-merri font-normal ">
+                    Preview
+                  </h1>
+                  <div className=" shadow-md py-4">
+                    <div className="w-full ">
+                      {selectedItem?.twitterImage?.length > 0 ? (
+                        selectedItem.twitterImage
+                          ?.slice(0, 1)
+                          .map((image, index) => {
+                            return (
+                              <img
+                                key={image?.url}
+                                src={image?.url}
+                                alt={selectedItem?.title || "Preview Image"}
+                                width={500}
+                                height={300}
+                                className="w-full h-40 object-cover"
+                              />
+                            );
+                          })
+                      ) : (
+                        <img
+                          src={link?.url} // Fallback image
+                          alt="No preview available"
+                          width={500}
+                          height={300}
+                          className="w-full h-40 object-cover"
+                        />
+                      )}
+                    </div>
+                    <div href={link?.url}>
+                      <div href={link?.url} className="p-4">
+                        <h2 className="text-md font-medium text-gray-800 mb-1">
+                          {selectedItem?.ogTitle || "No title available"}
+                        </h2>
+                        <p className="text-sm text-gray-500">
+                          {(selectedItem?.ogUrl?.slice(0, 35) &&
+                            selectedItem?.ogUrl?.slice(0, 35) + "...") ||
+                            "No URL available"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        )}
       </Modal>
 
       <section className={`bg-primary3 py-6 px-10`}>
         <div className="container mx-auto">
           <div className="grid grid-cols-4 gap-4 items-center">
             {tips?.data?.map((link, index) => (
-              <LinkViewComponent key={index} link={link} />
+              <TipsCard key={index} link={link} user={false} />
             ))}
           </div>
         </div>
@@ -116,188 +205,3 @@ function AddTips() {
 }
 
 export default AddTips;
-
-const LinkViewComponent = ({ link }) => {
-  const [selectedItem, setSelectedItem] = useState(null);
-
-  // Function to fetch metadata
-  const fetchMetaData = async (url) => {
-    try {
-      console.log("Fetching metadata for:", url);
-      const data = await metadata(url);
-      setSelectedItem(data); // Update state with fetched metadata
-      console.log("Fetched metadata:", data);
-    } catch (error) {
-      console.error("Error fetching metadata for URL:", url);
-      console.error("Error message:", error.message); // Log the error message
-      if (error.message === "Failed to fetch") {
-        console.error(
-          "Network error: Unable to fetch the metadata. Please check the URL and your network connection."
-        );
-      } else {
-        console.error("Error fetching metadata:", error);
-      }
-    }
-  };
-
-  useEffect(() => {
-    const testUrl = "https://www.wikipedia.org"; // Replace with a known URL
-    fetchMetaData(testUrl); // Fetch metadata for the test URL
-    form.setFieldsValue(link);
-  }, []);
-
-  // Optional: If you want to fetch metadata for the provided link.url
-  useEffect(() => {
-    if (link?.url) {
-      fetchMetaData(link?.url); // Fetch metadata for the provided link
-    }
-  }, [link?.url]);
-
-  const [updateTips] = useUpdateTipsMutation();
-  const [deletedTips] = useDeleteTipsMutation();
-
-  const handleDelete = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deletedTips(id)
-          .then((res) => {
-            console.log(res);
-            if (res.data) {
-              Swal.fire({
-                title: "Good job!",
-                text: "Tips deleted successfully!",
-                icon: "success",
-              });
-            }
-            if (res.error) {
-              console.log(res.error);
-              Swal.fire({
-                title: "Error",
-                text: res?.error?.data?.message,
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    });
-  };
-
-  const handleUpdateClick = () => {
-    setIsModalOpen(true);
-  };
-
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
-  const [form] = Form.useForm(); // Ant Design form instance
-
-  // Function to open modal
-
-  // Function to close modal
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
-  // Function to handle form submission
-  const handleUpdatedTips = (values) => {
-    // console.log("Service created:", values);
-
-    updateTips({
-      id: values?._id,
-      data: values,
-    })
-      .then((res) => {
-        console.log(res);
-        if (res.data) {
-          Swal.fire({
-            title: "Good job!",
-            text: "Tips Updated successfully!",
-            icon: "success",
-          });
-          setIsModalOpen(false);
-        }
-        if (res.error) {
-          console.log(res.error);
-          Swal.fire({
-            title: "Error",
-            text: res?.error?.data?.message,
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  return (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow relative">
-      <img
-        src={selectedItem?.image || "fallback-image-url"}
-        alt={selectedItem?.title || "Preview Image"}
-        className="w-full h-40 object-cover"
-      />
-      <div className="p-4">
-        <h2 className="text-md font-medium text-gray-800 mb-1">
-          {selectedItem?.title || "No title available"}
-        </h2>
-        <p className="text-sm text-gray-500">
-          {link?.url?.slice(0, 30) + "..."}
-        </p>
-      </div>
-
-      <div className="absolute bottom-2 right-2 flex space-x-2">
-        <button
-          onClick={handleUpdateClick}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs px-3 py-1 rounded"
-        >
-          Edit
-        </button>
-        <button
-          onClick={() => handleDelete(link?._id)}
-          className="bg-red-100 hover:bg-red-200 text-red-600 text-xs px-3 py-1 rounded"
-        >
-          Remove
-        </button>
-      </div>
-
-      <Modal
-        title="Create New Tip"
-        open={isModalOpen}
-        onCancel={handleCancel}
-        footer={null}
-      >
-        <Form form={form} layout="vertical" onFinish={handleUpdatedTips}>
-          <Form.Item name="_id">
-            <Input style={{ display: "none" }} />
-          </Form.Item>
-          <Form.Item
-            name="url"
-            label="URL Link"
-            rules={[{ required: true, message: "Please enter the link " }]}
-          >
-            <Input placeholder="Enter the link of tips blog or website, video" />
-          </Form.Item>
-
-          <div className="flex justify-end gap-4">
-            <Button onClick={handleCancel}>Cancel</Button>
-            <Button type="primary" htmlType="submit">
-              Add Tips
-            </Button>
-          </div>
-        </Form>
-      </Modal>
-    </div>
-  );
-};

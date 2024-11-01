@@ -4,6 +4,7 @@ import AboutUs from "../../components/AboutUs";
 import AboutUs2 from "../../components/AboutUs2";
 import Banner from "../../components/Banner";
 import FAQ from "../../components/FAQ";
+import GiveUsReview from "../../components/GiveUsReview";
 import HealthyTips from "../../components/HealthyTips";
 import Services from "../../components/Services";
 import Testimonials from "../../components/Testimonials";
@@ -34,6 +35,7 @@ function Page() {
 
       {/* healthy section */}
       <HealthyTips />
+      <GiveUsReview />
     </>
   );
 }

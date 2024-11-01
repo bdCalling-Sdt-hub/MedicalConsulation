@@ -152,7 +152,7 @@ const FaqsComponent = ({ faq }) => {
 
   useEffect(() => {
     form.setFieldsValue(faq);
-  }, [edit, faq]);
+  }, [edit, faq, form]);
 
   return (
     <div className=" border border-bg-primary1 bg-primary2 rounded-lg p-3 mb-3 flex justify-between items-start">
@@ -197,15 +197,13 @@ const FaqsComponent = ({ faq }) => {
         </>
       ) : (
         <>
-          <div className="">
+          <div className="flex-1">
             <p className=" text-lg flex gap-3 items-center">
-              <span className="text-gray-500 text-sm font-medium">
-                Question:
-              </span>
+              <span className="text-gray-500 text-sm font-medium">Q:</span>
               <span className=" text-lg">{faq?.question}</span>
             </p>
             <p className="text-gray-500 text-base flex gap-3 items-center">
-              <span className="text-gray-500 text-sm">Answer:</span>
+              <span className="text-gray-500 text-sm">A:</span>
               <span className=" text-md"> {faq?.answer}</span>
             </p>
           </div>

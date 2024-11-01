@@ -92,13 +92,13 @@ const SellerActivityChart = (props: Props) => {
     Consultant: 1,
   });
 
-  const handleMouseEnter = (o) => {
+  const handleMouseEnter = (o: any) => {
     const { dataKey } = o;
 
     setOpacity((op) => ({ ...op, [dataKey]: 0.5 }));
   };
 
-  const handleMouseLeave = (o) => {
+  const handleMouseLeave = (o: any) => {
     const { dataKey } = o;
 
     setOpacity((op) => ({ ...op, [dataKey]: 1 }));

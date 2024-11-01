@@ -166,7 +166,7 @@ const Settings_personalInformation = () => {
         email: userProfile?.data?.email,
       });
     }
-  }, [userProfile, value4]);
+  }, [userProfile, value4, form]);
 
   return (
     <div className="border border-gray-200  rounded-2xl flex flex-col items-center">

@@ -18,6 +18,12 @@
     scroll-padding-top: 80px;
     background: #F0F2F5;
   }
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+   font-family: 'Roboto', sans-serif !important;
+  }
 
   .blur-background {
     position: fixed;
@@ -112,3 +118,4 @@
  background-color: #D9C771 !important;
   color: #f0f0f0; /* Change text color on hover if needed */
 }
+

@@ -1,7 +1,8 @@
+import { useGetAllTipsQuery } from "../../redux/apiSlices/tips";
 import TipsCard from "./TipsCard";
-import placeholderImage from "../../public/images/placeholder.png";
 
 function HealthyTips() {
+  const { data: Tips } = useGetAllTipsQuery({});
   return (
     <section id="tips" className={`py-20 bg-white`}>
       <div className="container mx-auto">
@@ -12,8 +13,8 @@ function HealthyTips() {
         </h1>
 
         <div className="grid grid-cols-4 gap-4">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <TipsCard key={index} placeholderImage={placeholderImage} />
+          {Tips?.data?.slice(0, 8)?.map((tips, index) => (
+            <TipsCard key={index} link={tips} />
           ))}
         </div>
       </div>
