@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 
 import { Button } from "antd";
+import { useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 import { useGetTermsAndConditionQuery } from "../../../../../../../redux/apiSlices/tramsAndConditionsSlices";
-import { useRouter } from "next/navigation";
 
 const SettingsTermsAndConditions = () => {
   const [isClient, setIsClient] = useState(false);
@@ -27,9 +27,7 @@ const SettingsTermsAndConditions = () => {
   };
 
   const handleEdit = () => {
-    router.push(
-      "/admin/dashboard/settings/termsAndCondition/edittermsAndConditions"
-    );
+    router.push("/admin/dashboard/settings/terms/edit");
   };
 
   return (

@@ -84,7 +84,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({
       {/* Conditionally display the role selection */}
       {showRoleSelect && setRole && (
         <div className="mb-4 py-6 flex-col">
-          <Radio.Group onChange={onChange} inputvalue={value}>
+          <Radio.Group onChange={onChange} value={value}>
             <Space className="text-start" direction="vertical">
               <Radio value={1}>Admin</Radio>
               <Radio value={2}>Member</Radio>

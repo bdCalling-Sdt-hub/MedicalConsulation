@@ -2,13 +2,13 @@
 
 import { Button, Form, Input } from "antd";
 import { Plus, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
 import {
   useAddFaqsMutation,
   useDeleteFaqsMutation,
   useGetFaqsQuery,
   useUpdateFaqsMutation,
 } from "../../../../../../../redux/apiSlices/faqsSlices";
-import { useEffect, useState } from "react";
 
 import { EditOutlined } from "@ant-design/icons";
 import Swal from "sweetalert2";
@@ -105,16 +105,17 @@ const SettingsFaq = () => {
 
 export default SettingsFaq;
 
-export const FaqsComponent = ({ faq }) => {
+const FaqsComponent = ({ faq }) => {
   const [form] = Form.useForm();
 
   const [updatedFaq] = useUpdateFaqsMutation();
   const [deletedFaq] = useDeleteFaqsMutation();
   const [edit, setEdit] = useState(false);
 
-  const handleCreateService = async (values) => {
+  const handleUpdatedService = async (values) => {
     console.log(values);
-    const res = await updatedFaq({ id: faq?._id, data: values });
+    values.faqId = faq?._id;
+    const res = await updatedFaq(values);
     if (res.data) {
       Swal.fire({
         title: "Good job!",
@@ -151,16 +152,16 @@ export const FaqsComponent = ({ faq }) => {
 
   useEffect(() => {
     form.setFieldsValue(faq);
-  }, [edit]);
+  }, [edit, faq, form]);
 
   return (
-    <div className=" border border-primary6 bg-primary2 rounded-lg p-3 mb-3 flex justify-between items-start">
+    <div className=" border border-bg-primary1 bg-primary2 rounded-lg p-3 mb-3 flex justify-between items-start">
       {edit ? (
         <>
           <Form
             form={form}
             className="flex1 w-full"
-            onFinish={handleCreateService}
+            onFinish={handleUpdatedService}
             layout="vertical"
           >
             <Form.Item
@@ -184,19 +185,25 @@ export const FaqsComponent = ({ faq }) => {
             <Button icon={<EditOutlined />} htmlType="submit" type="secondary">
               Updated
             </Button>
+            <Button
+              danger
+              icon={<EditOutlined />}
+              onClick={() => setEdit(false)}
+              type="secondary"
+            >
+              Cancel
+            </Button>
           </Form>
         </>
       ) : (
         <>
-          <div className="">
+          <div className="flex-1">
             <p className=" text-lg flex gap-3 items-center">
-              <span className="text-gray-500 text-sm font-medium">
-                Question:
-              </span>
+              <span className="text-gray-500 text-sm font-medium">Q:</span>
               <span className=" text-lg">{faq?.question}</span>
             </p>
             <p className="text-gray-500 text-base flex gap-3 items-center">
-              <span className="text-gray-500 text-sm">Answer:</span>
+              <span className="text-gray-500 text-sm">A:</span>
               <span className=" text-md"> {faq?.answer}</span>
             </p>
           </div>

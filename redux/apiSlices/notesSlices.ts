@@ -33,7 +33,7 @@ export const notesSlices = api.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["notes"],
+      invalidatesTags: ["notes", "appointments"],
     }),
     editNote: builder.mutation({
       query: ({ id, data }) => ({
@@ -41,7 +41,7 @@ export const notesSlices = api.injectEndpoints({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: ["notes"],
+      invalidatesTags: ["notes", "appointments"],
     }),
     deleteNote: builder.mutation({
       query: (id) => ({

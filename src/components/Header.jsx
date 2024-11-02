@@ -1,30 +1,40 @@
 "use client";
 
-import { Button, Checkbox, Flex, Form, Input, Modal, Tooltip } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
-import { clearUser, setUser } from "../../redux/apiSlices/userSlices";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, Checkbox, Flex, Form, Input, Modal, Tooltip } from "antd";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
+  useForgotPasswordMutation,
   useLoginDoctorMutation,
   useLoginMutation,
+  useResetPasswordMutation,
   useSignUpDoctorMutation,
   useSignUpPatientMutation,
+  useVerifyEmailMutation,
 } from "../../redux/apiSlices/authSlice";
+import { clearUser, setUser } from "../../redux/apiSlices/userSlices";
 
+import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
-import bigLogo from "../../public/images/big-logo.png";
-import logo from "../../public/images/logo.png";
-import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import logo from "../../public/images/logo.png";
 
 function Header() {
   const user = useSelector((state) => state.user.user);
   const route = useRouter();
   const dispatch = useDispatch();
+  const [Email, setEmail] = useState("");
+
   const [singUpDoctor] = useSignUpDoctorMutation({});
   const [signUpPatient] = useSignUpPatientMutation({});
+
+  const [forgetPass] = useForgotPasswordMutation({});
+  const [resetPass] = useResetPasswordMutation({});
+  const [verifyEmail] = useVerifyEmailMutation({});
+
   const [loginPatient] = useLoginMutation({});
   const [loginDoctor] = useLoginDoctorMutation({});
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -60,6 +70,18 @@ function Header() {
 
   const onChange = (text) => {
     console.log("onChange:", text);
+    verifyEmail({
+      email: Email,
+      emailVerifyCode: text,
+    }).then((res) => {
+      console.log(res);
+
+      if (res?.data) {
+        setIsCreateNewPassModalOpen(true);
+      } else if (res?.error) {
+        toast.error(res.error?.data?.message);
+      }
+    });
   };
   const sharedProps = {
     onChange,
@@ -139,6 +161,7 @@ function Header() {
       console.log(res);
       if (res?.data) {
         toast.success(res.data?.message);
+        window.location.reload();
       }
       if (res.error) {
         toast.error(res.error?.data?.message);
@@ -158,6 +181,7 @@ function Header() {
         toast.success(res.data?.message);
 
         setIsSignInModalOpen(!isSignInModalOpen);
+        window.location.reload();
       }
       if (res.error) {
         toast.error(res.error?.data?.message);
@@ -169,11 +193,59 @@ function Header() {
     console.log("Failed:", errorInfo);
   };
 
+  const handleLogout = () => {
+    // Remove token from local storage
+    localStorage.removeItem("token");
+
+    // Dispatch action to clear user state in Redux
+    dispatch(clearUser());
+
+    // Remove cookies for token and role
+    Cookies.remove("token");
+    Cookies.remove("userRole");
+
+    // window.location.reload();
+
+    // Optionally redirect or update UI
+    // For example, you can use next/router for navigation
+  };
+
+  const handleSendTOtp = () => {
+    forgetPass(Email).then((res) => {
+      console.log(res);
+      if (res?.data) {
+        setIsForgetPassModalOpen(false);
+        setIsOtpModalOpen(true);
+        toast.success(res.data?.message);
+      } else if (res?.error) {
+        toast.error(res.error?.data?.message);
+      }
+    });
+  };
+
+  const handleCreateNewPassword = (values) => {
+    console.log(values);
+    resetPass({
+      email: Email,
+      ...values,
+    }).then((res) => {
+      console.log(res);
+      if (res?.data) {
+        setIsOtpModalOpen(false);
+        setIsCreateNewPassModalOpen(false);
+        setIsSignInModalOpen(true);
+        toast.success(res.data?.message);
+      } else if (res?.error) {
+        toast.error(res.error?.data?.message);
+      }
+    });
+  };
+
   return (
     <>
       <section
         className={`${
-          navbarFixed ? "blur-background" : "bg-primary6"
+          navbarFixed ? "blur-background " : "bg-primary6 "
         } z-50 fixed w-full shadow-xl`}
       >
         <div className="container mx-auto py-4 flex flex-row justify-between items-center">
@@ -203,8 +275,8 @@ function Header() {
             <div className="flex flex-row items-center gap-4">
               <div
                 onClick={async () => {
-                  localStorage.removeItem("token");
-                  dispatch(clearUser());
+                  handleLogout();
+                  // remove cookie token or role
                 }}
                 className="flex flex-row items-center gap-2  cursor-pointer text-offBlack hover:text-red-500 "
               >
@@ -226,13 +298,7 @@ function Header() {
               </div>
               <div
                 onClick={() => {
-                  if (user?.role === "admin") {
-                    route.push("/admin/dashboard");
-                  } else if (user?.role === "doctor") {
-                    route.push("/doctor/dashboard");
-                  } else if (user?.role === "patient") {
-                    route.push("/patient/dashboard");
-                  }
+                  route.push("/patient/dashboard");
                 }}
                 className="flex flex-row items-center gap-2 cursor-pointer hover:text-blue-500  "
               >
@@ -241,7 +307,7 @@ function Header() {
                   title={(user?.name || user?.email) + " go on dashboard"}
                   color="cyan"
                 >
-                  <p className="cal">{user?.name || user?.email} </p>
+                  <p className="cal">Dashboard </p>
                 </Tooltip>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -264,10 +330,11 @@ function Header() {
               <button
                 className={`text-secondaryBlack font-merri text-sm py-2 px-6 rounded-sm font-normal`}
                 onClick={(e) => {
-                  setIsSignInModalOpen(!isSignInModalOpen);
-                  setIsModalOpen(false);
+                  // setIsSignInModalOpen(!isSignInModalOpen);
+                  // setIsModalOpen(false);
 
-                  e.preventDefault();
+                  // e.preventDefault();
+                  route.push("/auth/login");
                 }}
               >
                 Sign In
@@ -275,9 +342,11 @@ function Header() {
               <button
                 className={`text-white bg-black font-merri text-sm py-2 px-6 rounded-sm font-normal`}
                 onClick={(e) => {
-                  setIsModalOpen(!isModalOpen);
-                  setIsSignInModalOpen(false);
-                  e.preventDefault();
+                  // e.preventDefault();
+
+                  // setIsModalOpen(!isModalOpen);
+                  // setIsSignInModalOpen(false);
+                  route.push("/auth/register");
                 }}
               >
                 Register
@@ -286,6 +355,7 @@ function Header() {
           )}
         </div>
       </section>
+      <section className="h-20 bg-gray-600"></section>
 
       {/* ===================== register modal ================ */}
 
@@ -311,7 +381,7 @@ function Header() {
           <div className="gap-1 bg-[#e3e3e3] flex flex-row items-center mt-6">
             <button
               className={`${
-                !isDoctorRegistered ? "bg-white" : ""
+                !isDoctorRegistered ? "bg-primary6 text-white" : ""
               } px-4 py-2 rounded text-neutral10 text-sm font-merri font-normal`}
               onClick={() => setIsDoctorRegistered(false)}
             >
@@ -319,7 +389,7 @@ function Header() {
             </button>
             <button
               className={`${
-                isDoctorRegistered ? "bg-white" : ""
+                isDoctorRegistered ? "bg-primary6 text-white" : ""
               } px-4 py-2 rounded text-neutral10 text-sm font-merri font-normal`}
               onClick={() => setIsDoctorRegistered(true)}
             >
@@ -457,7 +527,7 @@ function Header() {
           <div className="gap-1 bg-[#e3e3e3] flex flex-row items-center mt-6">
             <button
               className={`${
-                !isDoctorRegistered ? "bg-white" : ""
+                !isDoctorRegistered ? "bg-primary6 text-white" : ""
               } px-4 py-2 rounded text-neutral10 text-sm font-merri font-normal`}
               onClick={() => setIsDoctorRegistered(false)}
             >
@@ -465,7 +535,7 @@ function Header() {
             </button>
             <button
               className={`${
-                isDoctorRegistered ? "bg-white" : ""
+                isDoctorRegistered ? "bg-primary6 text-white" : ""
               } px-4 py-2 rounded text-neutral10 text-sm font-merri font-normal`}
               onClick={() => setIsDoctorRegistered(true)}
             >
@@ -583,8 +653,8 @@ function Header() {
             <h3
               className={`text-secondaryblack text-base font-normal font-merri`}
             >
-              We’ll send a 6 digit verification code to{" "}
-              <span className={`text-primary6`}>immi....@gmail.com</span>
+              We’ll send a 6 digit code you email for verification{" "}
+              {/* <span className={`text-primary6`}>immi....@gmail.com</span> */}
             </h3>
             <div>
               <form action="" className={`mt-6`}>
@@ -598,15 +668,17 @@ function Header() {
                     className={`py-2`}
                     type="email"
                     placeholder="Enter your e-mail"
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
                   />
                 </div>
                 <div>
                   <button
                     className={`bg-primary6 w-full py-2 rounded text-white text-base font-merri font-normal mt-4`}
                     onClick={(e) => {
-                      setIsForgetPassModalOpen(false);
                       e.preventDefault();
-                      setIsOtpModalOpen(true);
+                      handleSendTOtp();
                     }}
                   >
                     Submit
@@ -641,7 +713,7 @@ function Header() {
               className={`text-secondaryblack text-base font-normal font-merri`}
             >
               We’ve sent a 6 digit verification code to{" "}
-              <span className={`text-primary6`}>immi....@gmail.com</span>
+              <span className={`text-primary6`}>{Email}</span>
             </h3>
             <div>
               <form action="" className={`mt-6`}>
@@ -657,18 +729,6 @@ function Header() {
                       {...sharedProps}
                     />
                   </Flex>
-                </div>
-                <div>
-                  <button
-                    className={`bg-primary6 w-full py-2 rounded text-white text-base font-merri font-normal mt-4`}
-                    onClick={(e) => {
-                      setIsOtpModalOpen(false);
-                      setIsCreateNewPassModalOpen(true);
-                      e.preventDefault();
-                    }}
-                  >
-                    Submit
-                  </button>
                 </div>
               </form>
             </div>
@@ -687,7 +747,6 @@ function Header() {
         closeIcon={<span style={{ color: "red", fontSize: "24px" }}>×</span>}
       >
         <div className="flex flex-col items-center justify-center p-4">
-          <Image src={bigLogo} alt="logo" />
           <h1
             className={`text-[20px] font-normal font-merri text-secondaryBlack`}
           >
@@ -696,47 +755,74 @@ function Header() {
 
           <div className=" w-full mt-8">
             <div>
-              <form action="" className={`mt-6`}>
+              <Form
+                onFinish={handleCreateNewPassword}
+                action=""
+                className={`mt-6`}
+              >
                 <div className={`mb-4`}>
-                  <p
-                    className={`text-sm text-secondaryBlack font-merri font-normal`}
+                  <Form.Item
+                    name="newPassword"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your password!",
+                      },
+                    ]}
                   >
-                    New Password
-                  </p>
-                  <Input.Password
-                    className={`py-2`}
-                    placeholder="Create your password"
-                    iconRender={(visible) =>
-                      visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                    }
-                  />
+                    <Input.Password
+                      className={`py-2`}
+                      placeholder="Create your password"
+                      iconRender={(visible) =>
+                        visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                      }
+                    />
+                  </Form.Item>
                 </div>
                 <div className={`mb-4`}>
-                  <p
-                    className={`text-sm text-secondaryBlack font-merri font-normal`}
+                  <Form.Item
+                    name="confirmPassword"
+                    dependencies={["newPassword"]}
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please confirm your password!",
+                      },
+                      ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          if (
+                            !value ||
+                            getFieldValue("newPassword") === value
+                          ) {
+                            return Promise.resolve();
+                          }
+                          return Promise.reject(
+                            new Error(
+                              "The two passwords that you entered do not match!"
+                            )
+                          );
+                        },
+                      }),
+                    ]}
                   >
-                    Confirm Password
-                  </p>
-                  <Input.Password
-                    className={`py-2`}
-                    placeholder="Create your password"
-                    iconRender={(visible) =>
-                      visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                    }
-                  />
+                    <Input.Password
+                      className={`py-2`}
+                      placeholder="Confirm your password"
+                      iconRender={(visible) =>
+                        visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                      }
+                    />
+                  </Form.Item>
                 </div>
                 <div>
-                  <button
+                  <Button
+                    htmlType="submit"
                     className={`bg-primary6 w-full py-2 rounded text-white text-base font-merri font-normal mt-4`}
-                    onClick={(e) => {
-                      setIsCreateNewPassModalOpen(false);
-                      e.preventDefault();
-                    }}
                   >
                     Done
-                  </button>
+                  </Button>
                 </div>
-              </form>
+              </Form>
             </div>
           </div>
         </div>

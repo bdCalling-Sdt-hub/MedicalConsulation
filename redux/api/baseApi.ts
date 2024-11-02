@@ -1,13 +1,16 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import { clearToken } from "../apiSlices/tokenSlice";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://192.168.12.158:3000",
+  // baseUrl: "http://192.168.12.158:3000",
+  baseUrl: "https://mp-premises-hawk-tragedy.trycloudflare.com",
   timeout: 10000,
   prepareHeaders: async (headers, { getState }) => {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     // console.log(token);
     if (token) {
       // console.log(token);
@@ -37,17 +40,17 @@ const baseQueryWithRath: typeof baseQuery = async (args, api, extraOptions) => {
       });
     }
 
-    if (result?.error?.status === 404) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text:
-          result.error.data.message ||
-          result?.error?.error ||
-          "An error occurred",
-        confirmButtonText: "Ok",
-      });
-    }
+    // if (result?.error?.status === 404) {
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "Oops...",
+    //     text:
+    //       result.error.data.message ||
+    //       result?.error?.error ||
+    //       "An error occurred",
+    //     confirmButtonText: "Ok",
+    //   });
+    // }
   }
 
   if (result?.error?.status === 401) {
@@ -85,7 +88,8 @@ export const api = createApi({
     "faqs",
     "notifications",
     "payment",
+    "tips",
   ],
 });
 
-export const imageUrl = "http://192.168.12.158:3000/";
+export const imageUrl = "https://mp-premises-hawk-tragedy.trycloudflare.com/";

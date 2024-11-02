@@ -1,7 +1,14 @@
-import Image from "next/image";
-import user from "../../public/images/user.jpg";
+import { Avatar, Card, Rate, Row, Typography } from "antd";
+
+import { useGetAllReviewsQuery } from "../../redux/apiSlices/reviewSlices";
+
+const { Text } = Typography;
 
 function Testimonials() {
+  const { data: reviews } = useGetAllReviewsQuery({});
+
+  console.log(reviews);
+
   return (
     <section id="testimonials" className={`py-20 bg-primary1`}>
       <div className="container mx-auto">
@@ -11,170 +18,28 @@ function Testimonials() {
           What our Client Say
         </h1>
 
-        <div className="flex flex-row gap-4 items-center">
-          <div className="bg-white border border-neutral4 p-4 rounded-sm flex flex-col justify-between flex-1">
-            <div className={`flex flex-row items-center gap-2 `}>
-              <Image
-                src={user}
-                alt="user"
-                className={`w-12 h-12 rounded-full`}
-              />
-              <h1
-                className={`text-secondaryBlack font-roboto font-bold text-sm`}
-              >
-                Amena Akhter
-              </h1>
-            </div>
-            <p
-              className={`font-merri font-normal text-sm text-offBlack mt-4 pb-4`}
-            >
-              Dr. John Michael was attentive and thorough during my
-              consultation. He took the time to explain everything clearly and
-              made me feel comfortable throughout the process. I highly
-              recommend him for anyone seeking professional and compassionate
-              care.
-            </p>
-          </div>
-          <div className="bg-white border border-neutral4 p-4 rounded-sm flex flex-col justify-between flex-1">
-            <div className={`flex flex-row items-center gap-2 `}>
-              <Image
-                src={user}
-                alt="user"
-                className={`w-12 h-12 rounded-full`}
-              />
-              <h1
-                className={`text-secondaryBlack font-roboto font-bold text-sm`}
-              >
-                Amena Akhter
-              </h1>
-            </div>
-            <p
-              className={`font-merri font-normal text-sm text-offBlack mt-4 pb-4`}
-            >
-              Dr. John Michael was attentive and thorough during my
-              consultation. He took the time to explain everything clearly and
-              made me feel comfortable throughout the process. I highly
-              recommend him for anyone seeking professional and compassionate
-              care.
-            </p>
-          </div>
-          <div className="bg-white border border-neutral4 p-4 rounded-sm flex flex-col justify-between flex-1">
-            <div className={`flex flex-row items-center gap-2 `}>
-              <Image
-                src={user}
-                alt="user"
-                className={`w-12 h-12 rounded-full`}
-              />
-              <h1
-                className={`text-secondaryBlack font-roboto font-bold text-sm`}
-              >
-                Amena Akhter
-              </h1>
-            </div>
-            <p
-              className={`font-merri font-normal text-sm text-offBlack mt-4 pb-4`}
-            >
-              Dr. John Michael was attentive and thorough during my
-              consultation. He took the time to explain everything clearly and
-              made me feel comfortable throughout the process. I highly
-              recommend him for anyone seeking professional and compassionate
-              care.
-            </p>
-          </div>
-        </div>
-        <div className="flex flex-row gap-4 items-center mt-4">
-          <div className="bg-white border border-neutral4 p-4 rounded-sm flex flex-col justify-between flex-1">
-            <div className={`flex flex-row items-center gap-2 `}>
-              <Image
-                src={user}
-                alt="user"
-                className={`w-12 h-12 rounded-full`}
-              />
-              <h1
-                className={`text-secondaryBlack font-roboto font-bold text-sm`}
-              >
-                Amena Akhter
-              </h1>
-            </div>
-            <p
-              className={`font-merri font-normal text-sm text-offBlack mt-4 pb-4`}
-            >
-              Dr. John Michael was attentive and thorough during my
-              consultation. He took the time to explain everything clearly and
-              made me feel comfortable throughout the process. I highly
-              recommend him for anyone seeking professional and compassionate
-              care.
-            </p>
-          </div>
-          <div className="bg-white border border-neutral4 p-4 rounded-sm flex flex-col justify-between flex-1">
-            <div className={`flex flex-row items-center gap-2 `}>
-              <Image
-                src={user}
-                alt="user"
-                className={`w-12 h-12 rounded-full`}
-              />
-              <h1
-                className={`text-secondaryBlack font-roboto font-bold text-sm`}
-              >
-                Amena Akhter
-              </h1>
-            </div>
-            <p
-              className={`font-merri font-normal text-sm text-offBlack mt-4 pb-4`}
-            >
-              Dr. John Michael was attentive and thorough during my
-              consultation. He took the time to explain everything clearly and
-              made me feel comfortable throughout the process. I highly
-              recommend him for anyone seeking professional and compassionate
-              care.
-            </p>
-          </div>
-          <div className="bg-white border border-neutral4 p-4 rounded-sm flex flex-col justify-between flex-1">
-            <div className={`flex flex-row items-center gap-2 `}>
-              <Image
-                src={user}
-                alt="user"
-                className={`w-12 h-12 rounded-full`}
-              />
-              <h1
-                className={`text-secondaryBlack font-roboto font-bold text-sm`}
-              >
-                Amena Akhter
-              </h1>
-            </div>
-            <p
-              className={`font-merri font-normal text-sm text-offBlack mt-4 pb-4`}
-            >
-              Dr. John Michael was attentive and thorough during my
-              consultation. He took the time to explain everything clearly and
-              made me feel comfortable throughout the process. I highly
-              recommend him for anyone seeking professional and compassionate
-              care.
-            </p>
-          </div>
-          <div className="bg-white border border-neutral4 p-4 rounded-sm flex flex-col justify-between flex-1">
-            <div className={`flex flex-row items-center gap-2 `}>
-              <Image
-                src={user}
-                alt="user"
-                className={`w-12 h-12 rounded-full`}
-              />
-              <h1
-                className={`text-secondaryBlack font-roboto font-bold text-sm`}
-              >
-                Amena Akhter
-              </h1>
-            </div>
-            <p
-              className={`font-merri font-normal text-sm text-offBlack mt-4 pb-4`}
-            >
-              Dr. John Michael was attentive and thorough during my
-              consultation. He took the time to explain everything clearly and
-              made me feel comfortable throughout the process. I highly
-              recommend him for anyone seeking professional and compassionate
-              care.
-            </p>
-          </div>
+        <div className="grid grid-cols-4 gap-4 items-center">
+          {reviews?.data?.slice(0, 12)?.map((item, index) => {
+            return (
+              <Card className="bg-white flex flex-col" key={index}>
+                <div className="flex flex-col gap-4">
+                  <Row justify="space-between" align="middle">
+                    <div className="flex items-center gap-3">
+                      <Avatar>A</Avatar>
+                      <Text strong>Abir Hossain</Text>
+                    </div>
+                    <Rate
+                      style={{ fontSize: "12px" }}
+                      disabled
+                      value={item.rating}
+                    />
+                  </Row>
+
+                  <Text strong>{item.review}</Text>
+                </div>
+              </Card>
+            );
+          })}
         </div>
       </div>
     </section>

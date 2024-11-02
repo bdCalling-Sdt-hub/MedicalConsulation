@@ -1,8 +1,8 @@
+import Image from "next/image";
 import IconFacebook from "../../public/icons/IconFacebook";
 import IconInsta from "../../public/icons/IconInsta";
 import IconLinkedin from "../../public/icons/IconLinkedin";
 import IconTwitter from "../../public/icons/IconTwitter";
-import Image from "next/image";
 import logo from "../../public/images/logo.png";
 
 function Footer() {

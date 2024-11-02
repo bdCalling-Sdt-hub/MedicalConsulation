@@ -3,7 +3,8 @@ import { api } from "../api/baseApi";
 export const appointmentsSlices = api.injectEndpoints({
   endpoints: (builder) => ({
     getAllAppointment: builder.query({
-      query: () => "/appointment/get-all-appointments",
+      query: ({ status, page, limit }) =>
+        `/appointment/get-all-appointments?status=${status}&page=${page}&limit=${limit}`,
       providesTags: ["appointments"],
     }),
     getAppointmentById: builder.query({
@@ -11,24 +12,34 @@ export const appointmentsSlices = api.injectEndpoints({
       providesTags: ["appointments"],
     }),
     getAppointmentPatientById: builder.query({
-      query: (id) => `/appointment/get-appointment-by-patientId/${id}`,
+      query: (id) => `/appointment/get-appointment-by-patientId/`,
       providesTags: ["appointments"],
     }),
     getAppointmentDoctorById: builder.query({
-      query: (id) => `/appointment/get-appointment-by-doctorId/${id}`,
+      query: (id) => ({
+        url: `/appointment/get-appointment-by-doctorId/`,
+      }),
       providesTags: ["appointments"],
     }),
     cancelAppointment: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `/appointment/cancel-appointment-by-id/${id}`,
+      query: (data) => ({
+        url: `/appointment/cancel-appointment-by-id`,
         method: "PATCH",
         body: data,
       }),
       invalidatesTags: ["appointments"],
     }),
     completeAppointment: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `/appointment/complete-appointment-by-id/${id}`,
+      query: (data) => ({
+        url: `/appointment/complete-appointment-by-id`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["appointments"],
+    }),
+    assignDoctorToAppointment: builder.mutation({
+      query: (data) => ({
+        url: `/appointment/assign-doctor-to-appointment`,
         method: "PATCH",
         body: data,
       }),
@@ -45,6 +56,13 @@ export const appointmentsSlices = api.injectEndpoints({
     addZoomLink: builder.mutation({
       query: (data) => ({
         url: `/appointment/add-zoom-link`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    addEmailForZoomLink: builder.mutation({
+      query: (data) => ({
+        url: `/appointment/add-email-for-zoom-link`,
         method: "POST",
         body: data,
       }),
@@ -71,4 +89,6 @@ export const {
   useGetAppointmentDoctorByIdQuery,
   useGetAppointmentPatientByIdQuery,
   useLazyGetAppointmentByIdQuery,
+  useAssignDoctorToAppointmentMutation,
+  useAddEmailForZoomLinkMutation,
 } = appointmentsSlices;

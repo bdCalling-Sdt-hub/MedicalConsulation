@@ -11,6 +11,8 @@ function Services({
 }) {
   const { data, isError, error } = useGetAllServicesQuery({});
 
+  // console.log(data);
+
   // Function to handle selecting an item
   const handleSelectItem = (item) => {
     setSelectedItem && setSelectedItem(item); // Set the clicked item as the selected item
@@ -37,13 +39,21 @@ function Services({
                 ${
                   selectedItem === service
                     ? "bg-primary6 text-white"
-                    : "bg-white border border-neutral4"
+                    : "bg-white border border-neutral4 text-black"
                 }`} // Conditional styles for the selected item
             >
-              <h1 className={`text-lg font-roboto font-bold`}>
+              <h1
+                className={`text-lg font-roboto ${
+                  selectedItem === service ? "text-white" : "text-black"
+                }`} // Adjust text color based on selection
+              >
                 {service?.title}
               </h1>
-              <p className={`text-base font-roboto font-medium`}>
+              <p
+                className={`text-base font-roboto font-medium ${
+                  selectedItem === service ? "text-white" : "text-black"
+                }`} // Adjust price text color based on selection
+              >
                 $ {service?.price}
               </p>
             </div>

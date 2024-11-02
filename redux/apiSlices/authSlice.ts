@@ -21,8 +21,8 @@ const authSlice = api.injectEndpoints({
       providesTags: ["user"],
     }),
     allDoctor: builder.query({
-      query: (token) => ({
-        url: `/users/doctors`,
+      query: ({ page, limit, filter }) => ({
+        url: `/users/doctors?page=${page}&limit=${limit}&filter=${filter}`,
       }),
       providesTags: ["user"],
     }),
@@ -82,15 +82,17 @@ const authSlice = api.injectEndpoints({
     }),
     forgotPassword: builder.mutation({
       query: (email) => ({
-        url: `/users/auth/forgot-password?email=${email}`,
+        url: `/users/auth/forgot-password`,
         method: "POST",
+        body: { email },
       }),
       invalidatesTags: ["user"],
     }),
     resetPassword: builder.mutation({
-      query: () => ({
+      query: (data) => ({
         url: `/users/auth/reset-password`,
         method: "POST",
+        body: data,
       }),
       invalidatesTags: ["user"],
     }),
@@ -103,16 +105,22 @@ const authSlice = api.injectEndpoints({
       invalidatesTags: ["user"],
     }),
     approvedDoctor: builder.mutation({
-      query: () => ({
+      query: (id) => ({
         url: `/users/auth/approve-doctor`,
         method: "POST",
+        body: {
+          doctorId: id,
+        },
       }),
       invalidatesTags: ["user"],
     }),
     cancelDoctor: builder.mutation({
-      query: () => ({
+      query: (id) => ({
         url: `/users/auth/cancel-doctor`,
         method: "POST",
+        body: {
+          doctorId: id,
+        },
       }),
       invalidatesTags: ["user"],
     }),
@@ -153,6 +161,7 @@ const authSlice = api.injectEndpoints({
 
 export const {
   useGetUserProfileQuery,
+  useLazyGetUserProfileQuery,
   useCreateUserMutation,
   useSendCodeAgainMutation,
   useLoginMutation,

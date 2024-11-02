@@ -1,8 +1,5 @@
-export const metadata = {
-  title: "Medical Consultation",
-  description: "medical consultation app for patients and doctors ",
-};
+"use client";
 
-export default function HomeLayout({ children }) {
+export default function DashboardLayout({ children }) {
   return <main>{children}</main>;
 }

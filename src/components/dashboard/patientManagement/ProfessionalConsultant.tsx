@@ -1,12 +1,13 @@
 import { Button, Rate } from "antd";
 import React, { useState } from "react";
 
+import Image from "next/image";
 import img1 from "/images/dashboard/consultant/consultant1.png";
 
 // Define Props type
 type Props = {
   id: number;
-  img: string;
+  img: any;
   name: string;
   division: string;
   dayAndTime: string;
@@ -97,7 +98,7 @@ const ProfessionalConsultant: React.FC = () => {
             className="border border-gray-200 items-center justify-center mx-auto rounded-2xl"
             key={consultant.id}
           >
-            <img
+            <Image
               className="rounded-t-2xl"
               src={consultant.img}
               alt={consultant.name}

@@ -15,15 +15,15 @@ export const faqsSlices = api.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["prescription"],
+      invalidatesTags: ["prescription", "appointments"],
     }),
     editPrescription: builder.mutation({
       query: ({ id, data }) => ({
         url: `/prescription/edit-prescription/${id}`,
-        method: "POST",
+        method: "PUT",
         body: data,
       }),
-      invalidatesTags: ["prescription"],
+      invalidatesTags: ["prescription", "appointments"],
     }),
 
     deleteFaqs: builder.mutation({

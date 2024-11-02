@@ -1,5 +1,5 @@
 export function extractDateTimeParts(
-  dateTimeStr,
+  dateTimeStr = "2024-10-20T05:31:49.350+00:00",
   format24Hour = false,
   toLocal = false
 ) {
