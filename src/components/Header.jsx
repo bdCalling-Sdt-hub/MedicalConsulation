@@ -246,7 +246,7 @@ function Header() {
     <>
       <section
         className={`${
-          navbarFixed ? "blur-background " : "bg-primary6 "
+          navbarFixed ? "blur-background " : "bg-[#F6F2DD]"
         } z-50 fixed w-full shadow-xl`}
       >
         <div className="container mx-auto py-4 flex flex-row justify-between items-center">
