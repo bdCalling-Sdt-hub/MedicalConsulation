@@ -11,6 +11,7 @@ import Servicesv2 from "../../components/Servicesv2";
 import Testimonials from "../../components/Testimonials";
 import BookAppointment from "../../modal/BookAppointment";
 import VideoPlayer from "../../components/VideoPlayer";
+import TutorialAndBooking from "../../components/TutorialAndBooking";
 
 function Page() {
   return (
@@ -28,10 +29,11 @@ function Page() {
       <Servicesv2 title={`What can we help with?`} />
 
       {/* Tutorial section */}
-      <VideoPlayer
+      {/* <VideoPlayer
         src="https://www.w3schools.com/html/mov_bbb.mp4"
         autoPlay={true}
-      />
+      /> */}
+      <TutorialAndBooking />
 
       {/* book appointment section */}
       {/* <BookAppointment /> */}
