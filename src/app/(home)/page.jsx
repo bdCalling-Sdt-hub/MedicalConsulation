@@ -6,9 +6,11 @@ import Banner from "../../components/Banner";
 import FAQ from "../../components/FAQ";
 import GiveUsReview from "../../components/GiveUsReview";
 import HealthyTips from "../../components/HealthyTips";
-import Services from "../../components/Services";
+// import Services from "../../components/Services";
+import Servicesv2 from "../../components/Servicesv2";
 import Testimonials from "../../components/Testimonials";
 import BookAppointment from "../../modal/BookAppointment";
+import VideoPlayer from "../../components/VideoPlayer";
 
 function Page() {
   return (
@@ -17,19 +19,25 @@ function Page() {
       <Banner />
 
       {/*  about us section */}
-      <AboutUs />
+      {/* <AboutUs /> */}
 
       {/* about us 2 section */}
-      <AboutUs2 />
+      {/* <AboutUs2 /> */}
 
       {/* services section */}
-      <Services />
+      <Servicesv2 title={`What can we help with?`} />
+
+      {/* Tutorial section */}
+      <VideoPlayer
+        src="https://www.w3schools.com/html/mov_bbb.mp4"
+        autoPlay={true}
+      />
 
       {/* book appointment section */}
-      <BookAppointment />
+      {/* <BookAppointment /> */}
 
       {/* FAQ section */}
-      <FAQ />
+      {/* <FAQ /> */}
       {/* testimonials section */}
       <Testimonials />
 
