@@ -10,7 +10,7 @@ const VideoPlayer = ({
   autoPlay = false,
 }) => {
   return (
-    <div>
+    <>
       {/* <div className="container mx-auto">
         <ReactPlayer
           // url="<https://www.youtube.com/watch?v=G07V0aOmWTI>"
@@ -21,7 +21,7 @@ const VideoPlayer = ({
           controls
         />
       </div> */}
-      <div>
+      <div height={height}>
         <video
           src={src}
           width={width}
@@ -30,7 +30,7 @@ const VideoPlayer = ({
           controls
         ></video>
       </div>
-    </div>
+    </>
   );
 };
 
