@@ -9,7 +9,7 @@ function HealthyTips() {
         <h1
           className={`text-black text-2xl font-normal leading-[32px] font-merri mb-6`}
         >
-          Healty Tips
+          Stay Informed and Empowered with the Latest in Medical Research
         </h1>
 
         <div className="grid grid-cols-4 gap-4">
