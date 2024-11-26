@@ -24,6 +24,7 @@ import { CiCreditCard1 } from "react-icons/ci";
 import { FaTag } from "react-icons/fa6";
 import { IoIosCard } from "react-icons/io";
 import Logo from "../../../../../public/images/LogoFinal.png";
+// import Logo from "../../../../../public/images/HeaderLogo.png";
 import { clearUser } from "../../../../../redux/apiSlices/userSlices";
 
 const { Header, Sider, Content } = Layout;
