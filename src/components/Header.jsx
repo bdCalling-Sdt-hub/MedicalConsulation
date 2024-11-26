@@ -48,11 +48,12 @@ function Header() {
 
   const navItems = [
     { name: "Home", path: "#home" },
+    { name: "Help", path: "#help" },
     { name: "About Us", path: "#about" },
     { name: "Services", path: "#services" },
     { name: "FAQ", path: "#faq" },
-    { name: "Testimonials", path: "#testimonials" },
-    { name: "Tips", path: "#tips" },
+    // { name: "Testimonials", path: "#testimonials" },
+    // { name: "Tips", path: "#tips" },
   ];
   const handleCancel = () => {
     setIsModalOpen(false);
