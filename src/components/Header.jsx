@@ -253,6 +253,9 @@ function Header() {
           <div>
             <Image src={logo} alt="logo" height={60} width={161.76} />
           </div>
+          <div>
+            <h1 className="font-bold font-merri text-4xl">MyDoctorClinic</h1>
+          </div>
           <div className="flex flex-col gap-6">
             <div>
               <ul
