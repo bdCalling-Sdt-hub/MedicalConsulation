@@ -20,7 +20,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import logo from "../../public/images/logo.png";
+// import logo from "../../public/images/logo.png";
+import logo from "../../public/images/HeaderLogo.png";
 
 function Header() {
   const user = useSelector((state) => state.user.user);
@@ -250,7 +251,7 @@ function Header() {
       >
         <div className="container mx-auto py-4 flex flex-row justify-between items-center">
           <div>
-            <Image src={logo} alt="logo" />
+            <Image src={logo} alt="logo" height={60} width={161.76} />
           </div>
           <div>
             <ul
