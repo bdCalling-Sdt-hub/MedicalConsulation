@@ -129,10 +129,10 @@ function BookNow() {
 
   return (
     <>
-      <section id="book" className="py-20 bg-primary10 h-full">
+      <section id="book" className="py-20 bg-[#fffcee] h-full">
         <div className="container mx-auto">
           <div>
-            <h1 className="text-primary2 text-[48px] font-normal font-merri text-center">
+            <h1 className="text-[#000] text-[48px] font-normal font-merri text-center">
               Book an Appointment
             </h1>
             {/* <p className="text-primary3 text-base leading-[30px] font-roboto font-normal text-center mt-2">
@@ -148,7 +148,7 @@ function BookNow() {
             </p> */}
             <div className="text-center">
               <button
-                className="text-secondaryBlack bg-primary2 text-center font-merri text-sm py-2 px-6 rounded-sm font-normal mt-7"
+                className="text-secondaryBlack bg-primary6 text-center font-merri text-2xl py-3 px-7 rounded-md font-bold mt-7"
                 onClick={showModal}
               >
                 Book Now
