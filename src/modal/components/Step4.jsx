@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 const stripePromise = loadStripe(
   "pk_test_51Q51euIE7z8j8FQDRAixwTBcDJS0zyz8wjvgZVn64nZKzjxyVSdzEPIccMiD3hND02GAHRU8y2eB92YO1tcL1PQk00M6ydxlfZ"
 );
-function Step4({ createdAppointment, setCurrentStep }) {
+function Step4({ createdAppointment, setCurrentStep, setIsPaid }) {
   const options = {
     mode: "payment",
     amount: createdAppointment?.serviceId.price * 100,
@@ -43,6 +43,7 @@ function Step4({ createdAppointment, setCurrentStep }) {
             <CheckoutForm
               createdAppointment={createdAppointment}
               setCurrentStep={setCurrentStep}
+              setIsPaid={setIsPaid}
             />
           </Elements>
         </div>
@@ -105,7 +106,11 @@ function Step4({ createdAppointment, setCurrentStep }) {
 
 export default Step4;
 
-export const CheckoutForm = ({ createdAppointment, setCurrentStep }) => {
+export const CheckoutForm = ({
+  createdAppointment,
+  setCurrentStep,
+  setIsPaid,
+}) => {
   // console.log(appointmentId);
   const stripe = useStripe();
   const elements = useElements();
@@ -116,6 +121,9 @@ export const CheckoutForm = ({ createdAppointment, setCurrentStep }) => {
   const [createIntent] = usePaymentIntentMutation();
   const [confirmPaymentIntent] = useConfirmPaymentIntentMutation();
   const handleSubmit = async (event) => {
+    console.log("processing", processing);
+    console.log("elements", elements);
+    console.log("stripe", stripe);
     event.preventDefault();
     setProcessing(true);
     if (elements == null) {
@@ -154,6 +162,7 @@ export const CheckoutForm = ({ createdAppointment, setCurrentStep }) => {
       toast.success("Payment Successful");
       console.log(paymentIntent, "paymentIntent");
       setCurrentStep(5);
+      setIsPaid(true);
     }
     setProcessing(false);
     if (paymentIntent.error) {

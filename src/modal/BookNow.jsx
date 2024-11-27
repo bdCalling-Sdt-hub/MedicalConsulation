@@ -29,6 +29,7 @@ function BookNow() {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedItem, setSelectedItem] = useState(null);
   const [extraUserEmail, setExtraUserEmail] = useState(null);
+  const [isPaid, setIsPaid] = useState(false);
   // State to store only one selected item
   const [dateTime, setDateTime] = useState({
     dateTime: null,
@@ -249,21 +250,21 @@ function BookNow() {
                 user={user}
               />
             )}{" "}
-            {/* Now step 4 */}
+            {/* Now step 5 */}
             {currentStep === 5 && createdAppointment && (
               <Step4
                 setCurrentStep={setCurrentStep}
                 createdAppointment={createdAppointment}
+                setIsPaid={setIsPaid}
               />
             )}{" "}
-            {/* Now step 3 */}
+            {/* Now step 6 */}
             {currentStep === 6 && (
               <Step5
                 setExtraUserEmail={setExtraUserEmail}
                 email={user?.email}
               />
             )}{" "}
-            {/* Now step 5 */}
           </div>
         </div>
 
@@ -295,6 +296,8 @@ function BookNow() {
                   // ? true
                   currentStep === 4 && !createdAppointment
                   ? true
+                  : currentStep === 5 && !isPaid
+                  ? true
                   : false
               }
               // className="bg-primary6 text-white py-2 px-4 rounded-sm"
@@ -304,7 +307,8 @@ function BookNow() {
                 (currentStep === 3 &&
                   (!consentStatus.termsAndConditions ||
                     !consentStatus.dataSharing)) ||
-                (currentStep === 4 && !createdAppointment)
+                (currentStep === 4 && !createdAppointment) ||
+                (currentStep === 5 && !isPaid)
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-primary6 text-white"
               }`}
