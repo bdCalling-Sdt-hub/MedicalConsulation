@@ -3,7 +3,8 @@ import IconFacebook from "../../public/icons/IconFacebook";
 import IconInsta from "../../public/icons/IconInsta";
 import IconLinkedin from "../../public/icons/IconLinkedin";
 import IconTwitter from "../../public/icons/IconTwitter";
-import logo from "../../public/images/logo.png";
+// import logo from "../../public/images/logo.png";
+import logo from "../../public/images/HeaderLogo.png";
 
 function Footer() {
   return (
@@ -19,7 +20,13 @@ function Footer() {
 
           <div className="grid grid-cols-4 gap-4">
             <div>
-              <Image src={logo} alt="logo" className={`my-4`} />
+              <Image
+                src={logo}
+                alt="logo"
+                className={`my-4`}
+                height={60}
+                width={161.76}
+              />
               <p
                 className={`text-black text-xs font-merri font-normal leading-[20px]`}
               >

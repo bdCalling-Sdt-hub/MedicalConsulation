@@ -278,7 +278,7 @@ function Header() {
               </ul>
             </div>
             {user?._id ? (
-              <div className="flex flex-row items-center gap-4">
+              <div className="flex flex-row items-center self-end gap-4">
                 <div
                   onClick={async () => {
                     handleLogout();
