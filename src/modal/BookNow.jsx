@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import IconRightArrow from "../../public/icons/IconRightArrow";
 import Services from "../components/Services";
+import UserConsentAgreement from "./components/UserConsentAgreement";
 import NewStep from "./components/NewStep";
 import Step3 from "./components/Step3";
 import Step4 from "./components/Step4";
@@ -35,7 +36,16 @@ function BookNow() {
   }); // State to store only one selected item
   const [extraInfo, setExtraInfo] = useState(null); // State to store only one selected item
   const [createdAppointment, setCreatedAppointment] = useState(null); // State to store only one selected item
+  //
+  const [consentStatus, setConsentStatus] = useState({
+    termsAndConditions: false,
+    dataSharing: false,
+  });
 
+  const handleConsentChange = (updatedConsents) => {
+    setConsentStatus(updatedConsents);
+  };
+  //
   const showModal = () => {
     if (!user?.email) {
       route.push("/auth/login");
@@ -56,7 +66,7 @@ function BookNow() {
   };
 
   const handleNext = () => {
-    if (currentStep === 5) {
+    if (currentStep === 6) {
       handleAddEmailForZoomLink({
         email: extraUserEmail || user.email,
         appointmentId: createdAppointment?._id,
@@ -74,7 +84,7 @@ function BookNow() {
         type: selectedItem?.consultationType,
         patientId: user._id,
       });
-    } else if (currentStep < 5) {
+    } else if (currentStep < 6) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -171,7 +181,7 @@ function BookNow() {
           {/* Steps navigation */}
           <div className="flex flex-row items-center gap-4 mb-4">
             {/* Step indicators */}
-            {[1, 2, 3, 4, 5].map((step) => (
+            {[1, 2, 3, 4, 5, 6].map((step) => (
               <div
                 key={step}
                 className={`flex-row flex items-center gap-2 ${
@@ -225,6 +235,14 @@ function BookNow() {
             )}
             {/* Now step 2 */}
             {currentStep === 3 && (
+              // <NewStep
+              //   setExtraInfo={setExtraInfo}
+              //   extraInfo={extraInfo}
+              //   user={user}
+              // />
+              <UserConsentAgreement onConsentChange={handleConsentChange} />
+            )}{" "}
+            {currentStep === 4 && (
               <NewStep
                 setExtraInfo={setExtraInfo}
                 extraInfo={extraInfo}
@@ -232,14 +250,14 @@ function BookNow() {
               />
             )}{" "}
             {/* Now step 4 */}
-            {currentStep === 4 && createdAppointment && (
+            {currentStep === 5 && createdAppointment && (
               <Step4
                 setCurrentStep={setCurrentStep}
                 createdAppointment={createdAppointment}
               />
             )}{" "}
             {/* Now step 3 */}
-            {currentStep === 5 && (
+            {currentStep === 6 && (
               <Step5
                 setExtraUserEmail={setExtraUserEmail}
                 email={user?.email}
@@ -269,16 +287,30 @@ function BookNow() {
                   ? true
                   : currentStep === 2 && !dateTime?.dateTime
                   ? true
-                  : currentStep === 3 && !extraInfo
+                  : currentStep === 3 &&
+                    (!consentStatus.termsAndConditions ||
+                      !consentStatus.dataSharing)
                   ? true
-                  : currentStep === 4 && !createdAppointment
+                  : // : currentStep === 3 && !extraInfo
+                  // ? true
+                  currentStep === 4 && !createdAppointment
                   ? true
                   : false
               }
-              className="bg-primary6 text-white py-2 px-4 rounded-sm"
+              // className="bg-primary6 text-white py-2 px-4 rounded-sm"
+              className={`py-2 px-4 rounded-sm ${
+                (currentStep === 1 && !selectedItem) ||
+                (currentStep === 2 && !dateTime?.dateTime) ||
+                (currentStep === 3 &&
+                  (!consentStatus.termsAndConditions ||
+                    !consentStatus.dataSharing)) ||
+                (currentStep === 4 && !createdAppointment)
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-primary6 text-white"
+              }`}
               onClick={handleNext}
             >
-              {currentStep === 5 ? "Finish" : "Next"}
+              {currentStep === 6 ? "Finish" : "Next"}
             </button>
           </div>
         </div>
