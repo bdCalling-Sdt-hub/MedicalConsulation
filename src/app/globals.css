@@ -2,120 +2,137 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap");
 
 @font-face {
-    font-family: 'Abril Fatface';
-    src: url('/fonts/AbrilFatface-Regular.ttf') format('ttf'),
-        ;
-    font-weight: normal;
-    font-style: normal;
+  font-family: "Abril Fatface";
+  src: url("/fonts/AbrilFatface-Regular.ttf") format("ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+  background: #f0f2f5;
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif !important;
+}
+
+.blur-background {
+  position: fixed;
+  background-color: rgba(233, 226, 191, 0.7); /* Semi-transparent background */
+  backdrop-filter: blur(10px); /* Applies blur effect */
+  -webkit-backdrop-filter: blur(10px); /* For Safari */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds subtle shadow */
+}
+
+@media (max-width: 768px) {
+  .sidebar-menu {
+    width: 20px;
   }
 
-  html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 80px;
-    background: #F0F2F5;
+  .header {
+    left: 85px;
+    width: calc(100% - 80px);
   }
-  * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-   font-family: 'Roboto', sans-serif !important;
+}
+
+@media (max-width: 480px) {
+  .sidebar-menu {
+    width: 60px;
   }
 
-  .blur-background {
-    position: fixed;
-    background-color: rgb(217,199,113,.7); /* Semi-transparent background */
-    backdrop-filter: blur(10px); /* Applies blur effect */
-    -webkit-backdrop-filter: blur(10px); /* For Safari */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds subtle shadow */
- 
+  .header {
+    left: 60px;
+    width: calc(100% - 60px);
   }
-  
-  @media (max-width: 768px) {
-    .sidebar-menu {
-      width: 20px;
-    }
-  
-    .header {
-      left: 85px;
-      width: calc(100% - 80px);
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .sidebar-menu {
-      width: 60px;
-    }
-  
-    .header {
-      left: 60px;
-      width: calc(100% - 60px);
-    }
-  }
-  
+}
 
-  /* ant design customization */
-  :where(.css-dev-only-do-not-override-vryruh).ant-modal .ant-modal-content {
-    background-color: #ffffff;
-  }
+/* ant design customization */
+:where(.css-dev-only-do-not-override-vryruh).ant-modal .ant-modal-content {
+  background-color: #ffffff;
+}
 /* CustomRadio.css */
-:where(.css-dev-only-do-not-override-vryruh) .ant-radio-wrapper .ant-radio-checked .ant-radio-inner {
-    border-color: #D9C771!important; /* Color when checked */
-    background-color: #D9C771!important; /* Background color when checked */
+:where(.css-dev-only-do-not-override-vryruh)
+  .ant-radio-wrapper
+  .ant-radio-checked
+  .ant-radio-inner {
+  border-color: #d9c771 !important; /* Color when checked */
+  background-color: #d9c771 !important; /* Background color when checked */
 }
 
-:where(.css-dev-only-do-not-override-vryruh) .ant-radio-wrapper:hover .ant-radio-inner,
-:where(.css-dev-only-do-not-override-vryruh) .ant-radio-wrapper .ant-radio-inner:hover {
-    border-color: #D9C771!important; /* Hover border color */
+:where(.css-dev-only-do-not-override-vryruh)
+  .ant-radio-wrapper:hover
+  .ant-radio-inner,
+:where(.css-dev-only-do-not-override-vryruh)
+  .ant-radio-wrapper
+  .ant-radio-inner:hover {
+  border-color: #d9c771 !important; /* Hover border color */
 }
 
-:where(.css-dev-only-do-not-override-vryruh) .ant-radio-wrapper:hover .ant-radio-checked .ant-radio-inner {
-    border-color: #D9C771!important; /* Ensures checked radio has the same color on hover */
+:where(.css-dev-only-do-not-override-vryruh)
+  .ant-radio-wrapper:hover
+  .ant-radio-checked
+  .ant-radio-inner {
+  border-color: #d9c771 !important; /* Ensures checked radio has the same color on hover */
 }
-:where(.css-dev-only-do-not-override-vryruh).ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-checked:not(.ant-checkbox-disabled) .ant-checkbox-inner {
-  background-color: #D9C771!important;
+:where(.css-dev-only-do-not-override-vryruh).ant-checkbox-wrapper:not(
+    .ant-checkbox-wrapper-disabled
+  ):hover
+  .ant-checkbox-checked:not(.ant-checkbox-disabled)
+  .ant-checkbox-inner {
+  background-color: #d9c771 !important;
 }
-:where(.css-dev-only-do-not-override-vryruh).ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-inner, :where(.css-dev-only-do-not-override-vryruh).ant-checkbox:not(.ant-checkbox-disabled):hover .ant-checkbox-inner {
-  border-color: #D9C771!important;
+:where(.css-dev-only-do-not-override-vryruh).ant-checkbox-wrapper:not(
+    .ant-checkbox-wrapper-disabled
+  ):hover
+  .ant-checkbox-inner,
+:where(.css-dev-only-do-not-override-vryruh).ant-checkbox:not(
+    .ant-checkbox-disabled
+  ):hover
+  .ant-checkbox-inner {
+  border-color: #d9c771 !important;
 }
 
-:where(.css-dev-only-do-not-override-vryruh).ant-checkbox-checked .ant-checkbox-inner {
-  background-color: #D9C771!important;
-  border-color: #D9C771!important;
+:where(.css-dev-only-do-not-override-vryruh).ant-checkbox-checked
+  .ant-checkbox-inner {
+  background-color: #d9c771 !important;
+  border-color: #d9c771 !important;
 }
 :where(.css-dev-only-do-not-override-vryruh) .ant-input-number-input {
-  border-color: #D9C771!important; 
+  border-color: #d9c771 !important;
 }
-.ant-input, .ant-input-affix-wrapper , .ant-input-number-input{
-  border-color: #D9C771!important;
+.ant-input,
+.ant-input-affix-wrapper,
+.ant-input-number-input {
+  border-color: #d9c771 !important;
 }
-.ant-input:hover, .ant-input-number .ant-input-number-input .ant-input-affix-wrapper:hover{
-  border-color: #D9C771!important;
+.ant-input:hover,
+.ant-input-number .ant-input-number-input .ant-input-affix-wrapper:hover {
+  border-color: #d9c771 !important;
 }
 
 /* Add this to your CSS file */
 .ant-radio-button-wrapper-checked {
-  background-color: #D9C771 !important; /* Set your desired background color */
-  border-color: #D9C771 !important; /* Optional: matches border with background */
+  background-color: #d9c771 !important; /* Set your desired background color */
+  border-color: #d9c771 !important; /* Optional: matches border with background */
   color: #fff !important; /* Optional: set text color */
-
 }
 
-
-.ant-radio-button-wrapper{
-  border-color: #D9C771 !important;
-  
+.ant-radio-button-wrapper {
+  border-color: #d9c771 !important;
 }
-.ant-radio-button-wrapper:hover{
-  background-color: #D9C771 !important;
+.ant-radio-button-wrapper:hover {
+  background-color: #d9c771 !important;
   color: #f0f0f0;
-
 }
 .ant-radio-button-wrapper-checked:hover {
- background-color: #D9C771 !important;
+  background-color: #d9c771 !important;
   color: #f0f0f0; /* Change text color on hover if needed */
 }
-

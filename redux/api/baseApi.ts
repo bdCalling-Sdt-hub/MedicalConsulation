@@ -5,8 +5,8 @@ import Swal from "sweetalert2";
 import { clearToken } from "../apiSlices/tokenSlice";
 
 const baseQuery = fetchBaseQuery({
-  // baseUrl: "http://192.168.12.158:3000",
-  baseUrl: "https://nail-flags-gnome-receiver.trycloudflare.com/",
+  baseUrl: "http://192.168.12.158:3000",
+  // baseUrl: "https://nail-flags-gnome-receiver.trycloudflare.com/",
   timeout: 10000,
   prepareHeaders: async (headers, { getState }) => {
     // const token = localStorage.getItem("token");
@@ -92,4 +92,5 @@ export const api = createApi({
   ],
 });
 
-export const imageUrl = "https://nail-flags-gnome-receiver.trycloudflare.com//";
+// export const imageUrl = "https://nail-flags-gnome-receiver.trycloudflare.com/";
+export const imageUrl = "http://192.168.12.158:3000/";

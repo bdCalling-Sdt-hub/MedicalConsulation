@@ -20,7 +20,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import logo from "../../public/images/logo.png";
+// import logo from "../../public/images/logo.png";
+import logo from "../../public/images/HeaderLogo.png";
 
 function Header() {
   const user = useSelector((state) => state.user.user);
@@ -47,11 +48,12 @@ function Header() {
 
   const navItems = [
     { name: "Home", path: "#home" },
+    { name: "Help", path: "#help" },
     { name: "About Us", path: "#about" },
     { name: "Services", path: "#services" },
     { name: "FAQ", path: "#faq" },
-    { name: "Testimonials", path: "#testimonials" },
-    { name: "Tips", path: "#tips" },
+    // { name: "Testimonials", path: "#testimonials" },
+    // { name: "Tips", path: "#tips" },
   ];
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -245,114 +247,119 @@ function Header() {
     <>
       <section
         className={`${
-          navbarFixed ? "blur-background " : "bg-primary6 "
+          navbarFixed ? "blur-background " : "bg-[#F6F2DD]"
         } z-50 fixed w-full shadow-xl`}
       >
         <div className="container mx-auto py-4 flex flex-row justify-between items-center">
           <div>
-            <Image src={logo} alt="logo" />
+            <Image src={logo} alt="logo" height={60} width={161.76} />
           </div>
           <div>
-            <ul
-              className={`flex flex-row items-center gap-8 text-sm font-merri font-regular text-offBlack`}
-            >
-              {navItems.map((item) => (
-                <Link key={item.path} href={item.path}>
-                  <li
-                    className={`font-normal hover:text-secondaryBlack ${
-                      (activeHash || "#home") === `${item.path}`
-                        ? "text-secondaryBlack"
-                        : "text-offBlack"
-                    }`}
-                  >
-                    {item.name}
-                  </li>
-                </Link>
-              ))}
-            </ul>
+            <h1 className="font-bold font-merri text-4xl">MyDoctorClinic</h1>
           </div>
-          {user?._id ? (
-            <div className="flex flex-row items-center gap-4">
-              <div
-                onClick={async () => {
-                  handleLogout();
-                  // remove cookie token or role
-                }}
-                className="flex flex-row items-center gap-2  cursor-pointer text-offBlack hover:text-red-500 "
+          <div className="flex flex-col gap-6">
+            <div>
+              <ul
+                className={`flex flex-row items-center gap-8 text-sm font-merri font-regular text-offBlack`}
               >
-                <p className="">Logout </p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
-                  />
-                </svg>
-              </div>
-              <div
-                onClick={() => {
-                  route.push("/patient/dashboard");
-                }}
-                className="flex flex-row items-center gap-2 cursor-pointer hover:text-blue-500  "
-              >
-                <Tooltip
-                  placement="bottom"
-                  title={(user?.name || user?.email) + " go on dashboard"}
-                  color="cyan"
-                >
-                  <p className="cal">Dashboard </p>
-                </Tooltip>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-                  />
-                </svg>
-              </div>
+                {navItems.map((item) => (
+                  <Link key={item.path} href={item.path}>
+                    <li
+                      className={`font-normal hover:text-secondaryBlack ${
+                        (activeHash || "#home") === `${item.path}`
+                          ? "text-secondaryBlack"
+                          : "text-offBlack"
+                      }`}
+                    >
+                      {item.name}
+                    </li>
+                  </Link>
+                ))}
+              </ul>
             </div>
-          ) : (
-            <div className="flex flex-row items-center gap-4">
-              <button
-                className={`text-secondaryBlack font-merri text-sm py-2 px-6 rounded-sm font-normal`}
-                onClick={(e) => {
-                  // setIsSignInModalOpen(!isSignInModalOpen);
-                  // setIsModalOpen(false);
+            {user?._id ? (
+              <div className="flex flex-row items-center self-end gap-4">
+                <div
+                  onClick={async () => {
+                    handleLogout();
+                    // remove cookie token or role
+                  }}
+                  className="flex flex-row items-center gap-2  cursor-pointer text-offBlack hover:text-red-500 "
+                >
+                  <p className="">Logout </p>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
+                    />
+                  </svg>
+                </div>
+                <div
+                  onClick={() => {
+                    route.push("/patient/dashboard");
+                  }}
+                  className="flex flex-row items-center gap-2 cursor-pointer hover:text-blue-500  "
+                >
+                  <Tooltip
+                    placement="bottom"
+                    title={(user?.name || user?.email) + " go on dashboard"}
+                    color="cyan"
+                  >
+                    <p className="cal">Dashboard </p>
+                  </Tooltip>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                    />
+                  </svg>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-row items-center self-end gap-4">
+                <button
+                  className={`text-secondaryBlack font-merri text-sm py-2 px-6 rounded-sm font-normal`}
+                  onClick={(e) => {
+                    // setIsSignInModalOpen(!isSignInModalOpen);
+                    // setIsModalOpen(false);
 
-                  // e.preventDefault();
-                  route.push("/auth/login");
-                }}
-              >
-                Sign In
-              </button>
-              <button
-                className={`text-white bg-black font-merri text-sm py-2 px-6 rounded-sm font-normal`}
-                onClick={(e) => {
-                  // e.preventDefault();
+                    // e.preventDefault();
+                    route.push("/auth/login");
+                  }}
+                >
+                  Sign In
+                </button>
+                <button
+                  className={`text-white bg-black font-merri text-sm py-2 px-6 rounded-sm font-normal`}
+                  onClick={(e) => {
+                    // e.preventDefault();
 
-                  // setIsModalOpen(!isModalOpen);
-                  // setIsSignInModalOpen(false);
-                  route.push("/auth/register");
-                }}
-              >
-                Register
-              </button>
-            </div>
-          )}
+                    // setIsModalOpen(!isModalOpen);
+                    // setIsSignInModalOpen(false);
+                    route.push("/auth/register");
+                  }}
+                >
+                  Register
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </section>
       <section className="h-20 bg-gray-600"></section>
