@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   useAddEmailForZoomLinkMutation,
   useBookCreateAppointmentMutation,
@@ -17,14 +17,14 @@ import Step4 from "../../../modal/components/Step4";
 import Step5 from "../../../modal/components/Step5";
 import UserConsentAgreement from "../../../modal/components/UserConsentAgreement";
 
-const Booking = () => {
+const Booking = (pops) => {
+  console.log(pops?.searchParams);
   const user = useSelector((state) => state.user.user);
   const [createAppointment] = useBookCreateAppointmentMutation({});
   const [addEmailForZoomLink] = useAddEmailForZoomLinkMutation({});
 
   const router = useRouter();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedItem, setSelectedItem] = useState(null);
   const [extraUserEmail, setExtraUserEmail] = useState(null);
@@ -33,7 +33,7 @@ const Booking = () => {
   const [dateTime, setDateTime] = useState({
     dateTime: null,
     dayOfWeek: null,
-  }); // State to store only one selected item
+  });
   const [extraInfo, setExtraInfo] = useState(null); // State to store only one selected item
   const [createdAppointment, setCreatedAppointment] = useState(null); // State to store only one selected item
   //
@@ -120,6 +120,15 @@ const Booking = () => {
     },
     [addEmailForZoomLink]
   );
+
+  // console.log(selectedItem);
+
+  useEffect(() => {
+    if (pops?.searchParams?._id) {
+      setSelectedItem(pops?.searchParams);
+      setCurrentStep(2);
+    }
+  }, []);
 
   return (
     <div className=" container mx-auto  my-10">

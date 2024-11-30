@@ -1,16 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useGetHelpQuery } from "../../../../../../../redux/apiSlices/tramsAndConditionsSlices";
 
 import { Button } from "antd";
 import { useRouter } from "next/navigation";
-import { useGetTermsAndConditionQuery } from "../../../../../../../redux/apiSlices/tramsAndConditionsSlices";
 
 const SettingsTermsAndConditions = () => {
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
 
-  const { data: termsAndCondition } = useGetTermsAndConditionQuery();
+  const { data: help } = useGetHelpQuery();
   // console.log(termsAndCondition);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const SettingsTermsAndConditions = () => {
       </div>
       <div
         dangerouslySetInnerHTML={{
-          __html: termsAndCondition?.data?.content,
+          __html: help?.data?.content,
         }}
         className="pl-10 text-justify py-12"
       ></div>

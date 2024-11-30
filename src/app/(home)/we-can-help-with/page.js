@@ -2,12 +2,12 @@
 
 import { Breadcrumb } from "antd";
 import { usePathname } from "next/navigation";
-import { useGetTermsAndConditionQuery } from "../../../../redux/apiSlices/tramsAndConditionsSlices";
+import { useGetHelpQuery } from "../../../../redux/apiSlices/tramsAndConditionsSlices";
 
 const TermsAndCondition = () => {
   const pathName = usePathname();
   console.log(pathName);
-  const { data: termsAndCondition } = useGetTermsAndConditionQuery();
+  const { data: help } = useGetHelpQuery();
   // console.log(termsAndCondition);
   return (
     <div className="container mx-auto my-12 ">
@@ -23,7 +23,7 @@ const TermsAndCondition = () => {
       </div>
       <div
         dangerouslySetInnerHTML={{
-          __html: termsAndCondition?.data?.content,
+          __html: help?.data?.content,
         }}
         className=" text-justify pb-12 container mx-auto"
       ></div>

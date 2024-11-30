@@ -1,12 +1,13 @@
 "use client";
 
+import { useGetAboutQuery } from "../../../../redux/apiSlices/tramsAndConditionsSlices";
+
 import { Breadcrumb } from "antd";
-import { useGetTermsAndConditionQuery } from "../../../../redux/apiSlices/tramsAndConditionsSlices";
 import AboutUs2 from "../../../components/AboutUs2";
 
 const AboutPage = () => {
   // console.log(pathName);
-  const { data: termsAndCondition } = useGetTermsAndConditionQuery();
+  const { data: about } = useGetAboutQuery();
   // console.log(termsAndCondition);
   return (
     <div className=" my-12">
@@ -26,7 +27,7 @@ const AboutPage = () => {
       </div>
       <div
         dangerouslySetInnerHTML={{
-          __html: termsAndCondition?.data?.content,
+          __html: about?.data?.content,
         }}
         className=" text-justify pb-12 container mx-auto"
       ></div>

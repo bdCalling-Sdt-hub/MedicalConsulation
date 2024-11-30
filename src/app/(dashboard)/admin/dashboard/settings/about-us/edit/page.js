@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import {
-  useAddTermsAndConditionMutation,
-  useGetTermsAndConditionQuery,
+  useAddAboutUsMutation,
+  useGetAboutQuery,
 } from "../../../../../../../../redux/apiSlices/tramsAndConditionsSlices";
 
 import { Button } from "antd";
@@ -15,11 +15,11 @@ import Swal from "sweetalert2";
 // Dynamic import for JoditEditor
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
-const EditTermsAndCondition = () => {
+const EditAboutUs = () => {
   const route = useRouter();
   const [content, setContent] = useState("");
-  const { data: termsAndCondition, error } = useGetTermsAndConditionQuery();
-  const [createTermsAndCondition] = useAddTermsAndConditionMutation();
+  const { data: about, error } = useGetAboutQuery();
+  const [createAboutUs] = useAddAboutUsMutation();
   const [isMounted, setIsMounted] = useState(false); // Track if component is mounted
 
   // Effect to set mounted state
@@ -29,7 +29,7 @@ const EditTermsAndCondition = () => {
 
   // Handle update functionality
   const handleUpdate = async () => {
-    const res = await createTermsAndCondition({ content });
+    const res = await createAboutUs({ content });
     if (res?.data) {
       Swal.fire({
         title: "Good job!",
@@ -47,10 +47,10 @@ const EditTermsAndCondition = () => {
 
   // Effect to set content from query data
   useEffect(() => {
-    if (termsAndCondition?.data) {
-      setContent(termsAndCondition.data.content);
+    if (about?.data) {
+      setContent(about.data.content);
     }
-  }, [termsAndCondition]);
+  }, [about]);
 
   // Show loading message while waiting for content
   if (error) {
@@ -94,4 +94,4 @@ const EditTermsAndCondition = () => {
   );
 };
 
-export default EditTermsAndCondition;
+export default EditAboutUs;

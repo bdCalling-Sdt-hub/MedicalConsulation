@@ -1,6 +1,13 @@
 import { extractDateTimeParts } from "../../utils/extractDateTimeParts";
 
 function Step3({ selectedItem, setDateTime, dateTime }) {
+  if (selectedItem) {
+    selectedItem.dateTimes =
+      typeof selectedItem.dateTimes === "string"
+        ? [selectedItem.dateTimes]
+        : selectedItem.dateTimes;
+  }
+
   return (
     <div>
       <h1
@@ -15,33 +22,34 @@ function Step3({ selectedItem, setDateTime, dateTime }) {
           Pick a Date
         </h1>
         <div className="grid grid-cols-7 gap-3">
-          {selectedItem?.dateTimes?.map((item, index) => (
-            <div
-              key={index}
-              className={`h-36 flex-col flex justify-center items-center gap-y-2 cursor-pointer ${
-                dateTime?.dayOfWeek ===
-                extractDateTimeParts(item).day?.toLocaleLowerCase()
-                  ? "bg-primary6"
-                  : "bg-primary1"
-              }`}
-              onClick={() => {
-                setDateTime({
-                  ...dateTime,
-                  dayOfWeek:
-                    extractDateTimeParts(item).day?.toLocaleLowerCase(),
-                });
-              }}
-            >
-              <h3 className={`text-sm text-gray-600 font-merri font-normal`}>
-                {extractDateTimeParts(item).date}
-              </h3>
-              <h1
-                className={`text-[20px] text-gray-700 font-normal font-merri`}
+          {selectedItem?.dateTimes &&
+            selectedItem?.dateTimes?.map((item, index) => (
+              <div
+                key={index}
+                className={`h-36 flex-col flex justify-center items-center gap-y-2 cursor-pointer ${
+                  dateTime?.dayOfWeek ===
+                  extractDateTimeParts(item).day?.toLocaleLowerCase()
+                    ? "bg-primary6"
+                    : "bg-primary1"
+                }`}
+                onClick={() => {
+                  setDateTime({
+                    ...dateTime,
+                    dayOfWeek:
+                      extractDateTimeParts(item).day?.toLocaleLowerCase(),
+                  });
+                }}
               >
-                {extractDateTimeParts(item).day}
-              </h1>
-            </div>
-          ))}
+                <h3 className={`text-sm text-gray-600 font-merri font-normal`}>
+                  {extractDateTimeParts(item).date}
+                </h3>
+                <h1
+                  className={`text-[20px] text-gray-700 font-normal font-merri`}
+                >
+                  {extractDateTimeParts(item).day}
+                </h1>
+              </div>
+            ))}
         </div>
       </div>
 
