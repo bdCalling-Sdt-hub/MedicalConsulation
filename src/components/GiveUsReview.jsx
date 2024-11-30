@@ -27,8 +27,8 @@ const GiveUsReview = () => {
   };
 
   useEffect(() => {
-    form.setFieldValue("userId", user._id);
-  }, [form, user._id]);
+    form.setFieldValue("userId", user?._id);
+  }, [form, user?._id]);
 
   return (
     // Add your review form here
