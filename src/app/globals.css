@@ -50,6 +50,7 @@ html {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds subtle shadow */
 }
 
+
 @media (max-width: 768px) {
   .sidebar-menu {
     width: 20px;

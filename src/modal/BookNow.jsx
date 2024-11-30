@@ -11,14 +11,18 @@ import {
 import { Modal } from "antd";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
+
 import Swal from "sweetalert2";
 import IconRightArrow from "../../public/icons/IconRightArrow";
 import Services from "../components/Services";
+
 import NewStep from "./components/NewStep";
 import Step3 from "./components/Step3";
 import Step4 from "./components/Step4";
 import Step5 from "./components/Step5";
+
 import UserConsentAgreement from "./components/UserConsentAgreement";
+
 
 function BookNow() {
   const user = useSelector((state) => state.user.user);
@@ -73,11 +77,13 @@ function BookNow() {
         appointmentId: createdAppointment?._id,
       });
       setIsModalOpen(false);
+
       Swal.fire(
         "Congratulations!",
         "Your appointment created successfully!",
         "success"
       );
+
       handleCancel();
     } else if (currentStep === 3) {
       handleCreateAppointment({
@@ -111,7 +117,9 @@ function BookNow() {
           setCurrentStep(4);
         }
         if (response?.error) {
+
           Swal.fire("Error", response?.error?.data?.message, "error");
+
         }
       } catch (error) {
         console.log(error);
@@ -128,10 +136,12 @@ function BookNow() {
         const response = await addEmailForZoomLink(UData);
         console.log(response);
         if (response?.data) {
+
           Swal.fire("Success", response?.data?.message, "success");
         }
         if (response?.error) {
           Swal.fire("Error", response?.error?.data?.message, "error");
+
         }
       } catch (error) {
         console.log(error);
@@ -162,10 +172,12 @@ function BookNow() {
             <div className="text-center">
               <button
                 className="text-secondaryBlack bg-primary6 text-center font-merri text-2xl py-3 px-7 rounded-md font-bold mt-7"
+
                 onClick={() => {
                   // showModal();
                   route.push("/booking");
                 }}
+
               >
                 Book Now
               </button>

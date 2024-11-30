@@ -159,8 +159,10 @@ export const CheckoutForm = ({
         appointmentId: createdAppointment?._id,
         paymentIntent: paymentIntent?.paymentIntent,
       });
+
       Swal.fire("Success", "Payment done successfully!", "success");
       setCurrentStep(6);
+
       setIsPaid(true);
     }
     setProcessing(false);
