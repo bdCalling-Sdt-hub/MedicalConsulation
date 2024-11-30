@@ -1,16 +1,15 @@
 "use client";
 
-import AboutUs from "../../components/AboutUs";
-import AboutUs2 from "../../components/AboutUs2";
 import Banner from "../../components/Banner";
-import FAQ from "../../components/FAQ";
 import GiveUsReview from "../../components/GiveUsReview";
 import HealthyTips from "../../components/HealthyTips";
 // import Services from "../../components/Services";
 import Servicesv2 from "../../components/Servicesv2";
 import Testimonials from "../../components/Testimonials";
+
 import BookAppointment from "../../modal/BookAppointment";
 import VideoPlayer from "../../components/VideoPlayer";
+
 import TutorialAndBooking from "../../components/TutorialAndBooking";
 
 function Page() {

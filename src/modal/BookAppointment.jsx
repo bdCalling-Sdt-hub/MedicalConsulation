@@ -11,7 +11,7 @@ import {
 import { Modal } from "antd";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 import IconRightArrow from "../../public/icons/IconRightArrow";
 import Services from "../components/Services";
 import NewStep from "./components/NewStep";
@@ -62,9 +62,12 @@ function BookAppointment() {
         appointmentId: createdAppointment?._id,
       });
       setIsModalOpen(false);
-      toast.success("Congratulations! Your appointment has been completed!", {
-        autoClose: 2000,
-      });
+      Swal.fire(
+        "Congratulations!",
+        "Your appointment created successfully!",
+        "success"
+      );
+
       handleCancel();
     } else if (currentStep === 3) {
       handleCreateAppointment({
@@ -98,7 +101,12 @@ function BookAppointment() {
           setCurrentStep(4);
         }
         if (response?.error) {
-          toast.error(response?.error?.data?.message);
+          Swal.fire({
+            title: "Error",
+            text: res?.error?.data?.message,
+            icon: "error",
+            confirmButtonText: "OK",
+          });
         }
       } catch (error) {
         console.log(error);
@@ -115,10 +123,15 @@ function BookAppointment() {
         const response = await addEmailForZoomLink(UData);
         console.log(response);
         if (response?.data) {
-          toast.success(response?.data?.message);
+          Swal.fire("Error", response?.error?.data?.message, "error");
         }
         if (response?.error) {
-          toast.error(response?.error?.data?.message);
+          Swal.fire({
+            title: "Error",
+            text: res?.error?.data?.message,
+            icon: "error",
+            confirmButtonText: "OK",
+          });
         }
       } catch (error) {
         console.log(error);

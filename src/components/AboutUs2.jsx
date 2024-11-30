@@ -4,29 +4,25 @@ import about from "../../public/images/about.png";
 
 function AboutUs2() {
   return (
-    <section className={`py-20 bg-primary2`}>
-      <div className="container mx-auto flex flex-row gap-4">
-        <div className="w-4/12">
-          <h1 className={`text-primary10 text-[48px] font-abril font-bold`}>
-            15 Minutes
-            <br />
-            Consultation
-            <br />
-            with Specialist
-            <br />
-            Doctor
-          </h1>
-          <p className={`text-black font-normal text-lg `}>
-            Every hour, every day
-          </p>
-          <Link
-            href="/#book"
-            className={`text-white bg-primary10 font-merri text-sm py-2 px-6 rounded-sm font-normal mt-7`}
-          >
-            Book Now
-          </Link>
+    <section className={`w-full bg-primary2 p-12`}>
+      <div className="container mx-auto flex flex-row gap-8 justify-evenly ">
+        <div className="flex-1 justify-items-end">
+          <div className=" w-[85%]  ">
+            <h1 className=" !font-Abril text-6xl text-primary10 font-semibold  ">
+              Immediate consultation with doctors” – 7am – 00:00 every hour,
+              every day
+            </h1>
+            <div className="mt-12 w-full justify-items-center">
+              <Link
+                href="/booking"
+                className="text-white bg-primary10 !font-merri text-base py-2 px-6 rounded-sm font-normal "
+              >
+                Book Now
+              </Link>
+            </div>
+          </div>
         </div>
-        <div className="">
+        <div className="flex-1 ">
           <Image src={about} alt="about" />
         </div>
       </div>

@@ -18,10 +18,9 @@ import { clearUser, setUser } from "../../redux/apiSlices/userSlices";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
-// import logo from "../../public/images/logo.png";
 import logo from "../../public/images/HeaderLogo.png";
+// import logo from "../../public/images/logo.png";
+import { useRouter } from "next/navigation";
 
 function Header() {
   const user = useSelector((state) => state.user.user);
@@ -47,11 +46,11 @@ function Header() {
     useState(false);
 
   const navItems = [
-    { name: "Home", path: "#home" },
-    { name: "Help", path: "#help" },
-    { name: "About Us", path: "#about" },
+    { name: "Home", path: "/" },
+    { name: "What can we help with", path: "/we-can-help-with" },
+    { name: "About Us", path: "/about-us" },
     { name: "Services", path: "#services" },
-    { name: "FAQ", path: "#faq" },
+    { name: "FAQ", path: "/faqs" },
     // { name: "Testimonials", path: "#testimonials" },
     // { name: "Tips", path: "#tips" },
   ];
@@ -81,7 +80,7 @@ function Header() {
       if (res?.data) {
         setIsCreateNewPassModalOpen(true);
       } else if (res?.error) {
-        toast.error(res.error?.data?.message);
+        Swal.fire("Error", res.error?.data?.message, "error");
       }
     });
   };
@@ -121,10 +120,10 @@ function Header() {
       const res = await singUpDoctor({ ...values });
       console.log(res);
       if (res?.data) {
-        toast.success(res.data?.message);
+        Swal.fire("Success", res.data?.message, "success");
       }
       if (res.error) {
-        toast.error(res.error?.error);
+        Swal.fire("Error", res.error?.error, "error");
       }
     } else {
       const res = await signUpPatient({ ...values });
@@ -134,11 +133,11 @@ function Header() {
           localStorage.setItem("token", res.data?.data?.token);
         console.log(res.data?.data?.newUser);
         dispatch(setUser(res.data?.data?.newUser));
-        toast.success(res.data?.message);
+        Swal.fire("Success", res.data?.message, "success");
         setIsModalOpen(false);
       }
       if (res.error) {
-        toast.error(res.error?.data?.message);
+        Swal.fire("Error", res.error?.data?.message, "error");
       }
     }
     // console.log("Success:", values);
@@ -162,31 +161,31 @@ function Header() {
       const res = await loginDoctor(values);
       console.log(res);
       if (res?.data) {
-        toast.success(res.data?.message);
+        Swal.fire("Success", res.data?.message, "success");
         window.location.reload();
       }
       if (res.error) {
-        toast.error(res.error?.data?.message);
+        Swal.fire("Error", res.error?.data?.message, "error");
       }
     }
     if (!isDoctorRegistered) {
       const res = await loginPatient(values);
       console.log(res);
       if (res.error) {
-        toast.error(res.error?.error);
+        Swal.fire("Error", res.error?.error, "error");
       }
       if (res?.data) {
         res.data?.data?.token &&
           localStorage.setItem("token", res.data?.data?.token);
         console.log(res.data?.data?.user);
         dispatch(setUser(res.data?.data?.user));
-        toast.success(res.data?.message);
+        Swal.fire("Success", res.data?.message, "success");
 
         setIsSignInModalOpen(!isSignInModalOpen);
         window.location.reload();
       }
       if (res.error) {
-        toast.error(res.error?.data?.message);
+        Swal.fire("Error", res.error?.data?.message, "error");
       }
     }
     // console.log("Success:", values);
@@ -218,9 +217,9 @@ function Header() {
       if (res?.data) {
         setIsForgetPassModalOpen(false);
         setIsOtpModalOpen(true);
-        toast.success(res.data?.message);
+        Swal.fire("Success", res.data?.message, "success");
       } else if (res?.error) {
-        toast.error(res.error?.data?.message);
+        Swal.fire("Error", res.error?.data?.message, "error");
       }
     });
   };
@@ -236,9 +235,9 @@ function Header() {
         setIsOtpModalOpen(false);
         setIsCreateNewPassModalOpen(false);
         setIsSignInModalOpen(true);
-        toast.success(res.data?.message);
+        Swal.fire("Success", res.data?.message, "success");
       } else if (res?.error) {
-        toast.error(res.error?.data?.message);
+        Swal.fire("Error", res.error?.data?.message, "error");
       }
     });
   };
@@ -248,7 +247,7 @@ function Header() {
       <section
         className={`${
           navbarFixed ? "blur-background " : "bg-[#F6F2DD]"
-        } z-50 fixed w-full shadow-xl`}
+        } z-50 fixed w-full `}
       >
         <div className="container mx-auto py-4 flex flex-row justify-between items-center">
           <div>
@@ -362,7 +361,7 @@ function Header() {
           </div>
         </div>
       </section>
-      <section className="h-20 bg-gray-600"></section>
+      <section className="h-24 bg-white"></section>
 
       {/* ===================== register modal ================ */}
 
