@@ -26,7 +26,7 @@ const SettingsTermsAndConditions = () => {
   // };
 
   const handleEdit = () => {
-    router.push("/admin/dashboard/settings/terms/edit");
+    router.push("/admin/dashboard/settings/help/edit");
   };
 
   return (
@@ -37,7 +37,7 @@ const SettingsTermsAndConditions = () => {
           className="border-none text-[#193664] flex items-center gap-2 cursor-pointer"
         >
           {/* <IoIosArrowBack /> */}
-          Terms & Conditions
+          Help
         </div>
       </div>
       <div

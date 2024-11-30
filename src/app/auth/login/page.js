@@ -15,7 +15,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 import { setUser } from "../../../../redux/apiSlices/userSlices";
 
 const Login = () => {
@@ -55,7 +55,7 @@ const Login = () => {
       if (res?.data) {
         setIsCreateNewPassModalOpen(true);
       } else if (res?.error) {
-        toast.error(res.error?.data?.message);
+        Swal.fire("Error", res.error?.data?.message, "error");
       }
     });
   };
@@ -73,7 +73,7 @@ const Login = () => {
       const res = await loginDoctor(values);
       console.log(res);
       if (res?.data) {
-        toast.success(res.data?.message);
+        Swal.fire("Success", res.data?.message, "success");
         // Set the token in a cookie
         // console.log(res.data?.data?.token);
         Cookies.set("token", res.data?.data?.token, {
@@ -85,19 +85,19 @@ const Login = () => {
           path: "/",
         }); // Optional: Set user role
         dispatch(setUser(res.data?.data?.user));
-        toast.success(res.data?.message);
+        Swal.fire("Success", res.data?.message, "success");
 
         route.push("/");
       }
       if (res.error) {
-        toast.error(res.error?.data?.message);
+        Swal.fire("Error", res.error?.data?.message, "error");
       }
     }
     if (!isDoctorRegistered) {
       const res = await loginPatient(values);
       console.log(res);
       if (res.error) {
-        toast.error(res.error?.error);
+        Swal.fire("Error", res.error?.error, "error");
       }
       if (res?.data) {
         // Set the token in a cookie
@@ -111,7 +111,7 @@ const Login = () => {
           path: "/",
         }); // Optional: Set user role
         dispatch(setUser(res.data?.data?.user));
-        toast.success(res.data?.message);
+        Swal.fire("Success", res.data?.message, "success");
         if (res.data?.data?.user?.role === "patient") {
           route.push("/");
         } else if (res.data?.data?.user?.role === "doctor") {
@@ -121,7 +121,7 @@ const Login = () => {
         }
       }
       if (res.error) {
-        toast.error(res.error?.data?.message);
+        Swal.fire("Error", res.error?.data?.message, "error");
       }
     }
     // console.log("Success:", values);
@@ -136,9 +136,9 @@ const Login = () => {
       if (res?.data) {
         setIsForgetPassModalOpen(false);
         setIsOtpModalOpen(true);
-        toast.success(res.data?.message);
+        Swal.fire("Success", res.data?.message, "success");
       } else if (res?.error) {
-        toast.error(res.error?.data?.message);
+        Swal.fire("Error", res.error?.data?.message, "error");
       }
     });
   };
@@ -154,9 +154,9 @@ const Login = () => {
         setIsOtpModalOpen(false);
         setIsCreateNewPassModalOpen(false);
         setIsSignInModalOpen(true);
-        toast.success(res.data?.message);
+        Swal.fire("Success", res.data?.message, "success");
       } else if (res?.error) {
-        toast.error(res.error?.data?.message);
+        Swal.fire("Error", res.error?.data?.message, "error");
       }
     });
   };

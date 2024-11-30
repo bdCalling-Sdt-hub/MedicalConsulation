@@ -9,7 +9,7 @@ const Accordion = ({ faqs }) => {
       key: item.id,
       label: item.question,
       children: (
-        <p className="font-merri font-normal text-base text-offBlack">
+        <p className="!font-Merri font-normal text-base text-offBlack">
           {item.answer}
         </p>
       ),
@@ -19,8 +19,8 @@ const Accordion = ({ faqs }) => {
   return (
     <>
       <Collapse
-        size="small"
-        className={`font-merri font-normal text-sm text-secondaryBlack`}
+        size="large"
+        className={`!font-merri font-normal text-base text-secondaryBlack`}
         items={collapseData}
       />
     </>

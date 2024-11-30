@@ -19,7 +19,7 @@ function Services({
   };
 
   return (
-    <section id="services" className={`${containerBg || "bg-primary3 py-20"}`}>
+    <section id="services" className={`${containerBg || "bg-primary3 py-10"}`}>
       <div className="container mx-auto">
         <h1
           className={`${
@@ -35,7 +35,7 @@ function Services({
             <div
               key={index}
               onClick={() => handleSelectItem(service)}
-              className={`cursor-pointer p-4 rounded-sm h-52 flex flex-col justify-between flex-1 
+              className={`cursor-pointer p-4 rounded-sm h-40 flex flex-col justify-between flex-1 
                 ${
                   selectedItem === service
                     ? "bg-primary6 text-white"

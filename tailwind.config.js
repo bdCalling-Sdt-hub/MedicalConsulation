@@ -30,9 +30,9 @@ module.exports = {
         offBorder: "#0000000F",
       },
       fontFamily: {
-        roboto: ["Roboto", "sans-serif"],
-        abril: ["Abril Fatface", "serif"],
-        merri: ["Merriweather", "serif"],
+        Roboto: ["Roboto", "sans-serif"],
+        Abril: ["Abril Fatface", "serif"],
+        Merri: ["Merriweather", "serif"],
       },
     },
   },

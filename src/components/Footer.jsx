@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import IconFacebook from "../../public/icons/IconFacebook";
 import IconInsta from "../../public/icons/IconInsta";
 import IconLinkedin from "../../public/icons/IconLinkedin";
@@ -61,6 +62,12 @@ function Footer() {
               >
                 About Us
               </p>
+              <Link
+                href="/terms-and-conditions"
+                className={`text-sm font-merri font-normal text-black leading-[22px] mb-1 underline`}
+              >
+                Terms & Conditions
+              </Link>
             </div>
             <div>
               <h1

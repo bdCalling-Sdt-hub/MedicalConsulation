@@ -1,7 +1,7 @@
 "use client";
 
-import { useGetAllServicesQuery } from "../../redux/apiSlices/servicesSlices";
 import Image from "next/image";
+import { useGetAllServicesQuery } from "../../redux/apiSlices/servicesSlices";
 import serviceIcon from "/public/images/serviceIcon.png";
 // import ServiceIcon from "../../public/images/icons/ServiceIcon";
 
@@ -34,7 +34,7 @@ function Services({
         </h1>
 
         <div className="grid grid-cols-4 gap-4 items-center">
-          {data?.data?.result?.map((service, index) => (
+          {data?.data?.result?.slice(0, 8)?.map((service, index) => (
             <div
               key={index}
               onClick={() => handleSelectItem(service)}

@@ -12,7 +12,11 @@ import {
   FaRegUserCircle,
   FaUserCircle,
 } from "react-icons/fa";
-import { MdMedicalServices, MdOutlineSettings } from "react-icons/md";
+import {
+  MdEditDocument,
+  MdMedicalServices,
+  MdOutlineSettings,
+} from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 
 import SubMenu from "antd/es/menu/SubMenu";
@@ -20,9 +24,7 @@ import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
 import { BsMicrosoftTeams } from "react-icons/bs";
-import { CiCreditCard1 } from "react-icons/ci";
 import { FaTag } from "react-icons/fa6";
-import { IoIosCard } from "react-icons/io";
 import Logo from "../../../../../public/images/LogoFinal.png";
 // import Logo from "../../../../../public/images/HeaderLogo.png";
 import { clearUser } from "../../../../../redux/apiSlices/userSlices";
@@ -85,10 +87,22 @@ const adminMenuItems = [
         activeIcon: <FaLock size={18} color="white" />,
       },
       {
+        path: "/admin/dashboard/settings/about-us",
+        title: "About Us",
+        icon: <MdEditDocument color="white" size={18} />,
+        activeIcon: <MdEditDocument color="white" size={18} />,
+      },
+      {
+        path: "/admin/dashboard/settings/help",
+        title: "Help",
+        icon: <MdEditDocument color="white" size={18} />,
+        activeIcon: <MdEditDocument color="white" size={18} />,
+      },
+      {
         path: "/admin/dashboard/settings/terms",
         title: "Terms & Conditions",
-        icon: <CiCreditCard1 color="white" size={18} />,
-        activeIcon: <IoIosCard color="white" size={18} />,
+        icon: <MdEditDocument color="white" size={18} />,
+        activeIcon: <MdEditDocument color="white" size={18} />,
       },
     ],
   },

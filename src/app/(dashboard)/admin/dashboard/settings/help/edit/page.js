@@ -33,16 +33,16 @@ const EditTermsAndCondition = () => {
     if (res?.data) {
       Swal.fire({
         title: "Good job!",
-        text: "Terms and Conditions updated successfully!",
+        text: " Help updated successfully!",
         icon: "success",
       }).then(() => {
-        route.push("/admin/dashboard/settings/terms");
+        route.push("/admin/dashboard/settings/help");
       });
     }
   };
 
   const handleBackTermsAndCondition = () => {
-    route.push("/admin/dashboard/settings/terms");
+    route.push("/admin/dashboard/settings/help");
   };
 
   // Effect to set content from query data
@@ -65,7 +65,7 @@ const EditTermsAndCondition = () => {
         className="mt-[44px] cursor-pointer flex items-center pb-3 gap-2"
       >
         <MdOutlineKeyboardArrowLeft size={34} />
-        <h1 className="text-[24px] font-semibold">Edit Terms & Condition</h1>
+        <h1 className="text-[24px] font-semibold">Edit Help</h1>
       </div>
       <div className="text-justify mt-[24px] relative">
         {isMounted ? ( // Only render editor on client

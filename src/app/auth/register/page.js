@@ -11,7 +11,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
 import { setUser } from "../../../../redux/apiSlices/userSlices";
 
 const Login = () => {
@@ -28,7 +27,7 @@ const Login = () => {
       const res = await singUpDoctor({ ...values });
       console.log(res);
       if (res?.data) {
-        toast.success(res.data?.message);
+        Swal.fire("Success", res.data?.message, "success");
         // Set the token in a cookie
         // console.log(res.data?.data?.token);
         Cookies.set("token", res.data?.data?.token, {
@@ -43,7 +42,7 @@ const Login = () => {
         route.push("/");
       }
       if (res.error) {
-        toast.error(res.error?.error);
+        Swal.fire("Error", res.error?.error, "error");
       }
     } else {
       const res = await signUpPatient({ ...values });
@@ -62,10 +61,10 @@ const Login = () => {
           path: "/",
         }); // Optional: Set user role
         dispatch(setUser(res.data?.data?.newUser));
-        toast.success(res.data?.message);
+        Swal.fire("Success", res.data?.message, "success");
       }
       if (res.error) {
-        toast.error(res.error?.data?.message);
+        Swal.fire("Error", res.error?.data?.message, "error");
       }
     }
     // console.log("Success:", values);

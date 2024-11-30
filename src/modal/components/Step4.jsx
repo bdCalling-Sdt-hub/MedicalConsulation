@@ -13,7 +13,7 @@ import {
 
 import { loadStripe } from "@stripe/stripe-js";
 import { useState } from "react";
-import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const stripePromise = loadStripe(
   "pk_test_51Q51euIE7z8j8FQDRAixwTBcDJS0zyz8wjvgZVn64nZKzjxyVSdzEPIccMiD3hND02GAHRU8y2eB92YO1tcL1PQk00M6ydxlfZ"
@@ -159,9 +159,8 @@ export const CheckoutForm = ({
         appointmentId: createdAppointment?._id,
         paymentIntent: paymentIntent?.paymentIntent,
       });
-      toast.success("Payment Successful");
-      console.log(paymentIntent, "paymentIntent");
-      setCurrentStep(5);
+      Swal.fire("Success", "Payment done successfully!", "success");
+      setCurrentStep(6);
       setIsPaid(true);
     }
     setProcessing(false);
