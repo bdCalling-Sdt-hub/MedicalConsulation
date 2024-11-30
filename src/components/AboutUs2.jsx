@@ -14,7 +14,7 @@ function AboutUs2() {
             </h1>
             <div className="mt-12 w-full justify-items-center">
               <Link
-                href="/#book"
+                href="/booking"
                 className="text-white bg-primary10 !font-merri text-base py-2 px-6 rounded-sm font-normal "
               >
                 Book Now

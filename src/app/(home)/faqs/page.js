@@ -14,7 +14,7 @@ const FAQS = () => {
   return (
     <div className="container mx-auto my-12">
       <div className="justify-center items-center w-full ">
-        <Breadcrumb className="flex justify-center items-center py-10 text-lg">
+        <Breadcrumb className="flex justify-center items-center  text-lg">
           <Breadcrumb.Item>Home</Breadcrumb.Item>
           <Breadcrumb.Item>FAQs</Breadcrumb.Item>
         </Breadcrumb>

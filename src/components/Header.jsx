@@ -22,7 +22,6 @@ import logo from "../../public/images/HeaderLogo.png";
 // import logo from "../../public/images/logo.png";
 import { useRouter } from "next/navigation";
 
-
 function Header() {
   const user = useSelector((state) => state.user.user);
   const route = useRouter();
@@ -46,13 +45,12 @@ function Header() {
   const [isCreateNewPassModalOpen, setIsCreateNewPassModalOpen] =
     useState(false);
 
-
+  const navItems = [
     { name: "Home", path: "/" },
     { name: "What can we help with", path: "/we-can-help-with" },
     { name: "About Us", path: "/about-us" },
     { name: "Services", path: "#services" },
     { name: "FAQ", path: "/faqs" },
-
     // { name: "Testimonials", path: "#testimonials" },
     // { name: "Tips", path: "#tips" },
   ];
@@ -249,9 +247,8 @@ function Header() {
       <section
         className={`${
           navbarFixed ? "blur-background " : "bg-[#F6F2DD]"
-
         } z-50 fixed w-full `}
-
+      >
         <div className="container mx-auto py-4 flex flex-row justify-between items-center">
           <div>
             <Image src={logo} alt="logo" height={60} width={161.76} />

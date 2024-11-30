@@ -1,19 +1,17 @@
 "use client";
 
 import { Breadcrumb } from "antd";
-import { usePathname } from "next/navigation";
 import { useGetTermsAndConditionQuery } from "../../../../redux/apiSlices/tramsAndConditionsSlices";
 import AboutUs2 from "../../../components/AboutUs2";
 
 const AboutPage = () => {
-  const pathName = usePathname();
-  console.log(pathName);
+  // console.log(pathName);
   const { data: termsAndCondition } = useGetTermsAndConditionQuery();
   // console.log(termsAndCondition);
   return (
     <div className=" my-12">
       <div className="container mx-auto justify-center items-center w-full ">
-        <Breadcrumb className="flex justify-center items-center py-10 text-lg">
+        <Breadcrumb className="flex justify-center items-center pb-10 text-lg">
           <Breadcrumb.Item>Home</Breadcrumb.Item>
           <Breadcrumb.Item>About Us</Breadcrumb.Item>
         </Breadcrumb>
