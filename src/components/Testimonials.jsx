@@ -10,7 +10,7 @@ function Testimonials() {
   console.log(reviews);
 
   return (
-    <section id="testimonials" className={`py-20 bg-primary1`}>
+    <section id="testimonials" className={`py-20 bg-primary1 my-12`}>
       <div className="container mx-auto">
         <h1
           className={`text-primary10 text-[32px] leading-[22px] font-merri mb-6`}

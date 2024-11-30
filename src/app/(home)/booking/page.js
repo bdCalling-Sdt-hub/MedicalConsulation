@@ -1,34 +1,29 @@
 "use client";
 
-import "react-toastify/dist/ReactToastify.css";
-
 import { useCallback, useState } from "react";
 import {
   useAddEmailForZoomLinkMutation,
   useBookCreateAppointmentMutation,
-} from "../../redux/apiSlices/appointmentsSlices";
+} from "../../../../redux/apiSlices/appointmentsSlices";
 
-import { Modal } from "antd";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-
 import Swal from "sweetalert2";
-import IconRightArrow from "../../public/icons/IconRightArrow";
-import Services from "../components/Services";
+import IconRightArrow from "../../../../public/icons/IconRightArrow";
+import Services from "../../../components/Services";
+import NewStep from "../../../modal/components/NewStep";
+import Step3 from "../../../modal/components/Step3";
+import Step4 from "../../../modal/components/Step4";
+import Step5 from "../../../modal/components/Step5";
+import UserConsentAgreement from "../../../modal/components/UserConsentAgreement";
 
-import NewStep from "./components/NewStep";
-import Step3 from "./components/Step3";
-import Step4 from "./components/Step4";
-import Step5 from "./components/Step5";
-
-import UserConsentAgreement from "./components/UserConsentAgreement";
-
-
-function BookNow() {
+const Booking = () => {
   const user = useSelector((state) => state.user.user);
   const [createAppointment] = useBookCreateAppointmentMutation({});
   const [addEmailForZoomLink] = useAddEmailForZoomLinkMutation({});
-  const route = useRouter();
+
+  const router = useRouter();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -51,40 +46,20 @@ function BookNow() {
     setConsentStatus(updatedConsents);
   };
   //
-  const showModal = () => {
-    if (!user?.email) {
-      route.push("/auth/login");
-      return;
-    }
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-
-    setCurrentStep(1);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-    setCurrentStep(1);
-  };
 
   const handleNext = () => {
     if (currentStep === 6) {
       handleAddEmailForZoomLink({
         email: extraUserEmail || user.email,
         appointmentId: createdAppointment?._id,
+      }).then(() => {
+        Swal.fire(
+          "Congratulations!",
+          "Your appointment created successfully!",
+          "success"
+        );
+        router.push("/");
       });
-      setIsModalOpen(false);
-
-      Swal.fire(
-        "Congratulations!",
-        "Your appointment created successfully!",
-        "success"
-      );
-
-      handleCancel();
     } else if (currentStep === 3) {
       handleCreateAppointment({
         ...dateTime,
@@ -117,9 +92,7 @@ function BookNow() {
           setCurrentStep(4);
         }
         if (response?.error) {
-
           Swal.fire("Error", response?.error?.data?.message, "error");
-
         }
       } catch (error) {
         console.log(error);
@@ -136,12 +109,10 @@ function BookNow() {
         const response = await addEmailForZoomLink(UData);
         console.log(response);
         if (response?.data) {
-
-          Swal.fire("Success", response?.data?.message, "success");
+          Swal.fire("Good job!", "Your email has been added!", "success");
         }
         if (response?.error) {
           Swal.fire("Error", response?.error?.data?.message, "error");
-
         }
       } catch (error) {
         console.log(error);
@@ -151,50 +122,8 @@ function BookNow() {
   );
 
   return (
-    <>
-      <section id="book" className="py-20 bg-[#fffcee] h-full">
-        <div className="container mx-auto">
-          <div>
-            <h1 className="text-[#000] text-[48px] font-normal font-merri text-center">
-              Book an Appointment
-            </h1>
-            {/* <p className="text-primary3 text-base leading-[30px] font-roboto font-normal text-center mt-2">
-              Connect with qualified, GMC-registered medical professionals from
-              the <br />
-              comfort of your home. For your convenience, we currently offer
-              telephone <br />
-              and video consultations tailored to your needs. Enjoy secure,
-              personalized <br />
-              care, and seamless integration with NHS services. Book your
-              appointment <br />
-              today and discover the unparalleled benefits of MyDoctorClinic.
-            </p> */}
-            <div className="text-center">
-              <button
-                className="text-secondaryBlack bg-primary6 text-center font-merri text-2xl py-3 px-7 rounded-md font-bold mt-7"
-
-                onClick={() => {
-                  // showModal();
-                  route.push("/booking");
-                }}
-
-              >
-                Book Now
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <Modal
-        open={isModalOpen}
-        onCancel={handleCancel}
-        footer={null}
-        maskClosable={false}
-        centered
-        width={"70%"}
-        closeIcon={<span style={{ color: "red", fontSize: "24px" }}>×</span>}
-      >
+    <div className=" container mx-auto  my-10">
+      <div className=" bg-primary1 rounded-md">
         <div className="p-4">
           {/* Steps navigation */}
           <div className="flex flex-row items-center gap-4 mb-4">
@@ -335,9 +264,9 @@ function BookNow() {
             </button>
           </div>
         </div>
-      </Modal>
-    </>
+      </div>
+    </div>
   );
-}
+};
 
-export default BookNow;
+export default Booking;

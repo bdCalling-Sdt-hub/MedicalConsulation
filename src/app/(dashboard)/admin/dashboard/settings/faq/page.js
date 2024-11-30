@@ -155,7 +155,7 @@ const FaqsComponent = ({ faq }) => {
   }, [edit, faq, form]);
 
   return (
-    <div className=" border border-bg-primary1 bg-primary2 rounded-lg p-3 mb-3 flex justify-between items-start">
+    <div className=" border border-bg-primary1 bg-white rounded-lg p-3 mb-3 flex justify-between items-start">
       {edit ? (
         <>
           <Form
@@ -207,7 +207,7 @@ const FaqsComponent = ({ faq }) => {
               <span className=" text-md"> {faq?.answer}</span>
             </p>
           </div>
-          <div>
+          <div className="items-center justify-center">
             <Button
               icon={<EditOutlined />}
               type="secondary"
@@ -219,7 +219,7 @@ const FaqsComponent = ({ faq }) => {
             </Button>
             <Button
               icon={<Trash2 />}
-              type="primary"
+              type="secondary"
               danger
               onClick={() => {
                 handleDeleteService();
