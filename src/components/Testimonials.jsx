@@ -7,7 +7,7 @@ const { Text } = Typography;
 function Testimonials() {
   const { data: reviews } = useGetAllReviewsQuery({});
 
-  console.log(reviews);
+  console.log("reviews", reviews);
 
   return (
     <section id="testimonials" className={`py-20 bg-primary1`}>
@@ -26,7 +26,11 @@ function Testimonials() {
                   <Row justify="space-between" align="middle">
                     <div className="flex items-center gap-3">
                       <Avatar>A</Avatar>
-                      <Text strong>Abir Hossain</Text>
+                      <Text strong>
+                        {item?.userId?.name ||
+                          item.userId?.email ||
+                          `Abir Hossain`}
+                      </Text>
                     </div>
                     <Rate
                       style={{ fontSize: "12px" }}
