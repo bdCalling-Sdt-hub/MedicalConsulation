@@ -9,7 +9,9 @@ function Services({
   selectedItem,
   setSelectedItem,
 }) {
-  const { data, isError, error } = useGetAllServicesQuery({});
+  const { data, isError, error } = useGetAllServicesQuery({
+    hasDateTime: true,
+  });
 
   // console.log(data);
 
@@ -17,6 +19,10 @@ function Services({
   const handleSelectItem = (item) => {
     setSelectedItem && setSelectedItem(item); // Set the clicked item as the selected item
   };
+
+  const filteredData = data?.data?.result?.filter(
+    (service) => service?.dateTimes?.length > 0
+  );
 
   return (
     <section id="services" className={`${containerBg || "bg-primary3 py-10"}`}>
@@ -40,7 +46,8 @@ function Services({
                   selectedItem === service
                     ? "bg-primary6 text-white"
                     : "bg-white border border-neutral4 text-black"
-                }`} // Conditional styles for the selected item
+                }
+                `} // Conditional styles for the selected item
             >
               <h1
                 className={`text-lg font-roboto ${

@@ -3,8 +3,8 @@ import { api } from "../api/baseApi";
 export const servicesSlices = api.injectEndpoints({
   endpoints: (builder) => ({
     getAllServices: builder.query({
-      query: ({ id, page, limit }) => ({
-        url: `service/get-all-services?page=${page}&limit=${limit}`,
+      query: ({ id, page, limit, hasDateTime }) => ({
+        url: `service/get-all-services?page=${page}&limit=${limit}&hasDateTime=${hasDateTime}`,
       }),
       providesTags: ["services"],
     }),
