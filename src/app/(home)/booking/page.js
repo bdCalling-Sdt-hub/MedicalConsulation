@@ -18,7 +18,7 @@ import Step5 from "../../../modal/components/Step5";
 import UserConsentAgreement from "../../../modal/components/UserConsentAgreement";
 
 const Booking = (pops) => {
-  console.log(pops?.searchParams);
+  // console.log(pops?.searchParams);
   const user = useSelector((state) => state.user.user);
   const [createAppointment] = useBookCreateAppointmentMutation({});
   const [addEmailForZoomLink] = useAddEmailForZoomLinkMutation({});
@@ -128,7 +128,7 @@ const Booking = (pops) => {
       setSelectedItem(pops?.searchParams);
       setCurrentStep(2);
     }
-  }, []);
+  }, [pops?.searchParams]);
 
   return (
     <div className=" container mx-auto  my-10">
