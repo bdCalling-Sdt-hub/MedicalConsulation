@@ -85,6 +85,8 @@ export const api = createApi({
     "prescription",
     "review",
     "termsAndCondition",
+    "help",
+    "about",
     "faqs",
     "notifications",
     "payment",

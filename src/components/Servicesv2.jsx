@@ -1,11 +1,10 @@
 "use client";
 
-
 import Image from "next/image";
+import Link from "next/link";
 import { useGetAllServicesQuery } from "../../redux/apiSlices/servicesSlices";
-
-
 import serviceIcon from "/public/images/serviceIcon.png";
+
 // import ServiceIcon from "../../public/images/icons/ServiceIcon";
 
 function Services({
@@ -21,6 +20,7 @@ function Services({
 
   // Function to handle selecting an item
   const handleSelectItem = (item) => {
+    console.log(item);
     setSelectedItem && setSelectedItem(item); // Set the clicked item as the selected item
   };
 
@@ -37,10 +37,12 @@ function Services({
         </h1>
 
         <div className="grid grid-cols-4 gap-4 items-center">
-
           {data?.data?.result?.slice(0, 8)?.map((service, index) => (
-
-            <div
+            <Link
+              href={{
+                pathname: "/booking",
+                query: service,
+              }}
               key={index}
               onClick={() => handleSelectItem(service)}
               className={`cursor-pointer p-4 rounded-sm h-52 flex flex-col justify-between flex-1 
@@ -70,7 +72,7 @@ function Services({
               >
                 &#163; {service?.price}
               </p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
