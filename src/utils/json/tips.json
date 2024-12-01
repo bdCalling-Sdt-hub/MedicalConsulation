@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "title": "The Book of Kells Experience",
+    "subtitle": "Tourist attraction in Dublin, Ireland",
+    "image_url": "https://images.unsplash.com/photo-1613241364689-96b383cf50d9?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "is_favorite": true,
+    "color": "#FC5D88"
+  },
+  {
+    "id": 2,
+    "title": "The Moscow Kremlin",
+    "subtitle": "Kremlin in Moscow, Russia",
+    "image_url": "https://images.unsplash.com/photo-1725552372544-d41ee1a86259?q=80&w=1750&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "is_favorite": false,
+    "color": "#FFA94D"
+  },
+  {
+    "id": 3,
+    "title": "The Louvre Museum",
+    "subtitle": "Museum in Paris, France",
+    "image_url": "https://images.unsplash.com/photo-1709027615779-25af6606a61e?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "is_favorite": true,
+    "color": "#FC5D88"
+  },
+  {
+    "id": 4,
+    "title": "Colosseum",
+    "subtitle": "Historical landmark in Rome, Italy",
+    "image_url": "https://images.unsplash.com/photo-1679965213584-9ef479ecf1ac?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "is_favorite": false,
+    "color": "#8C78EA"
+  },
+  {
+    "id": 5,
+    "title": "Statue of Liberty",
+    "subtitle": "Monument in New York, USA",
+    "image_url": "https://images.unsplash.com/photo-1677389931416-9832636048ff?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "is_favorite": true,
+    "color": "#FFA94D"
+  },
+  {
+    "id": 6,
+    "title": "Taj Mahal",
+    "subtitle": "Historical landmark in Agra, India",
+    "image_url": "https://media.istockphoto.com/id/1491722807/photo/singer-man-singing-in-a-music-concert.webp?s=612x612&w=is&k=20&c=Z2_ay2cvrshBZqzvCw0yQYHfdYN22I1dZZhKgAer9Z0=",
+    "is_favorite": false,
+    "color": "#8C78EA"
+  },
+  {
+    "id": 7,
+    "title": "Great Wall of China",
+    "subtitle": "Historical landmark in Beijing, China",
+    "image_url": "https://images.unsplash.com/photo-1613241364689-96b383cf50d9?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "is_favorite": true,
+    "color": "#8C78EA"
+  },
+  {
+    "id": 8,
+    "title": "Machu Picchu",
+    "subtitle": "Inca site in Peru",
+    "image_url": "https://images.unsplash.com/photo-1679965213584-9ef479ecf1ac?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "is_favorite": false,
+    "color": "#FFA94D"
+  },
+  {
+    "id": 9,
+    "title": "Sydney Opera House",
+    "subtitle": "Performing arts center in Sydney, Australia",
+    "image_url": "https://images.unsplash.com/photo-1709027615779-25af6606a61e?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "is_favorite": true,
+    "color": "#8C78EA"
+  },
+  {
+    "id": 10,
+    "title": "Christ the Redeemer",
+    "subtitle": "Monument in Rio de Janeiro, Brazil",
+    "image_url": "https://images.unsplash.com/photo-1725552372544-d41ee1a86259?q=80&w=1750&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "is_favorite": false,
+    "color": "#FFA94D"
+  }
+]

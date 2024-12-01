@@ -1,12 +1,12 @@
 import { extractDateTimeParts } from "../../utils/extractDateTimeParts";
 
 function Step3({ selectedItem, setDateTime, dateTime }) {
-  if (selectedItem) {
-    selectedItem.dateTimes =
-      typeof selectedItem.dateTimes === "string"
-        ? [selectedItem.dateTimes]
-        : selectedItem.dateTimes;
-  }
+  // if (selectedItem) {
+  //   selectedItem.dateTimes =
+  //     typeof selectedItem.dateTimes === "string"
+  //       ? [selectedItem.dateTimes]
+  //       : selectedItem.dateTimes;
+  // }
 
   return (
     <div>

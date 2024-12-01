@@ -1,3 +1,4 @@
+import tipsImage from "../../src/utils/json/tips.json";
 import { Button, Form, Input, Modal, Spin } from "antd";
 import { useEffect, useState } from "react";
 import {
@@ -73,6 +74,12 @@ const TipsCard = ({ link, user = true }) => {
     });
   };
 
+  console.log(selectedItem?.ogImage);
+  console.log(
+    "tips image",
+    tipsImage[Math.floor(Math.random() * 10)].image_url
+  );
+
   return (
     <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow relative">
       {loading ? (
@@ -83,7 +90,12 @@ const TipsCard = ({ link, user = true }) => {
         <Link href={link?.url}>
           {selectedItem?.twitterImage?.length > 0 ? (
             <img
-              src={selectedItem.twitterImage[0].url}
+              src={
+                selectedItem.twitterImage[0].url
+                  ? selectedItem.twitterImage[0].url
+                  : // selectedItem.ogImage[0].url ||
+                    tipsImage[Math.floor(Math.random() * 10)].image_url
+              }
               alt={selectedItem?.title || "Preview Image"}
               width={500}
               height={300}
@@ -91,7 +103,9 @@ const TipsCard = ({ link, user = true }) => {
             />
           ) : (
             <img
-              src={link?.url}
+              src={
+                link?.url || tipsImage[Math.floor(Math.random() * 10)].image_url
+              }
               alt="No preview available"
               width={500}
               height={300}
