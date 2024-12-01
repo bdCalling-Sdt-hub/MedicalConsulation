@@ -14,7 +14,9 @@ function Services({
   selectedItem,
   setSelectedItem,
 }) {
-  const { data, isError, error } = useGetAllServicesQuery({});
+  const { data, isError, error } = useGetAllServicesQuery({
+    hasDateTime: true,
+  });
 
   // console.log(data);
 
