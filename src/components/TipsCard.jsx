@@ -91,10 +91,9 @@ const TipsCard = ({ link, user = true }) => {
           {selectedItem?.twitterImage?.length > 0 ? (
             <img
               src={
-                selectedItem.twitterImage[0].url
-                  ? selectedItem.twitterImage[0].url
-                  : // selectedItem.ogImage[0].url ||
-                    tipsImage[Math.floor(Math.random() * 10)].image_url
+                selectedItem.twitterImage[0].url ||
+                // selectedItem.ogImage[0].url ||
+                tipsImage[Math.floor(Math.random() * 10)].image_url
               }
               alt={selectedItem?.title || "Preview Image"}
               width={500}
@@ -104,7 +103,8 @@ const TipsCard = ({ link, user = true }) => {
           ) : (
             <img
               src={
-                link?.url || tipsImage[Math.floor(Math.random() * 10)].image_url
+                // link?.url ||
+                tipsImage[Math.floor(Math.random() * 10)].image_url
               }
               alt="No preview available"
               width={500}
