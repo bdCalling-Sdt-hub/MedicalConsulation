@@ -47,12 +47,19 @@ function BookNow() {
     setConsentStatus(updatedConsents);
   };
   //
-  const showModal = () => {
+  // const showModal = () => {
+  //   if (!user?.email) {
+  //     route.push("/auth/login");
+  //     return;
+  //   }
+  //   setIsModalOpen(true);
+  // };
+  const handleBookNow = () => {
     if (!user?.email) {
       route.push("/auth/login");
       return;
     }
-    setIsModalOpen(true);
+    route.push("/booking");
   };
 
   const handleOk = () => {
@@ -166,7 +173,8 @@ function BookNow() {
                 className="text-secondaryBlack bg-primary6 text-center font-merri text-2xl py-3 px-7 rounded-md font-bold mt-7"
                 onClick={() => {
                   // showModal();
-                  route.push("/booking");
+                  // route.push("/booking");
+                  handleBookNow();
                 }}
               >
                 Book Now

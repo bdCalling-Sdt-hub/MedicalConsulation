@@ -23,7 +23,7 @@ const AboutPage = () => {
       {/* about us 2 section */}
       <AboutUs2 />
       <div className="container mx-auto pt-12">
-        <p className="text-primary9 font-semibold">About Up</p>
+        {/* <p className="text-primary9 font-semibold">About Us</p> */}
       </div>
       <div
         dangerouslySetInnerHTML={{

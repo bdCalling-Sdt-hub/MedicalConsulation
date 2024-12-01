@@ -30,6 +30,7 @@ const EditTermsAndCondition = () => {
   // Handle update functionality
   const handleUpdate = async () => {
     const res = await createHelp({ content });
+    // console.log(res);
     if (res?.data) {
       Swal.fire({
         title: "Good job!",

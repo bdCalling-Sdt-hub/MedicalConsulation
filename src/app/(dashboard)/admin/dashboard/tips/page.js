@@ -1,5 +1,5 @@
 "use client";
-
+import tipsImage from "../../../../../../src/utils/json/tips.json";
 import { Button, Form, Input, Modal, Spin } from "antd";
 import {
   useAddTipsMutation,
@@ -78,6 +78,9 @@ function AddTips() {
       });
   };
 
+  console.log("tips", tipsImage[0].image_url);
+  console.log("tips", tipsImage);
+
   return (
     <>
       <div className="flex justify-between">
@@ -153,7 +156,11 @@ function AddTips() {
                             return (
                               <img
                                 key={image?.url}
-                                src={image?.url}
+                                src={
+                                  image?.url ||
+                                  tipsImage[Math.floor(Math.random() * 10)]
+                                    .image_url
+                                }
                                 alt={selectedItem?.title || "Preview Image"}
                                 width={500}
                                 height={300}
@@ -163,7 +170,10 @@ function AddTips() {
                           })
                       ) : (
                         <img
-                          src={link?.url} // Fallback image
+                          src={
+                            link?.url ||
+                            tipsImage[Math.floor(Math.random() * 10)].image_url
+                          } // Fallback image
                           alt="No preview available"
                           width={500}
                           height={300}
