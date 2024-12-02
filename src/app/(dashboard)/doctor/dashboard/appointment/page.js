@@ -40,6 +40,7 @@ const Appointment = () => {
   const { data: doctorAppointments } = useGetAppointmentDoctorByIdQuery({
     page: currentPage,
     limit: 10,
+    status: selectedValue || "",
   });
   console.log(doctorAppointments);
 
