@@ -34,6 +34,7 @@ const Appointment = () => {
   const [role, setRole] = useState();
   const [openPrescriptionModal, setOpenPrescriptionModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState();
+  const [searchTerm, setSearchTerm] = useState("");
 
   const user = useSelector((state) => state.user.user);
   console.log(user?._id);
@@ -41,6 +42,7 @@ const Appointment = () => {
     page: currentPage,
     limit: 10,
     status: selectedValue || "",
+    search: searchTerm,
   });
   console.log(doctorAppointments);
 
@@ -211,6 +213,9 @@ const Appointment = () => {
   const handlePage = (page) => {
     setCurrentPage(page);
   };
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   const handleUser = (record) => {
     // Use the navigate function to redirect to the appointment/patientProfile with the ID
@@ -233,6 +238,7 @@ const Appointment = () => {
           prefix={<Search />}
           className="w-1/2 rounded-2xl h-12 bg-base border-0 text-primary placeholder:text-gray-200"
           placeholder="Search by email"
+          onChange={handleSearch}
           style={{
             backgroundColor: "#f0f0f0",
             color: "#333333",
