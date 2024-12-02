@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../../redux/apiSlices/userSlices";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const route = useRouter();
@@ -28,6 +29,7 @@ const Login = () => {
       console.log(res);
       if (res?.data) {
         Swal.fire("Success", res.data?.message, "success");
+
         // Set the token in a cookie
         // console.log(res.data?.data?.token);
         Cookies.set("token", res.data?.data?.token, {
@@ -42,7 +44,7 @@ const Login = () => {
         route.push("/");
       }
       if (res.error) {
-        Swal.fire("Error", res.error?.error, "error");
+        Swal.fire("Already Applied", res.error?.data?.message, "error");
       }
     } else {
       const res = await signUpPatient({ ...values });
