@@ -12,7 +12,8 @@ export const appointmentsSlices = api.injectEndpoints({
       providesTags: ["appointments"],
     }),
     getAppointmentPatientById: builder.query({
-      query: (id) => `/appointment/get-appointment-by-patientId/`,
+      query: ({ page, limit, status }) =>
+        `/appointment/get-appointment-by-patientId?page=${page}&limit=${limit}&status=${status}`,
       providesTags: ["appointments"],
     }),
     getAppointmentDoctorById: builder.query({

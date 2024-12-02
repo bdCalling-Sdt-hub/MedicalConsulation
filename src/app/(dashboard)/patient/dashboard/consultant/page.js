@@ -35,11 +35,15 @@ const Appointment = () => {
   const [openPrescriptionModal, setOpenPrescriptionModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState();
 
+  console.log("selectOptions", selectOptions);
+  console.log("selectedValue", selectedValue);
+
   const user = useSelector((state) => state.user.user);
   console.log(user?._id);
   const { data: doctorAppointments } = useGetAppointmentPatientByIdQuery({
     page: currentPage,
     limit: 10,
+    status: selectedValue || "",
   });
   console.log(doctorAppointments);
 
@@ -54,7 +58,7 @@ const Appointment = () => {
 
   const columns = [
     {
-      title: "Patient Email",
+      title: "Email",
       dataIndex: "patientEmail",
       key: "patientEmail",
       render: (_, record) => (
@@ -224,6 +228,8 @@ const Appointment = () => {
   const handleSelectChange = (value) => {
     setSelectedValue(value);
     console.log("Selected", value);
+    // console.log("Select Options", selectOptions.value);
+    console.log("selectedValue", selectedValue);
   };
   return (
     <div>
