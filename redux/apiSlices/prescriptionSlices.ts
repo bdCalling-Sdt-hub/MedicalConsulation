@@ -25,6 +25,13 @@ export const faqsSlices = api.injectEndpoints({
       }),
       invalidatesTags: ["prescription", "appointments"],
     }),
+    downloadPrescription: builder.mutation({
+      query: (prescriptionId) => ({
+        url: `/prescription/download-prescription/${prescriptionId}`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["prescription"],
+    }),
 
     deleteFaqs: builder.mutation({
       query: (id) => ({
@@ -41,4 +48,5 @@ export const {
   useDeleteFaqsMutation,
   useGetPrescriptionByAppointmentIdQuery,
   useEditPrescriptionMutation,
+  useDownloadPrescriptionMutation,
 } = faqsSlices;

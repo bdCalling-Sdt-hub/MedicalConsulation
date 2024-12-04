@@ -20,6 +20,7 @@ import {
 import {
   useAddPrescriptionMutation,
   useEditPrescriptionMutation,
+  useDownloadPrescriptionMutation,
 } from "../../../../../../../redux/apiSlices/prescriptionSlices";
 
 import { InfoCircleOutlined, CloudDownloadOutlined } from "@ant-design/icons";
@@ -47,8 +48,11 @@ const AppointmentDetails = (props) => {
   const [selectPrescriptionData, setSelectPrescriptionData] = useState(null);
   const componentRef = useRef();
 
-  const generatePdf = async () => {
+  const generatePdf = async (item) => {
     const element = componentRef.current;
+
+    console.log("element generatePdf", element);
+    console.log("item generatePdf clicked", item);
 
     if (!element) return;
 
@@ -100,6 +104,7 @@ const AppointmentDetails = (props) => {
   const [editNote] = useEditNoteMutation();
   const [addPrescription] = useAddPrescriptionMutation();
   const [editPrescription] = useEditPrescriptionMutation();
+  const [downloadPrescription] = useDownloadPrescriptionMutation();
 
   const handleNoteSubmit = async (values) => {
     // console.log(values);
@@ -344,29 +349,31 @@ const AppointmentDetails = (props) => {
             <h1 className="text-lg text-gray-600 py-3">Prescription</h1>
           </div>
           {Appointments?.data?.prescription?.length > 0 ? (
-            <div ref={componentRef}>
+            <>
               {Appointments?.data?.prescription?.map((item, index) => (
-                <Space
-                  key={index}
-                  direction="vertical"
-                  style={{ width: "100%" }}
-                >
-                  <Card
-                    bordered
-                    hoverable
-                    style={{
-                      marginBottom: "16px",
-                      borderRadius: "10px",
-                      padding: "20px",
-                      position: "relative",
-                      border: "1px solid #e0e0e0",
-                      boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.05)",
-                      transition: "transform 0.2s",
-                    }}
-                    bodyStyle={{ padding: 10 }}
+                <div key={index}>
+                  <Space
+                    key={index}
+                    direction="vertical"
+                    style={{ width: "100%" }}
                   >
-                    {/* Edit button in top-right corner */}
-                    {/* <Button
+                    <Card
+                      bordered
+                      hoverable
+                      style={{
+                        marginBottom: "16px",
+                        borderRadius: "10px",
+                        padding: "20px",
+                        position: "relative",
+                        border: "1px solid #e0e0e0",
+                        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.05)",
+                        transition: "transform 0.2s",
+                      }}
+                      bodyStyle={{ padding: 10 }}
+                      ref={componentRef}
+                    >
+                      {/* Edit button in top-right corner */}
+                      {/* <Button
                       type="text"
                       icon={<EditOutlined />}
                       style={{
@@ -377,55 +384,56 @@ const AppointmentDetails = (props) => {
                       }}
                       onClick={() => prescriptionModalClicked(item)} // Replace with actual edit handler
                     /> */}
-                    <Title
-                      level={5}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        fontWeight: 600,
-                        color: "#333",
-                      }}
-                    >
-                      <InfoCircleOutlined
+                      <Title
+                        level={5}
                         style={{
-                          marginRight: "10px",
-                          color: "#1890ff",
-                          fontSize: "18px",
+                          display: "flex",
+                          alignItems: "center",
+                          fontWeight: 600,
+                          color: "#333",
+                        }}
+                      >
+                        <InfoCircleOutlined
+                          style={{
+                            marginRight: "10px",
+                            color: "#1890ff",
+                            fontSize: "18px",
+                          }}
+                        />
+                        {item?.title}
+                      </Title>
+                      <Divider
+                        style={{
+                          margin: "8px 0",
+                          borderTop: "1px solid #e0e0e0",
                         }}
                       />
-                      {item?.title}
-                    </Title>
-                    <Divider
-                      style={{
-                        margin: "8px 0",
-                        borderTop: "1px solid #e0e0e0",
-                      }}
-                    />
-                    <Text
-                      style={{
-                        fontSize: "16px",
-                        color: "#595959",
-                        lineHeight: "1.7",
-                        whiteSpace: "pre-line",
-                      }}
-                    >
-                      {item?.content}
-                    </Text>
-                  </Card>
-                  <div className="flex flex-col items-end py-2">
-                    <Button
-                      icon={<CloudDownloadOutlined />}
-                      type="text"
-                      size="small"
-                      className="h-10 bg-primary6 text-white"
-                      onClick={generatePdf}
-                    >
-                      Download Prescription
-                    </Button>
-                  </div>
-                </Space>
+                      <Text
+                        style={{
+                          fontSize: "16px",
+                          color: "#595959",
+                          lineHeight: "1.7",
+                          whiteSpace: "pre-line",
+                        }}
+                      >
+                        {item?.content}
+                      </Text>
+                      <div className="flex flex-col items-end py-2">
+                        <Button
+                          icon={<CloudDownloadOutlined />}
+                          type="text"
+                          size="small"
+                          className="h-10 bg-primary6 text-white"
+                          onClick={() => generatePdf(item)}
+                        >
+                          Download Prescription
+                        </Button>
+                      </div>
+                    </Card>
+                  </Space>
+                </div>
               ))}
-            </div>
+            </>
           ) : (
             <div className="flex justify-center items-center">
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
