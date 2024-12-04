@@ -11,6 +11,8 @@ import {
   Space,
   Typography,
 } from "antd";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 import {
   useAddNoteMutation,
   useEditNoteMutation,
@@ -24,7 +26,7 @@ import { InfoCircleOutlined, CloudDownloadOutlined } from "@ant-design/icons";
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Swal from "sweetalert2";
 import { imageUrl } from "../../../../../../../redux/api/baseApi";
 import { useGetAppointmentByIdQuery } from "../../../../../../../redux/apiSlices/appointmentsSlices";
@@ -43,6 +45,36 @@ const AppointmentDetails = (props) => {
   const [prescriptionForm] = Form.useForm();
   const [selectNoteData, setSelectNoteData] = useState(null);
   const [selectPrescriptionData, setSelectPrescriptionData] = useState(null);
+  const componentRef = useRef();
+
+  const generatePdf = async () => {
+    const element = componentRef.current;
+
+    if (!element) return;
+
+    const canvas = await html2canvas(element, { scale: 2 });
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF("p", "mm", "a4");
+    const imgWidth = 190; // Width for the PDF
+    const pageHeight = 297; // A4 Page height
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+
+    pdf.save("prescription.pdf");
+  };
 
   const [type, setType] = useState("");
   const pageSize = 3;
@@ -312,7 +344,7 @@ const AppointmentDetails = (props) => {
             <h1 className="text-lg text-gray-600 py-3">Prescription</h1>
           </div>
           {Appointments?.data?.prescription?.length > 0 ? (
-            <>
+            <div ref={componentRef}>
               {Appointments?.data?.prescription?.map((item, index) => (
                 <Space
                   key={index}
@@ -386,14 +418,14 @@ const AppointmentDetails = (props) => {
                       type="text"
                       size="small"
                       className="h-10 bg-primary6 text-white"
-                      // onClick={showModal}
+                      onClick={generatePdf}
                     >
                       Download Prescription
                     </Button>
                   </div>
                 </Space>
               ))}
-            </>
+            </div>
           ) : (
             <div className="flex justify-center items-center">
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
