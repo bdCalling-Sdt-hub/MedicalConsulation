@@ -20,7 +20,7 @@ import {
   useEditPrescriptionMutation,
 } from "../../../../../../../redux/apiSlices/prescriptionSlices";
 
-import { InfoCircleOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined, CloudDownloadOutlined } from "@ant-design/icons";
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -380,6 +380,17 @@ const AppointmentDetails = (props) => {
                       {item?.content}
                     </Text>
                   </Card>
+                  <div className="flex flex-col items-end py-2">
+                    <Button
+                      icon={<CloudDownloadOutlined />}
+                      type="text"
+                      size="small"
+                      className="h-10 bg-primary6 text-white"
+                      // onClick={showModal}
+                    >
+                      Download Prescription
+                    </Button>
+                  </div>
                 </Space>
               ))}
             </>
