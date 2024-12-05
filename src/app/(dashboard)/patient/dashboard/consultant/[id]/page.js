@@ -31,7 +31,8 @@ import { useState, useRef } from "react";
 import Swal from "sweetalert2";
 import { imageUrl } from "../../../../../../../redux/api/baseApi";
 import { useGetAppointmentByIdQuery } from "../../../../../../../redux/apiSlices/appointmentsSlices";
-
+// Dynamic import for JoditEditor
+const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 const { Title, Text } = Typography;
 
 const AppointmentDetails = (props) => {
@@ -46,7 +47,13 @@ const AppointmentDetails = (props) => {
   const [prescriptionForm] = Form.useForm();
   const [selectNoteData, setSelectNoteData] = useState(null);
   const [selectPrescriptionData, setSelectPrescriptionData] = useState(null);
+  const [isMounted, setIsMounted] = useState(false); // Track if component is mounted
   const componentRef = useRef();
+
+  // Effect to set mounted state
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const generatePdf = async (item) => {
     const element = componentRef.current;
@@ -536,6 +543,7 @@ const AppointmentDetails = (props) => {
           >
             <Input.TextArea placeholder="Content" rows={4} />
           </Form.Item>
+
           <Form.Item style={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
               className="h-10 bg-primary6 text-white"

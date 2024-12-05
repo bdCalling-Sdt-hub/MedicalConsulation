@@ -1,5 +1,6 @@
 "use client";
-
+import dynamic from "next/dynamic";
+import { useEffect } from "react";
 import {
   EditOutlined,
   InfoCircleOutlined,
@@ -32,7 +33,8 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import { imageUrl } from "../../../../../../../redux/api/baseApi";
 import { useGetAppointmentByIdQuery } from "../../../../../../../redux/apiSlices/appointmentsSlices";
-
+// Dynamic import for JoditEditor
+const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 const { Title, Text } = Typography;
 
 const AppointmentDetails = (props) => {
@@ -47,6 +49,12 @@ const AppointmentDetails = (props) => {
   const [prescriptionForm] = Form.useForm();
   const [selectNoteData, setSelectNoteData] = useState(null);
   const [selectPrescriptionData, setSelectPrescriptionData] = useState(null);
+  const [isMounted, setIsMounted] = useState(false); // Track if component is mounted
+
+  // Effect to set mounted state
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const [type, setType] = useState("");
   const pageSize = 3;
@@ -92,11 +100,13 @@ const AppointmentDetails = (props) => {
     }
   };
   const handlePrescriptionSubmit = async (values) => {
-    console.log(values);
+    console.log("values", values);
+    console.log("handleEditPrescriptionSubmit content", content);
 
     const res = await addPrescription({
       appointmentId: Appointments?.data?._id,
       ...values,
+      // content: content,
     });
     console.log(res);
     if (res.data) {
@@ -108,6 +118,7 @@ const AppointmentDetails = (props) => {
       prescriptionForm.resetFields(); // Reset form fields after submission
       setPrescriptionNoteModalOpen(false);
     }
+    // setPrescriptionNoteModalOpen(false);
   };
 
   const handleEditNoteSubmit = async (values) => {
@@ -129,9 +140,12 @@ const AppointmentDetails = (props) => {
   };
 
   const handleEditPrescriptionSubmit = async (values) => {
-    console.log(values);
+    console.log("values handleEditPrescriptionSubmit id", values?._id);
+    console.log("values handleEditPrescriptionSubmit content", values?.content);
+    console.log("...values", { ...values });
     const res = await editPrescription({
       id: values?._id,
+      // content: values?.content,
       data: values,
     });
     console.log(res);
@@ -145,6 +159,7 @@ const AppointmentDetails = (props) => {
       prescriptionForm.resetFields();
       // Reset form fields after submission
     }
+    // setEditPrescriptionModalOpen(false);
   };
 
   const handleCancel = () => {
@@ -172,6 +187,10 @@ const AppointmentDetails = (props) => {
 
   const prescriptionModalClicked = (prescription) => {
     prescriptionForm.setFieldsValue(prescription);
+    setContent(prescription.content);
+    console.log("prescription", prescription.content);
+    console.log("prescription Form", prescriptionForm);
+    console.log("prescription content", content);
     setEditPrescriptionModalOpen(true);
   };
 
@@ -337,73 +356,108 @@ const AppointmentDetails = (props) => {
           {Appointments?.data?.prescription?.length > 0 ? (
             <>
               {Appointments?.data?.prescription?.map((item, index) => (
-                <Space
-                  key={index}
-                  direction="vertical"
-                  style={{ width: "100%" }}
-                >
-                  <Card
-                    bordered
-                    hoverable
-                    style={{
-                      marginBottom: "16px",
-                      borderRadius: "10px",
-                      padding: "20px",
-                      position: "relative",
-                      border: "1px solid #e0e0e0",
-                      boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.05)",
-                      transition: "transform 0.2s",
+                // <Space
+                //   key={index}
+                //   direction="vertical"
+                //   style={{ width: "100%" }}
+                // >
+                //   <Card
+                //     bordered
+                //     hoverable
+                //     style={{
+                //       marginBottom: "16px",
+                //       borderRadius: "10px",
+                //       padding: "20px",
+                //       position: "relative",
+                //       border: "1px solid #e0e0e0",
+                //       boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.05)",
+                //       transition: "transform 0.2s",
+                //     }}
+                //     bodyStyle={{ padding: 10 }}
+                //   >
+                //     {/* Edit button in top-right corner */}
+                //     <Button
+                //       type="text"
+                //       icon={<EditOutlined />}
+                //       style={{
+                //         position: "absolute",
+                //         top: "16px",
+                //         right: "16px",
+                //         color: "#1890ff",
+                //       }}
+                //       onClick={() => prescriptionModalClicked(item)} // Replace with actual edit handler
+                //     />
+                //     <Title
+                //       level={5}
+                //       style={{
+                //         display: "flex",
+                //         alignItems: "center",
+                //         fontWeight: 600,
+                //         color: "#333",
+                //       }}
+                //     >
+                //       <InfoCircleOutlined
+                //         style={{
+                //           marginRight: "10px",
+                //           color: "#1890ff",
+                //           fontSize: "18px",
+                //         }}
+                //       />
+                //       {item?.title}
+                //     </Title>
+                //     <Divider
+                //       style={{
+                //         margin: "8px 0",
+                //         borderTop: "1px solid #e0e0e0",
+                //       }}
+                //     />
+                //     <Text
+                //       style={{
+                //         fontSize: "16px",
+                //         color: "#595959",
+                //         lineHeight: "1.7",
+                //         whiteSpace: "pre-line",
+                //       }}
+                //     >
+                //       {item?.content}
+                //     </Text>
+                //   </Card>
+                // </Space>
+                <div className="w-full" key={index}>
+                  <div>
+                    <div
+                      // onClick={handleBackSettings}
+                      className="border-none text-[#193664] flex items-center gap-2 cursor-pointer"
+                    >
+                      {/* <IoIosArrowBack /> */}
+                      Prescription
+                    </div>
+                  </div>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: item?.content,
                     }}
-                    bodyStyle={{ padding: 10 }}
-                  >
-                    {/* Edit button in top-right corner */}
+                    className="pl-10 text-justify py-12"
+                  ></div>
+                  <div className="flex justify-end">
                     <Button
-                      type="text"
-                      icon={<EditOutlined />}
+                      // onClick={handleEdit}
+                      onClick={() => prescriptionModalClicked(item)}
+                      // type="primary"
                       style={{
-                        position: "absolute",
-                        top: "16px",
-                        right: "16px",
-                        color: "#1890ff",
+                        backgroundColor: "#193664",
+                        color: "#fff",
+                        size: "18px",
+                        height: "56px",
                       }}
-                      onClick={() => prescriptionModalClicked(item)} // Replace with actual edit handler
-                    />
-                    <Title
-                      level={5}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        fontWeight: 600,
-                        color: "#333",
-                      }}
+                      htmlType="submit"
+                      className=" w-[300px] 
+                   h-[56px]  py-4 mt-2 text-white hover:border-none border-none rounded-lg"
                     >
-                      <InfoCircleOutlined
-                        style={{
-                          marginRight: "10px",
-                          color: "#1890ff",
-                          fontSize: "18px",
-                        }}
-                      />
-                      {item?.title}
-                    </Title>
-                    <Divider
-                      style={{
-                        margin: "8px 0",
-                        borderTop: "1px solid #e0e0e0",
-                      }}
-                    />
-                    <Text
-                      style={{
-                        fontSize: "16px",
-                        color: "#595959",
-                        lineHeight: "1.7",
-                        whiteSpace: "pre-line",
-                      }}
-                    >
-                      {item?.content}
-                    </Text>
-                  </Card>
-                </Space>
+                      Edit
+                    </Button>
+                  </div>
+                </div>
               ))}
             </>
           ) : (
@@ -496,7 +550,31 @@ const AppointmentDetails = (props) => {
           onFinish={handlePrescriptionSubmit}
           className="w-full pt-3"
         >
-          <Form.Item
+          <div className="text-justify mt-[24px] relative">
+            {isMounted ? ( // Only render editor on client
+              <JoditEditor
+                value={content}
+                onChange={(newContent) => setContent(newContent)}
+                className="text-wrap bg-red-900"
+              />
+            ) : (
+              <div>Loading....</div>
+            )}
+            <Button
+              // onClick={handleUpdate}
+              onClick={handlePrescriptionSubmit}
+              style={{
+                backgroundColor: "#193664",
+                color: "#fff",
+                height: "56px",
+              }}
+              block
+              className="mt-[30px] hover:text-white bg-secondary hover:bg-gradient-to-r from-red-500 via-red-600 to-red-800 text-white py-3 rounded-lg w-full text-[18px] font-medium duration-200"
+            >
+              Add
+            </Button>
+          </div>
+          {/* <Form.Item
             name={"title"}
             rules={[{ required: true, message: "Please input title" }]}
           >
@@ -507,8 +585,8 @@ const AppointmentDetails = (props) => {
             rules={[{ required: true, message: "Please input content" }]}
           >
             <Input.TextArea placeholder="Content" rows={4} />
-          </Form.Item>
-          <Form.Item style={{ display: "flex", justifyContent: "flex-end" }}>
+          </Form.Item> */}
+          {/* <Form.Item style={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
               className="h-10 bg-primary6 text-white"
               type="text"
@@ -516,7 +594,7 @@ const AppointmentDetails = (props) => {
             >
               Submit
             </Button>
-          </Form.Item>
+          </Form.Item> */}
         </Form>
       </Modal>
       <Modal
@@ -525,7 +603,7 @@ const AppointmentDetails = (props) => {
         onCancel={handleCancel}
         footer={null}
       >
-        <Form
+        {/* <Form
           form={prescriptionForm}
           onFinish={handleEditPrescriptionSubmit}
           className="w-full pt-3"
@@ -554,6 +632,58 @@ const AppointmentDetails = (props) => {
               Edit
             </Button>
           </Form.Item>
+
+        </Form> */}
+        <Form
+          form={prescriptionForm}
+          onFinish={handleEditPrescriptionSubmit}
+          className="w-full pt-3"
+        >
+          <div className="relative bg-white rounded-lg shadow-lg">
+            <div
+              // onClick={handleBackTermsAndCondition}
+              className="cursor-pointer flex items-center pb-3 gap-2"
+            >
+              {/* <MdOutlineKeyboardArrowLeft size={34} /> */}
+              <h1 className="text-[24px] font-semibold">Edit Prescription</h1>
+            </div>
+            <div className="text-justify relative">
+              <Form.Item name={"_id"} style={{ display: "none" }}>
+                <Input />
+              </Form.Item>
+              {isMounted ? ( // Only render editor on client
+                <Form.Item
+                  name={"content"}
+                  // rules={[{ required: true, message: "Please input content" }]}
+                >
+                  <JoditEditor
+                    value={content}
+                    onChange={(newContent) => setContent(newContent)}
+                    className="text-wrap"
+                  />
+                </Form.Item>
+              ) : (
+                <div>Loading....</div>
+              )}
+              <Form.Item
+              // style={{ display: "flex", justifyContent: "flex-end" }}
+              >
+                <Button
+                  // onClick={handleEditPrescriptionSubmit}
+                  htmlType="submit"
+                  style={{
+                    backgroundColor: "#193664",
+                    color: "#fff",
+                    height: "56px",
+                  }}
+                  block
+                  className="mt-[30px] hover:text-white bg-secondary hover:bg-gradient-to-r from-red-500 via-red-600 to-red-800 text-white py-3 rounded-lg w-full text-[18px] font-medium duration-200"
+                >
+                  Update
+                </Button>
+              </Form.Item>
+            </div>
+          </div>
         </Form>
       </Modal>
     </div>

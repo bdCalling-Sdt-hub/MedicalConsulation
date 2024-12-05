@@ -18,11 +18,14 @@ export const faqsSlices = api.injectEndpoints({
       invalidatesTags: ["prescription", "appointments"],
     }),
     editPrescription: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `/prescription/edit-prescription/${id}`,
-        method: "PUT",
-        body: data,
-      }),
+      query: ({ id, data }) => {
+        console.log("data argument in editPrescription mutation", data);
+        return {
+          url: `/prescription/edit-prescription/${id}`,
+          method: "PUT",
+          body: data,
+        };
+      },
       invalidatesTags: ["prescription", "appointments"],
     }),
     downloadPrescription: builder.mutation({
