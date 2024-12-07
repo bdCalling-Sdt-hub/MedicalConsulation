@@ -1,5 +1,6 @@
 "use client";
-
+import dynamic from "next/dynamic";
+import { useEffect } from "react";
 import {
   Button,
   Card,
@@ -55,36 +56,88 @@ const AppointmentDetails = (props) => {
     setIsMounted(true);
   }, []);
 
+  // const generatePdf = async (item) => {
+  //   try {
+  //     const element = componentRef.current;
+
+  //     console.log("element generatePdf", element);
+  //     console.log("item generatePdf clicked", item.content);
+
+  //     // if (!element) return;
+  //     if (!item) return;
+
+  //     const canvas = await html2canvas(item.content, { scale: 2 });
+  //     const imgData = canvas.toDataURL("image/png");
+
+  //     const pdf = new jsPDF("p", "mm", "a4");
+  //     const imgWidth = 190; // Width for the PDF
+  //     const pageHeight = 297; // A4 Page height
+  //     const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+  //     let heightLeft = imgHeight;
+  //     let position = 0;
+
+  //     pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+  //     heightLeft -= pageHeight;
+
+  //     while (heightLeft > 0) {
+  //       position = heightLeft - imgHeight;
+  //       pdf.addPage();
+  //       pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+  //       heightLeft -= pageHeight;
+  //     }
+  //   } catch (error) {
+  //     console.log("error generatePdf", error);
+  //   }
+  // };
+
+  // const generatePdf = async (item) => {
+  //   const element = componentRef.current;
+
+  //   console.log("element generatePdf", element);
+  //   console.log("item generatePdf clicked", item);
+  //   console.log("item generatePdf clicked", item.content);
+
+  //   // if (!element) return;
+  //   if (!item) return;
+  //   const doc = new jsPDF();
+  //   console.log("doc", doc);
+
+  //   doc.html(item.content, {
+  //     callback: (doc) => {
+  //       console.log("pdf generated");
+  //       doc.save("download.pdf");
+  //     },
+  //     // margin: [10, 0, 0, 0], // Optional: set margins for the PDF
+  //     // x: 10, // Optional: set the x position of the content
+  //     // y: 10, // Optional: set the y position of the content
+  //   });
+  //   console.log("pdf", doc);
+  // };
   const generatePdf = async (item) => {
-    const element = componentRef.current;
-
-    console.log("element generatePdf", element);
-    console.log("item generatePdf clicked", item);
-
-    if (!element) return;
-
-    const canvas = await html2canvas(element, { scale: 2 });
-    const imgData = canvas.toDataURL("image/png");
-
-    const pdf = new jsPDF("p", "mm", "a4");
-    const imgWidth = 190; // Width for the PDF
-    const pageHeight = 297; // A4 Page height
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    let heightLeft = imgHeight;
-    let position = 0;
-
-    pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
-
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+    if (!item || !item.content) {
+      console.error("Invalid item or content");
+      return;
     }
 
-    pdf.save("prescription.pdf");
+    const doc = new jsPDF("p", "mm", "a4"); // A4 size PDF in portrait mode
+
+    // Render the HTML content into the PDF
+    doc.html(item.content, {
+      callback: (doc) => {
+        console.log("PDF generated successfully");
+        doc.save("Prescription.pdf");
+      },
+      x: 10, // X position of content
+      y: 10, // Y position of content
+      html2canvas: {
+        scale: 0.5, // Scale the content to fit in one page
+      },
+      width: 180, // Width of the rendered content (adjust to fit the page)
+      windowWidth: 1000, // Set the width of the rendering window
+    });
+
+    console.log("PDF generation completed");
   };
 
   const [type, setType] = useState("");
@@ -359,7 +412,25 @@ const AppointmentDetails = (props) => {
             <>
               {Appointments?.data?.prescription?.map((item, index) => (
                 <div key={index}>
-                  <Space
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: item?.content,
+                    }}
+                    className="pl-10 text-justify py-12"
+                  ></div>
+                  <div className="flex flex-col items-end py-2">
+                    <Button
+                      icon={<CloudDownloadOutlined />}
+                      type="text"
+                      size="small"
+                      className="h-10 bg-primary6 text-white"
+                      onClick={() => generatePdf(item)}
+                    >
+                      Download Prescription
+                    </Button>
+                  </div>
+
+                  {/* <Space
                     key={index}
                     direction="vertical"
                     style={{ width: "100%" }}
@@ -378,9 +449,9 @@ const AppointmentDetails = (props) => {
                       }}
                       bodyStyle={{ padding: 10 }}
                       ref={componentRef}
-                    >
-                      {/* Edit button in top-right corner */}
-                      {/* <Button
+                    > */}
+                  {/* Edit button in top-right corner */}
+                  {/* <Button
                       type="text"
                       icon={<EditOutlined />}
                       style={{
@@ -391,7 +462,7 @@ const AppointmentDetails = (props) => {
                       }}
                       onClick={() => prescriptionModalClicked(item)} // Replace with actual edit handler
                     /> */}
-                      <Title
+                  {/* <Title
                         level={5}
                         style={{
                           display: "flex",
@@ -437,7 +508,7 @@ const AppointmentDetails = (props) => {
                         </Button>
                       </div>
                     </Card>
-                  </Space>
+                  </Space> */}
                 </div>
               ))}
             </>

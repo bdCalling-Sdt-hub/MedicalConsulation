@@ -104,6 +104,12 @@ const adminMenuItems = [
         icon: <MdEditDocument color="white" size={18} />,
         activeIcon: <MdEditDocument color="white" size={18} />,
       },
+      {
+        path: "/admin/dashboard/settings/prescription-template",
+        title: "Prescription Template",
+        icon: <MdEditDocument color="white" size={18} />,
+        activeIcon: <MdEditDocument color="white" size={18} />,
+      },
     ],
   },
 ];

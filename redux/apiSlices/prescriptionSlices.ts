@@ -19,7 +19,7 @@ export const faqsSlices = api.injectEndpoints({
     }),
     editPrescription: builder.mutation({
       query: ({ id, data }) => {
-        console.log("data argument in editPrescription mutation", data);
+        // console.log("data argument in editPrescription mutation", data);
         return {
           url: `/prescription/edit-prescription/${id}`,
           method: "PUT",
@@ -43,6 +43,22 @@ export const faqsSlices = api.injectEndpoints({
       }),
       invalidatesTags: ["prescription"],
     }),
+
+    addPrescriptionTemplate: builder.mutation({
+      query: (data) => ({
+        url: `/prescription/add-prescription-template`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["prescription"],
+    }),
+
+    getPrescriptionTemplate: builder.query({
+      query: () => ({
+        url: `/prescription/get-prescription-template`,
+      }),
+      providesTags: ["prescription"],
+    }),
   }),
 });
 
@@ -52,4 +68,6 @@ export const {
   useGetPrescriptionByAppointmentIdQuery,
   useEditPrescriptionMutation,
   useDownloadPrescriptionMutation,
+  useAddPrescriptionTemplateMutation,
+  useGetPrescriptionTemplateQuery,
 } = faqsSlices;

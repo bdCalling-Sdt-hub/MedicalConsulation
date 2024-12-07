@@ -544,6 +544,7 @@ const AppointmentDetails = (props) => {
         open={prescriptionModalOpen}
         onCancel={handleCancel}
         footer={null}
+        width={1200}
       >
         <Form
           form={noteForm}
