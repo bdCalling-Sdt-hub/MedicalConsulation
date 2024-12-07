@@ -1,6 +1,9 @@
 "use client";
 import dynamic from "next/dynamic";
 import { useEffect } from "react";
+import Html from "react-pdf-html";
+import { Page, View, Document, StyleSheet } from "@react-pdf/renderer";
+
 import {
   EditOutlined,
   InfoCircleOutlined,
@@ -34,6 +37,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import { imageUrl } from "../../../../../../../redux/api/baseApi";
 import { useGetAppointmentByIdQuery } from "../../../../../../../redux/apiSlices/appointmentsSlices";
+// import { Document, Page } from "@react-pdf/renderer";
 // Dynamic import for JoditEditor
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 const { Title, Text } = Typography;
@@ -51,6 +55,17 @@ const AppointmentDetails = (props) => {
   const [selectNoteData, setSelectNoteData] = useState(null);
   const [selectPrescriptionData, setSelectPrescriptionData] = useState(null);
   const [isMounted, setIsMounted] = useState(false); // Track if component is mounted
+  const styles = StyleSheet.create({
+    page: {
+      flexDirection: "row",
+      backgroundColor: "#E4E4E4",
+    },
+    section: {
+      margin: 10,
+      padding: 10,
+      flexGrow: 1,
+    },
+  });
 
   // Effect to set mounted state
   useEffect(() => {
@@ -76,6 +91,76 @@ const AppointmentDetails = (props) => {
   const handleBack = () => {
     navigate.push("/doctor/dashboard/appointment");
   };
+
+  const html = `<html>
+  <body>
+    <style>
+      .my-heading4 {
+        background: darkgreen;
+        color: white;
+      }
+      pre {
+        background-color: #eee;
+        padding: 10px;
+      }
+    </style>
+    <h1>Heading 1</h1>
+    <h2 style="background-color: pink">Heading 2</h2>
+    <h3>Heading 3</h3>
+    <h4 class="my-heading4">Heading 4</h4>
+    <p>
+      Paragraph with <strong>bold</strong>, <i>italic</i>, <u>underline</u>,
+      <s>strikethrough</s>,
+      <strong><u><s><i>and all of the above</i></s></u></strong>
+    </p>
+    <p>
+      Paragraph with image <img src="" /> and
+      <a href="http://google.com">link</a>
+    </p>
+    <hr />
+    <ul>
+      <li>Unordered item</li>
+      <li>Unordered item</li>
+    </ul>
+    <ol>
+      <li>Ordered item</li>
+      <li>Ordered item</li>
+    </ol>
+    <br /><br /><br /><br /><br />
+    Text outside of any tags
+    <table>
+      <thead>
+        <tr>
+          <th>Column 1</th>
+          <th>Column 2</th>
+          <th>Column 3</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Foo</td>
+          <td>Bar</td>
+          <td>Foobar</td>
+        </tr>
+        <tr>
+          <td colspan="2">Foo</td>
+          <td>Bar</td>
+        </tr>
+        <tr>
+          <td>Some longer thing</td>
+          <td>Even more content than before!</td>
+          <td>Even more content than before!</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="width: 200px; height: 200px; background: pink"></div>
+    <pre>
+function myCode() {
+  const foo = 'bar';
+}
+</pre>
+  </body>
+</html>`;
 
   const [addNote] = useAddNoteMutation();
   const [editNote] = useEditNoteMutation();
@@ -104,6 +189,16 @@ const AppointmentDetails = (props) => {
   const handlePrescriptionSubmit = async (values) => {
     console.log("values", values);
     console.log("handlePrescriptionSubmit content", content);
+    console.log("handlePrescriptionSubmit content", content);
+
+    if (!Appointments?.data?._id || !content) {
+      Swal.fire({
+        title: "Error!",
+        text: "Please add prescription content!",
+        icon: "error",
+      });
+      return;
+    }
 
     const res = await addPrescription({
       appointmentId: Appointments?.data?._id,
@@ -461,6 +556,17 @@ const AppointmentDetails = (props) => {
                   </div>
                 </div>
               ))}
+
+              <Document>
+                <Page size="A4" style={styles.page}>
+                  <View style={styles.section}>
+                    <Text>Section #1</Text>
+                  </View>
+                  <View style={styles.section}>
+                    <Text>Section #2</Text>
+                  </View>
+                </Page>
+              </Document>
             </>
           ) : (
             <div className="flex justify-center items-center">

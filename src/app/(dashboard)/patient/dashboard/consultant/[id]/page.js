@@ -23,7 +23,7 @@ import {
   useEditPrescriptionMutation,
   useDownloadPrescriptionMutation,
 } from "../../../../../../../redux/apiSlices/prescriptionSlices";
-
+import { createRoot } from "react-dom/client"; // Import createRoot for React 18+
 import { InfoCircleOutlined, CloudDownloadOutlined } from "@ant-design/icons";
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
@@ -32,6 +32,7 @@ import { useState, useRef } from "react";
 import Swal from "sweetalert2";
 import { imageUrl } from "../../../../../../../redux/api/baseApi";
 import { useGetAppointmentByIdQuery } from "../../../../../../../redux/apiSlices/appointmentsSlices";
+import { PDFRenderer } from "@react-pdf/renderer";
 // Dynamic import for JoditEditor
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 const { Title, Text } = Typography;
@@ -114,30 +115,95 @@ const AppointmentDetails = (props) => {
   //   });
   //   console.log("pdf", doc);
   // };
+  // const generatePdf = async (item) => {
+  //   if (!item || !item.content) {
+  //     console.error("Invalid item or content");
+  //     return;
+  //   }
+
+  //   console.log("item generatePdf clicked item.content", item.content);
+  //   console.log("item generatePdf clicked item", item);
+
+  //   const doc = new jsPDF("p", "mm", "a4"); // A4 size PDF in portrait mode
+
+  //   doc.html(item.content, {
+  //     callback: (doc) => {
+  //       console.log("PDF generated successfully");
+  //       doc.save("Prescription.pdf");
+  //     },
+  //     x: 10, // X position of content
+  //     y: 10, // Y position of content
+  //     html2canvas: {
+  //       scale: 0.25, // Adjust this scale to fit the content
+  //     },
+  //     width: 190, // Width of the rendered content (adjust to fit within A4 width)
+  //     windowWidth: 1200, // Window width used for rendering (set this based on your content's design)
+  //   });
+
+  //   console.log("PDF generation completed");
+  // };
+
+  const TestRef = useRef();
   const generatePdf = async (item) => {
     if (!item || !item.content) {
       console.error("Invalid item or content");
       return;
     }
 
-    const doc = new jsPDF("p", "mm", "a4"); // A4 size PDF in portrait mode
+    // Create a container to render the HTML content
+    const container = document.createElement("div");
+    container.style.position = "fixed";
+    container.style.top = "-9999px"; // Hide it off-screen
+    container.style.width = "794px"; // Set width for A4 size (in pixels at 96dpi)
+    container.style.padding = "10px"; // Add padding for better visuals
+    container.style.background = "white"; // Ensure a white background
+    document.body.appendChild(container);
 
-    // Render the HTML content into the PDF
-    doc.html(item.content, {
-      callback: (doc) => {
-        console.log("PDF generated successfully");
-        doc.save("Prescription.pdf");
-      },
-      x: 10, // X position of content
-      y: 10, // Y position of content
-      html2canvas: {
-        scale: 0.5, // Scale the content to fit in one page
-      },
-      width: 180, // Width of the rendered content (adjust to fit the page)
-      windowWidth: 1000, // Set the width of the rendering window
-    });
+    // Render content into the container
+    const root = createRoot(container);
+    root.render(
+      <div
+        dangerouslySetInnerHTML={{ __html: item.content }}
+        style={{ width: "100%" }}
+      />
+    );
 
-    console.log("PDF generation completed");
+    try {
+      // Allow some time for content to render before capturing
+      await new Promise((resolve) => setTimeout(resolve, 500)); // 500ms delay
+
+      // Capture the content using html2canvas
+      const canvas = await html2canvas(container, {
+        scale: 2, // Higher scale for better quality
+        useCORS: true, // Handle cross-origin issues
+        logging: true, // Debugging
+      });
+
+      // Generate the PDF
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      console.log("Canvas captured:", imgData);
+
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+
+      const scaledWidth = imgWidth * ratio;
+      const scaledHeight = imgHeight * ratio;
+      const imgX = (pdfWidth - scaledWidth) / 2; // Center horizontally
+      const imgY = 10; // Add top margin
+
+      pdf.addImage(imgData, "PNG", imgX, imgY, scaledWidth, scaledHeight);
+      pdf.save("Prescription.pdf");
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
+      // Clean up the container
+      root.unmount();
+      document.body.removeChild(container);
+    }
   };
 
   const [type, setType] = useState("");
@@ -266,7 +332,7 @@ const AppointmentDetails = (props) => {
   };
 
   return (
-    <div>
+    <div ref={TestRef}>
       <div className="flex justify-between gap-3 items-center w-full">
         <div onClick={handleBack} className="flex cursor-pointer">
           <ChevronLeft />
