@@ -10,7 +10,8 @@ const SettingsTermsAndConditions = () => {
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
 
-  const { data: about } = useGetPrescriptionTemplateQuery();
+  const { data: prescriptionTemplate, isLoading } =
+    useGetPrescriptionTemplateQuery();
   // console.log(termsAndCondition);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const SettingsTermsAndConditions = () => {
       </div>
       <div
         dangerouslySetInnerHTML={{
-          __html: about?.data?.content,
+          __html: prescriptionTemplate?.data?.content,
         }}
         className="pl-10 text-justify py-12"
       ></div>

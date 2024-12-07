@@ -24,6 +24,7 @@ import {
 import {
   useAddPrescriptionMutation,
   useEditPrescriptionMutation,
+  useGetPrescriptionTemplateQuery,
 } from "../../../../../../../redux/apiSlices/prescriptionSlices";
 
 import { ChevronLeft } from "lucide-react";
@@ -80,6 +81,7 @@ const AppointmentDetails = (props) => {
   const [editNote] = useEditNoteMutation();
   const [addPrescription] = useAddPrescriptionMutation();
   const [editPrescription] = useEditPrescriptionMutation();
+  const { data: prescriptionTemplate } = useGetPrescriptionTemplateQuery();
 
   const handleNoteSubmit = async (values) => {
     // console.log(values);
@@ -101,18 +103,18 @@ const AppointmentDetails = (props) => {
   };
   const handlePrescriptionSubmit = async (values) => {
     console.log("values", values);
-    console.log("handleEditPrescriptionSubmit content", content);
+    console.log("handlePrescriptionSubmit content", content);
 
     const res = await addPrescription({
       appointmentId: Appointments?.data?._id,
-      ...values,
-      // content: content,
+      // ...values,
+      content: content,
     });
     console.log(res);
     if (res.data) {
       Swal.fire({
         title: "Good job!",
-        text: "You clicked the button!",
+        text: "Prescription added successfully!",
         icon: "success",
       });
       prescriptionForm.resetFields(); // Reset form fields after submission
@@ -548,13 +550,13 @@ const AppointmentDetails = (props) => {
       >
         <Form
           form={noteForm}
-          onFinish={handlePrescriptionSubmit}
+          // onFinish={handlePrescriptionSubmit}
           className="w-full pt-3"
         >
           <div className="text-justify mt-[24px] relative">
             {isMounted ? ( // Only render editor on client
               <JoditEditor
-                value={content}
+                value={prescriptionTemplate?.data?.content}
                 onChange={(newContent) => setContent(newContent)}
                 className="text-wrap bg-red-900"
               />
@@ -564,6 +566,7 @@ const AppointmentDetails = (props) => {
             <Button
               // onClick={handleUpdate}
               onClick={handlePrescriptionSubmit}
+              htmlType="submit" // This triggers Form's `onFinish`
               style={{
                 backgroundColor: "#193664",
                 color: "#fff",
