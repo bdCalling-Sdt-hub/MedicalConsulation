@@ -17,7 +17,6 @@ const Settings_personalInformation = () => {
   const { data: userProfile } = useGetUserProfileQuery();
   const [updatedPass] = useChangePasswordMutation();
   const [form] = Form.useForm();
-  // console.log(userProfile);
 
   const [image, setImage] = useState(null);
   const [value4, setValue4] = useState("info");
@@ -50,10 +49,10 @@ const Settings_personalInformation = () => {
     },
   ];
 
-  const [fileList, setFileList] = useState([]); // State to hold the list of uploaded files
+  const [fileList, setFileList] = useState([]);
 
   const handleChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList); // Update the state with the new file list
+    setFileList(newFileList);
   };
 
   const customRequest = async ({ file, onSuccess, onError }) => {
@@ -63,7 +62,7 @@ const Settings_personalInformation = () => {
       "image/gif",
       "image/webp",
       "image/jpg",
-    ]; // Allowed file types
+    ];
 
     if (!allowedTypes.includes(file.type)) {
       message.error("You can only upload JPG/PNG/GIF files!");
@@ -71,7 +70,6 @@ const Settings_personalInformation = () => {
       return;
     }
 
-    // Simulate a file upload
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -82,7 +80,7 @@ const Settings_personalInformation = () => {
   };
 
   const beforeUpload = (file) => {
-    const isValid = file.size / 1024 / 1024 < 2; // Limit to 2 MB
+    const isValid = file.size / 1024 / 1024 < 2;
     if (!isValid) {
       message.error("File must be smaller than 2MB!");
     }
@@ -98,7 +96,15 @@ const Settings_personalInformation = () => {
     if (image) {
       formData.append("image", image);
     }
+    formData.append("nhsNumber", values.nhsNumber);
     formData.append("name", values.name);
+    formData.append("address", values.address);
+    formData.append("dateOfBirth", values.dateOfBirth);
+    formData.append("currentNHSGPDetails", values.currentNHSGPDetails);
+    formData.append("nameOfDoctor", values.nameOfDoctor);
+    formData.append("surgeryAddress", values.surgeryAddress);
+    formData.append("surgeryTelephoneNumber", values.surgeryTelephoneNumber);
+    formData.append("surgeryEmail", values.surgeryEmail);
     formData.append("phone", values.phone);
     fileList && formData.append("image", fileList[0]?.originFileObj);
     userUpdate(formData).then((res) => {
@@ -147,7 +153,15 @@ const Settings_personalInformation = () => {
   useEffect(() => {
     if (value4 === "info") {
       form.setFieldsValue({
+        nhsNumber: userProfile?.data?.nhsNumber,
         name: userProfile?.data?.name,
+        address: userProfile?.data?.address,
+        dateOfBirth: userProfile?.data?.dateOfBirth,
+        currentNHSGPDetails: userProfile?.data?.currentNHSGPDetails,
+        nameOfDoctor: userProfile?.data?.nameOfDoctor,
+        surgeryAddress: userProfile?.data?.surgeryAddress,
+        surgeryTelephoneNumber: userProfile?.data?.surgeryTelephoneNumber,
+        surgeryEmail: userProfile?.data?.surgeryEmail,
         phone: userProfile?.data?.phone,
         image: imageUrl + userProfile?.data?.image,
       });
@@ -181,12 +195,10 @@ const Settings_personalInformation = () => {
       </div>
       {value4 === "info" ? (
         <>
-          {/* user updated Form */}
-
           <Form
             name="basic"
             layout="vertical"
-            style={{ width: "100%", maxWidth: "800px" }} // Ensures the form and its elements are centered
+            style={{ width: "100%", maxWidth: "800px" }}
             form={form}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
@@ -213,13 +225,93 @@ const Settings_personalInformation = () => {
               </ImgCrop>
             </Form.Item>
             <Form.Item
+              label="NHS Number"
+              name="nhsNumber"
+              rules={[
+                { required: true, message: "Please input your NHS number!" },
+              ]}
+            >
+              <Input placeholder="NHS Number" className="h-12" />
+            </Form.Item>
+            <Form.Item
               label="Name"
               name="name"
               rules={[{ required: true, message: "Please input your name!" }]}
             >
-              <Input placeholder="name" className="h-12" />
+              <Input placeholder="Name" className="h-12" />
             </Form.Item>
-
+            <Form.Item
+              label="Address"
+              name="address"
+              rules={[
+                { required: true, message: "Please input your address!" },
+              ]}
+            >
+              <Input placeholder="Address" className="h-12" />
+            </Form.Item>
+            <Form.Item
+              label="Date of Birth"
+              name="dateOfBirth"
+              rules={[
+                { required: true, message: "Please input your date of birth!" },
+              ]}
+            >
+              <Input placeholder="Date of Birth" className="h-12" />
+            </Form.Item>
+            <Form.Item
+              label="Current NHS GP Details"
+              name="currentNHSGPDetails"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your current NHS GP details!",
+                },
+              ]}
+            >
+              <Input placeholder="Current NHS GP Details" className="h-12" />
+            </Form.Item>
+            <Form.Item
+              label="Name of Doctor"
+              name="nameOfDoctor"
+              rules={[
+                { required: true, message: "Please input your doctor's name!" },
+              ]}
+            >
+              <Input placeholder="Name of Doctor" className="h-12" />
+            </Form.Item>
+            <Form.Item
+              label="Surgery Address"
+              name="surgeryAddress"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your surgery address!",
+                },
+              ]}
+            >
+              <Input placeholder="Surgery Address" className="h-12" />
+            </Form.Item>
+            <Form.Item
+              label="Surgery Telephone Number"
+              name="surgeryTelephoneNumber"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your surgery telephone number!",
+                },
+              ]}
+            >
+              <Input placeholder="Surgery Telephone Number" className="h-12" />
+            </Form.Item>
+            <Form.Item
+              label="Surgery Email"
+              name="surgeryEmail"
+              rules={[
+                { required: true, message: "Please input your surgery email!" },
+              ]}
+            >
+              <Input placeholder="Surgery Email" className="h-12" />
+            </Form.Item>
             <Form.Item
               label="Phone"
               name="phone"
@@ -227,28 +319,26 @@ const Settings_personalInformation = () => {
                 { required: true, message: "Please input your phone number!" },
               ]}
             >
-              <Input placeholder="Phone" type="number" className="h-12" />
+              <Input placeholder="Phone" className="h-12" />
             </Form.Item>
-
             <Form.Item>
               <Button
                 type="text"
                 className="w-full h-12 bg-primary6 text-white"
                 htmlType="submit"
               >
-                Updated
+                Update
               </Button>
             </Form.Item>
           </Form>
         </>
       ) : (
         <>
-          {/* password Form  updated*/}
           <Form
             name="basic"
             layout="vertical"
             form={form}
-            style={{ width: "100%", maxWidth: "800px", marginTop: "50px" }} // Ensures the form and its elements are centered
+            style={{ width: "100%", maxWidth: "800px", marginTop: "50px" }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
@@ -282,7 +372,6 @@ const Settings_personalInformation = () => {
                 }
               />
             </Form.Item>
-
             <Form.Item
               label="New Password"
               name="newPassword"
@@ -298,7 +387,6 @@ const Settings_personalInformation = () => {
                 }
               />
             </Form.Item>
-
             <Form.Item
               label="Confirm Password"
               name="confirmPassword"
@@ -314,7 +402,6 @@ const Settings_personalInformation = () => {
                 }
               />
             </Form.Item>
-
             <Form.Item>
               <Button
                 type="text"
