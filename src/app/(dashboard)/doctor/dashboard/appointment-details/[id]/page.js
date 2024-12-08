@@ -556,17 +556,6 @@ function myCode() {
                   </div>
                 </div>
               ))}
-
-              <Document>
-                <Page size="A4" style={styles.page}>
-                  <View style={styles.section}>
-                    <Text>Section #1</Text>
-                  </View>
-                  <View style={styles.section}>
-                    <Text>Section #2</Text>
-                  </View>
-                </Page>
-              </Document>
             </>
           ) : (
             <div className="flex justify-center items-center">
@@ -712,6 +701,7 @@ function myCode() {
         open={editPrescriptionModalOpen}
         onCancel={handleCancel}
         footer={null}
+        width={1000}
       >
         {/* <Form
           form={prescriptionForm}
