@@ -156,7 +156,10 @@ const Settings_personalInformation = () => {
         nhsNumber: userProfile?.data?.nhsNumber,
         name: userProfile?.data?.name,
         address: userProfile?.data?.address,
-        dateOfBirth: userProfile?.data?.dateOfBirth,
+        // dateOfBirth: userProfile?.data?.dateOfBirth,
+        dateOfBirth: userProfile?.data?.dateOfBirth
+          ? new Date(userProfile?.data?.dateOfBirth).toISOString().split("T")[0]
+          : "",
         currentNHSGPDetails: userProfile?.data?.currentNHSGPDetails,
         nameOfDoctor: userProfile?.data?.nameOfDoctor,
         surgeryAddress: userProfile?.data?.surgeryAddress,
@@ -256,8 +259,9 @@ const Settings_personalInformation = () => {
                 { required: true, message: "Please input your date of birth!" },
               ]}
             >
-              <Input placeholder="Date of Birth" className="h-12" />
+              <Input type="date" placeholder="Date of Birth" className="h-12" />
             </Form.Item>
+
             <Form.Item
               label="Current NHS GP Details"
               name="currentNHSGPDetails"
