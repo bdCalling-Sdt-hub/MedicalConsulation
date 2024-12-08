@@ -228,13 +228,16 @@ const Settings_personalInformation = () => {
               </ImgCrop>
             </Form.Item>
             <Form.Item
-              label="NHS Number"
+              label="Your unique ID "
               name="nhsNumber"
               rules={[
-                { required: true, message: "Please input your NHS number!" },
+                {
+                  required: true,
+                  message: "Please input your Your unique ID!",
+                },
               ]}
             >
-              <Input placeholder="NHS Number" className="h-12" />
+              <Input placeholder="Your unique ID " className="h-12" />
             </Form.Item>
             <Form.Item
               label="Name"
