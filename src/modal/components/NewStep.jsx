@@ -2,6 +2,7 @@ import { Input } from "antd";
 import TextArea from "antd/es/input/TextArea";
 
 function NewStep({ setExtraInfo, extraInfo, user }) {
+  console.log(user?.dateOfBirth);
   return (
     <div className={`   gap-4`}>
       <div className={`col-span-2`}>
@@ -60,7 +61,11 @@ function NewStep({ setExtraInfo, extraInfo, user }) {
           <Input
             type="date"
             value={extraInfo?.dateOfBirth}
-            defaultValue={user?.dateOfBirth}
+            defaultValue={
+              user?.dateOfBirth
+                ? new Date(user?.dateOfBirth).toISOString().split("T")[0]
+                : ""
+            }
             onChange={(e) => {
               setExtraInfo({ ...extraInfo, dateOfBirth: e.target.value });
             }}
