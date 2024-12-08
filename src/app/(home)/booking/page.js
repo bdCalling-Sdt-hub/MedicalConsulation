@@ -48,6 +48,7 @@ const Booking = (pops) => {
   //
 
   const handleNext = () => {
+    console.log("extraInfo", extraInfo);
     if (currentStep === 6) {
       handleAddEmailForZoomLink({
         email: extraUserEmail || user.email,
@@ -60,7 +61,8 @@ const Booking = (pops) => {
         );
         router.push("/");
       });
-    } else if (currentStep === 3) {
+    } else if (currentStep === 4) {
+      console.log("extraInfo", extraInfo);
       handleCreateAppointment({
         ...dateTime,
         ...extraInfo,
@@ -249,7 +251,7 @@ const Booking = (pops) => {
                   ? true
                   : // : currentStep === 3 && !extraInfo
                   // ? true
-                  currentStep === 4 && !createdAppointment
+                  currentStep === 4 && !extraInfo
                   ? true
                   : currentStep === 5 && !isPaid
                   ? true
@@ -262,7 +264,8 @@ const Booking = (pops) => {
                 (currentStep === 3 &&
                   (!consentStatus.termsAndConditions ||
                     !consentStatus.dataSharing)) ||
-                (currentStep === 4 && !createdAppointment) ||
+                // (currentStep === 4 && !createdAppointment) ||
+                (currentStep === 4 && !extraInfo) ||
                 (currentStep === 5 && !isPaid)
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-primary6 text-white"

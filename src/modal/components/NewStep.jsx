@@ -27,10 +27,10 @@ function NewStep({ setExtraInfo, extraInfo, user }) {
           </p>
           <Input
             type="text"
-            value={extraInfo?.fullName}
-            defaultValue={user?.fullName}
+            value={extraInfo?.name}
+            defaultValue={user?.name}
             onChange={(e) => {
-              setExtraInfo({ ...extraInfo, fullName: e.target.value });
+              setExtraInfo({ ...extraInfo, name: e.target.value });
             }}
             id="cardNumber"
             placeholder="Enter your Full Name"
@@ -39,7 +39,7 @@ function NewStep({ setExtraInfo, extraInfo, user }) {
         </div>
         <div className={`mb-4 mt-6`}>
           <p className={`text-sm text-secondaryBlack font-merri font-normal`}>
-            Full Address including Postal Code
+            Full Address
           </p>
           <Input
             type="text"
@@ -75,10 +75,13 @@ function NewStep({ setExtraInfo, extraInfo, user }) {
           </p>
           <Input
             type="text"
-            value={extraInfo?.gpDetails}
-            defaultValue={user?.gpDetails}
+            value={extraInfo?.currentNHSGPDetails}
+            defaultValue={user?.currentNHSGPDetails}
             onChange={(e) => {
-              setExtraInfo({ ...extraInfo, gpDetails: e.target.value });
+              setExtraInfo({
+                ...extraInfo,
+                currentNHSGPDetails: e.target.value,
+              });
             }}
             id="cardNumber"
             placeholder="Enter your Current NHS General Practitioner Details"
@@ -91,10 +94,10 @@ function NewStep({ setExtraInfo, extraInfo, user }) {
           </p>
           <Input
             type="text"
-            value={extraInfo?.doctorName}
-            defaultValue={user?.doctorName}
+            value={extraInfo?.nameOfDoctor}
+            defaultValue={user?.nameOfDoctor}
             onChange={(e) => {
-              setExtraInfo({ ...extraInfo, doctorName: e.target.value });
+              setExtraInfo({ ...extraInfo, nameOfDoctor: e.target.value });
             }}
             id="cardNumber"
             placeholder="Enter your Name of Doctor"
@@ -123,12 +126,12 @@ function NewStep({ setExtraInfo, extraInfo, user }) {
           </p>
           <Input
             type="text"
-            value={extraInfo?.surgeryPhoneNumber}
-            defaultValue={user?.surgeryPhoneNumber}
+            value={extraInfo?.surgeryTelephoneNumber}
+            defaultValue={user?.surgeryTelephoneNumber}
             onChange={(e) => {
               setExtraInfo({
                 ...extraInfo,
-                surgeryPhoneNumber: e.target.value,
+                surgeryTelephoneNumber: e.target.value,
               });
             }}
             id="cardNumber"
