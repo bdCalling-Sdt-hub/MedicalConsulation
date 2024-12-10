@@ -14,7 +14,7 @@ import Cookies from "js-cookie";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { setUser } from "../../../../redux/apiSlices/userSlices";
 
@@ -33,8 +33,12 @@ const Login = () => {
   const [isForgetPassModalOpen, setIsForgetPassModalOpen] = useState(false);
   const [isDoctorRegistered, setIsDoctorRegistered] = useState(false);
   const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
+  const [isTwoFAModalOpen, setIsTwoFAModalOpen] = useState(false);
+  // const [handleIsTwoFAModalCancel, setHandleIsTwoFAModalCancel] =
+  //   useState(false);
   const [isCreateNewPassModalOpen, setIsCreateNewPassModalOpen] =
     useState(false);
+  const [userData, setUserData] = useState({});
 
   const handleForgetPassCancel = () => {
     setIsForgetPassModalOpen(false);
@@ -44,8 +48,42 @@ const Login = () => {
     setIsOtpModalOpen(false);
   };
 
+  const handleTwoFAModalCancel = () => {
+    setIsTwoFAModalOpen(false);
+  };
+
   const onChange = (text) => {
     console.log("onChange:", text);
+    console.log("userData", userData.email);
+    verifyEmail({
+      email: Email,
+      emailVerifyCode: text,
+    }).then((res) => {
+      console.log(res);
+      console.log("userData", userData);
+
+      if (res?.data) {
+        if (userData) {
+          Swal.fire("Success", res.data?.message, "success");
+          if (userData.role === "patient") {
+            route.push("/");
+          } else if (userData.role === "doctor") {
+            route.push("/doctor/dashboard");
+          } else if (userData.role === "admin") {
+            route.push("/admin/dashboard");
+          }
+        } else {
+          setIsCreateNewPassModalOpen(true);
+        }
+      } else if (res?.error) {
+        Swal.fire("Error", res.error?.data?.message, "error");
+      }
+    });
+  };
+
+  const onChangeTwoFA = (text) => {
+    console.log("onChangeTwoFA:", text);
+    console.log("userProfile onChangeTwoFA", userProfile);
     verifyEmail({
       email: Email,
       emailVerifyCode: text,
@@ -53,7 +91,14 @@ const Login = () => {
       console.log(res);
 
       if (res?.data) {
-        setIsCreateNewPassModalOpen(true);
+        // if (userData.data?.data?.user?.role === "patient") {
+        //   route.push("/");
+        // } else if (userData.data?.data?.user?.role === "doctor") {
+        //   route.push("/doctor/dashboard");
+        // } else if (userData.data?.data?.user?.role === "admin") {
+        //   route.push("/admin/dashboard");
+        // }
+        console.log("userData onChangeTwoFA", userData);
       } else if (res?.error) {
         Swal.fire("Error", res.error?.data?.message, "error");
       }
@@ -63,67 +108,76 @@ const Login = () => {
     onChange,
   };
 
+  // const sharedPropsTwoFA = {
+  //   onChangeTwoFA,
+  // };
+
   const handleCreateNewPassModalCancel = () => {
     setIsCreateNewPassModalOpen(false);
   };
 
   const onFinishLogin = async (values) => {
     console.log(values);
-    if (isDoctorRegistered) {
-      const res = await loginDoctor(values);
-      console.log(res);
-      if (res?.data) {
-        Swal.fire("Success", res.data?.message, "success");
-        // Set the token in a cookie
-        // console.log(res.data?.data?.token);
-        Cookies.set("token", res.data?.data?.token, {
-          expires: 1,
-          path: "/",
-        }); // Expires in 1 day
-        Cookies.set("userRole", res.data?.data?.user?.role, {
-          expires: 1,
-          path: "/",
-        }); // Optional: Set user role
-        dispatch(setUser(res.data?.data?.user));
-        Swal.fire("Success", res.data?.message, "success");
+    // if (isDoctorRegistered) {
+    //   const res = await loginDoctor(values);
+    //   console.log(res);
+    //   if (res?.data) {
+    //     Swal.fire("Success", res.data?.message, "success");
+    //     // Set the token in a cookie
+    //     // console.log(res.data?.data?.token);
+    //     Cookies.set("token", res.data?.data?.token, {
+    //       expires: 1,
+    //       path: "/",
+    //     }); // Expires in 1 day
+    //     Cookies.set("userRole", res.data?.data?.user?.role, {
+    //       expires: 1,
+    //       path: "/",
+    //     }); // Optional: Set user role
+    //     dispatch(setUser(res.data?.data?.user));
+    //     Swal.fire("Success", res.data?.message, "success");
 
-        route.push("/");
-      }
-      if (res.error) {
-        Swal.fire("Error", res.error?.data?.message, "error");
-      }
+    //     route.push("/");
+    //   }
+    //   if (res.error) {
+    //     Swal.fire("Error", res.error?.data?.message, "error");
+    //   }
+    // }
+    // if (!isDoctorRegistered) {
+
+    const res = await loginPatient(values);
+    console.log(res);
+    if (res.error) {
+      Swal.fire("Error", res.error?.error, "error");
     }
-    if (!isDoctorRegistered) {
-      const res = await loginPatient(values);
-      console.log(res);
-      if (res.error) {
-        Swal.fire("Error", res.error?.error, "error");
-      }
-      if (res?.data) {
-        // Set the token in a cookie
-        // console.log(res.data?.data?.token);
-        Cookies.set("token", res.data?.data?.token, {
-          expires: 1,
-          path: "/",
-        }); // Expires in 1 day
-        Cookies.set("userRole", res.data?.data?.user?.role, {
-          expires: 1,
-          path: "/",
-        }); // Optional: Set user role
-        dispatch(setUser(res.data?.data?.user));
-        Swal.fire("Success", res.data?.message, "success");
-        if (res.data?.data?.user?.role === "patient") {
-          route.push("/");
-        } else if (res.data?.data?.user?.role === "doctor") {
-          route.push("/doctor/dashboard");
-        } else if (res.data?.data?.user?.role === "admin") {
-          route.push("/admin/dashboard");
-        }
-      }
-      if (res.error) {
-        Swal.fire("Error", res.error?.data?.message, "error");
-      }
+    if (res?.data) {
+      // Set the token in a cookie
+      // console.log(res.data?.data?.token);
+      Cookies.set("token", res.data?.data?.token, {
+        expires: 1,
+        path: "/",
+      }); // Expires in 1 day
+      Cookies.set("userRole", res.data?.data?.user?.role, {
+        expires: 1,
+        path: "/",
+      }); // Optional: Set user role
+      dispatch(setUser(res.data?.data?.user));
+      // Swal.fire("Success", res.data?.message, "success");
+      // if (res.data?.data?.user?.role === "patient") {
+      //   route.push("/");
+      // } else if (res.data?.data?.user?.role === "doctor") {
+      //   route.push("/doctor/dashboard");
+      // } else if (res.data?.data?.user?.role === "admin") {
+      //   route.push("/admin/dashboard");
+      // }
+      handleSendOTPTwoFA(res);
+      console.log("user data", res.data?.data?.user);
+      setUserData(res.data?.data?.user);
+      console.log("user data", userData);
     }
+    if (res.error) {
+      Swal.fire("Error", res.error?.data?.message, "error");
+    }
+    // }
     // console.log("Success:", values);
   };
   const onFinishFailedLogin = (errorInfo) => {
@@ -132,11 +186,36 @@ const Login = () => {
 
   const handleSendTOtp = () => {
     forgetPass(Email).then((res) => {
-      console.log(res);
+      console.log("handleSendTOtp", res);
       if (res?.data) {
         setIsForgetPassModalOpen(false);
         setIsOtpModalOpen(true);
         Swal.fire("Success", res.data?.message, "success");
+      } else if (res?.error) {
+        Swal.fire("Error", res.error?.data?.message, "error");
+      }
+    });
+  };
+  const userProfile = useSelector((state) => state.user?.user);
+  const handleSendOTPTwoFA = (userData) => {
+    // console.log("userProfile", userProfile);
+    console.log("token", userData.data?.data?.token);
+    console.log("role", userData.data?.data?.user?.role);
+    console.log("message", userData.data?.message);
+    forgetPass(Email).then((res) => {
+      console.log("handleSendOTPTwoFA", res);
+      if (res?.data) {
+        // setIsForgetPassModalOpen(false);
+        // setIsOtpModalOpen(true);
+        setIsTwoFAModalOpen(true);
+        Swal.fire("Success", res.data?.message, "success");
+        // if (userData.data?.data?.user?.role === "patient") {
+        //   route.push("/");
+        // } else if (userData.data?.data?.user?.role === "doctor") {
+        //   route.push("/doctor/dashboard");
+        // } else if (userData.data?.data?.user?.role === "admin") {
+        //   route.push("/admin/dashboard");
+        // }
       } else if (res?.error) {
         Swal.fire("Error", res.error?.data?.message, "error");
       }
@@ -213,6 +292,9 @@ const Login = () => {
                   <Input
                     className={`py-2 focus:outline-none`}
                     placeholder="Enter your email"
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
                   />
                 </Form.Item>
               </div>
@@ -242,6 +324,8 @@ const Login = () => {
                     className={`bg-primary6 w-full h-12 py-2 rounded text-white text-base font-merri font-normal mt-4`}
                     onClick={(e) => {
                       // setIsModalOpen(false);
+                      // e.preventDefault();
+                      // handleSendTOtp();
                     }}
                   >
                     Login
@@ -378,6 +462,55 @@ const Login = () => {
                   <Flex gap="middle" align="flex-center" vertical>
                     <Input.OTP
                       formatter={(str) => str.toUpperCase()}
+                      {...sharedProps}
+                    />
+                  </Flex>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </Modal>
+      {/*======================== 2FA MODAL ===================*/}
+      <Modal
+        open={isTwoFAModalOpen}
+        onCancel={handleTwoFAModalCancel}
+        footer={null}
+        maskClosable={false}
+        centered
+        width={"40%"}
+        closeIcon={<span style={{ color: "red", fontSize: "24px" }}>×</span>}
+      >
+        <div className="flex flex-col items-center justify-center p-4">
+          <Image
+            src={require("../../../../public/images/logo.png")}
+            alt="logo"
+          />
+
+          <div className=" w-full mt-8">
+            <h1
+              className={`text-secondaryblack text-[20px] font-normal font-merri`}
+            >
+              OTP Verification fot two factor authentication
+            </h1>
+            <h3
+              className={`text-secondaryblack text-base font-normal font-merri`}
+            >
+              We’ve sent a 6 digit verification code to{" "}
+              <span className={`text-primary6`}>{Email}</span>
+            </h3>
+            <div>
+              <form action="" className={`mt-6`}>
+                <div className={`mb-4`}>
+                  <p
+                    className={`text-sm text-secondaryBlack font-merri font-normal`}
+                  >
+                    OTP
+                  </p>
+                  <Flex gap="middle" align="flex-center" vertical>
+                    <Input.OTP
+                      formatter={(str) => str.toUpperCase()}
+                      // {...sharedPropsTwoFA}
                       {...sharedProps}
                     />
                   </Flex>
