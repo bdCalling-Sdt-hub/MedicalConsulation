@@ -63,7 +63,11 @@ const Login = () => {
       console.log("userData", userData);
 
       if (res?.data) {
-        if (userData) {
+        if (Object.keys(userData).length === 0) {
+          console.log("userData length", userData);
+          setIsCreateNewPassModalOpen(true);
+        } else {
+          console.log("userData", userData);
           Swal.fire("Success", res.data?.message, "success");
           if (userData.role === "patient") {
             route.push("/");
@@ -72,8 +76,6 @@ const Login = () => {
           } else if (userData.role === "admin") {
             route.push("/admin/dashboard");
           }
-        } else {
-          setIsCreateNewPassModalOpen(true);
         }
       } else if (res?.error) {
         Swal.fire("Error", res.error?.data?.message, "error");
