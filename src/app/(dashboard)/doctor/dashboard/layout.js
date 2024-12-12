@@ -37,6 +37,12 @@ const doctorMenuItems = [
     icon: <FaRegUserCircle size={18} color="white" />,
     activeIcon: <FaUserCircle size={18} color="white" />,
   },
+  {
+    path: "/doctor/dashboard/availability",
+    title: "Availability",
+    icon: <FaRegUserCircle size={18} color="white" />,
+    activeIcon: <FaUserCircle size={18} color="white" />,
+  },
   // {
   //   path: "/reSchedule",
   //   title: "Re-Schedule",

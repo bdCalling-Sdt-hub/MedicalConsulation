@@ -91,6 +91,7 @@ export const api = createApi({
     "notifications",
     "payment",
     "tips",
+    "availabilities",
   ],
 });
 
