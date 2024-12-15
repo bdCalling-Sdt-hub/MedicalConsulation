@@ -511,7 +511,7 @@ function CreateAvailabilities() {
 
   return (
     <>
-      {/* Add Service Button */}
+      {/* Add Availability Button */}
       <div className="flex justify-between">
         <h1 className="p-4 ">
           <span className="text-xl font-bold">Available timing</span>
@@ -530,7 +530,7 @@ function CreateAvailabilities() {
         </div>
       </div>
 
-      {/* Modal for creating a new service */}
+      {/* Modal for creating a new Availability */}
       <Modal
         title="Add your available timing"
         open={isModalOpen}
