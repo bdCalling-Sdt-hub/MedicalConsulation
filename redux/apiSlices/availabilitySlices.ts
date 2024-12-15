@@ -2,12 +2,12 @@ import { api } from "../api/baseApi";
 
 export const availabilitySlices = api.injectEndpoints({
   endpoints: (builder) => ({
-    // getAllServices: builder.query({
-    //   query: ({ id, page, limit, hasDateTime }) => ({
-    //     url: `service/get-all-services?page=${page}&limit=${limit}&hasDateTime=${hasDateTime}`,
-    //   }),
-    //   providesTags: ["availabilities"],
-    // }),
+    getAllAvailabilities: builder.query({
+      query: ({ id, page, limit, dateTime }) => ({
+        url: `availability/get-all-availabilities?page=${page}&limit=${limit}&dateTime=${dateTime}`,
+      }),
+      providesTags: ["availabilities"],
+    }),
     getAvailabilityByDoctorId: builder.query({
       query: (id) => ({
         url: `/availability/get-availability-by-doctorId/${id}`,
@@ -35,7 +35,7 @@ export const availabilitySlices = api.injectEndpoints({
 
 export const {
   useAddAvailabilityMutation,
-  //   useGetAllServicesQuery,
+  useGetAllAvailabilitiesQuery,
   //   useLazyGetAllServicesQuery,
   useGetAvailabilityByDoctorIdQuery,
   useDeletedAvailabilityMutation,
