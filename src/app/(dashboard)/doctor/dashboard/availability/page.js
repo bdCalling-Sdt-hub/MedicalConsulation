@@ -61,6 +61,7 @@ function CreateAvailabilities() {
 
   // create availibity
   const [createAvailability] = useAddAvailabilityMutation();
+  const [deleteAvailability] = useDeletedAvailabilityMutation();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [openModel, setOpenModel] = useState(false);
@@ -282,6 +283,37 @@ function CreateAvailabilities() {
         return <Tag color="green">{dayjs(startDateTime).format("dddd")}</Tag>;
       },
     },
+    {
+      title: "Action",
+      dataIndex: "details",
+      key: "details",
+      render: (_, record) => (
+        <div>
+          {/* <Button
+            icon={<EyeFilled />}
+            onClick={() => handleView(record)}
+            type="secondary"
+          >
+            View
+          </Button>
+          <Button
+            icon={<EditOutlined />}
+            onClick={() => handleUpdated(record)}
+            type="secondary"
+          >
+            Edit
+          </Button> */}
+          <Button
+            icon={<DeleteOutlined />}
+            onClick={() => handleDelete(record)}
+            type="secondary"
+            danger
+          >
+            Delete
+          </Button>
+        </div>
+      ),
+    },
   ];
 
   const route = useRouter();
@@ -396,12 +428,12 @@ function CreateAvailabilities() {
   };
 
   const confirmDelete = () => {
-    console.log("Deleted:", selectedItem);
-    deleteService(selectedItem?._id).then((res) => {
+    console.log("Deleted:", selectedItem?._id);
+    deleteAvailability(selectedItem?._id).then((res) => {
       console.log(res);
       if (res?.data) {
         Swal.fire({
-          title: "Success",
+          title: "Availability Deleted",
           text: res.data?.message,
           icon: "success",
           confirmButtonText: "OK",
@@ -493,7 +525,7 @@ function CreateAvailabilities() {
             className="h-10 bg-primary6 text-white"
             onClick={showModal}
           >
-            Add Service
+            Add Availability
           </Button>
         </div>
       </div>
