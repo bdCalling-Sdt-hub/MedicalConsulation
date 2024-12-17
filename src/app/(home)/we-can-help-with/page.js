@@ -19,7 +19,7 @@ const TermsAndCondition = () => {
       </div>
 
       <div className="container mx-auto pt-12">
-        <p className="text-primary9 font-semibold">Help</p>
+        {/* <p className="text-primary9 font-semibold">Help</p> */}
       </div>
       <div
         dangerouslySetInnerHTML={{
