@@ -478,7 +478,7 @@ const UpcomingConsultant = () => {
                   ),
                 },
                 record?.status !== "completed" && {
-                  key: "4",
+                  key: "6",
                   label: (
                     <Button
                       icon={<CloseCircleFilled size={20} />}
@@ -506,22 +506,22 @@ const UpcomingConsultant = () => {
     //   key: "rating",
     //   render: (rating) => <Rate className="custom-rate" disabled value={rating} />, // Display stars
     // }
-    {
-      title: "Select Doctor",
-      render: (_, record) => (
-        <Select
-          style={{ width: "100%" }}
-          placeholder="Select a doctor"
-          options={doctorSelectOptions(record)}
-          loading={availabilitesLoading}
-          onChange={() => console.log("changed")}
-          onClick={() => console.log("clicked")}
-          // onChange={() => handleAssignDoctor(record)}
-          // onChange={() => handleAssignDoctor(doctorSelectOptions(record))}
-          // onClick={() => handleAssignDoctor(doctorSelectOptions(record))}
-        />
-      ),
-    },
+    // {
+    //   title: "Select Doctor",
+    //   render: (_, record) => (
+    //     <Select
+    //       style={{ width: "100%" }}
+    //       placeholder="Select a doctor"
+    //       options={doctorSelectOptions(record)}
+    //       loading={availabilitesLoading}
+    //       onChange={() => console.log("changed")}
+    //       onClick={() => console.log("clicked")}
+    //       // onChange={() => handleAssignDoctor(record)}
+    //       // onChange={() => handleAssignDoctor(doctorSelectOptions(record))}
+    //       // onClick={() => handleAssignDoctor(doctorSelectOptions(record))}
+    //     />
+    //   ),
+    // },
   ];
 
   const handlePage = (page) => {
@@ -906,19 +906,6 @@ const UpcomingConsultant = () => {
           </Form.Item>
         </Form>
       </Modal>
-      {/* <ModalComponent
-        openModel={openAssignDoctorModal}
-        setOpenModel={setAssignDoctorModal}
-        title="Doctor Assignment"
-        subtitle="This is the current role of the selected user"
-        cancelLabel="Cancel"
-        // role={role}
-        // setRole={setRole}
-        // showRoleSelect={true}
-        confirmLabel="Assign"
-        onConfirm={(e) => confirmAssignedDoctor(e)}
-        // value={userData}
-      /> */}
     </div>
   );
 };
