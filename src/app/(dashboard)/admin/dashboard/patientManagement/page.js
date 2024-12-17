@@ -21,6 +21,9 @@ const PatientsManagement = () => {
   const [openPrescriptionModal, setOpenPrescriptionModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
+  console.log("searchTerm", searchTerm);
+  console.log("searchTerm", typeof searchTerm);
+
   const pageSize = 10;
 
   const { data: patient } = useAllPatientsQuery({
@@ -38,6 +41,10 @@ const PatientsManagement = () => {
     nhsNumber: item?.nhsNumber,
     details: "Details",
     totalConsultationHistory: item?.consultationHistory?.length,
+    dateOfBirth: item?.dateOfBirth
+      ? new Date(item?.dateOfBirth).toLocaleDateString()
+      : "N/A",
+    address: item?.address,
   }));
 
   const columns = [
@@ -81,9 +88,19 @@ const PatientsManagement = () => {
       key: "totalConsultationHistory",
     },
     {
-      title: "NHS Number",
+      title: "Unique ID Number",
       dataIndex: "nhsNumber",
       key: "nhsNumber",
+    },
+    {
+      title: "Date of birth",
+      dataIndex: "dateOfBirth",
+      key: "dateOfBirth",
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
     },
   ];
 
