@@ -197,6 +197,11 @@ const AppointmentDetails = (props) => {
 
       pdf.addImage(imgData, "PNG", imgX, imgY, scaledWidth, scaledHeight);
       pdf.save("Prescription.pdf");
+
+      downloadPrescription(item._id);
+      console.log("PDF generated successfully", item);
+      console.log("item id", item._id);
+      console.log("download count", item.downloadCount);
     } catch (error) {
       console.error("Error generating PDF:", error);
     } finally {
@@ -491,6 +496,7 @@ const AppointmentDetails = (props) => {
                       size="small"
                       className="h-10 bg-primary6 text-white"
                       onClick={() => generatePdf(item)}
+                      disabled={item?.downloadCount}
                     >
                       Download Prescription
                     </Button>
