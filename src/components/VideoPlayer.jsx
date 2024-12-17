@@ -1,5 +1,8 @@
+"use client";
 import React, { useRef, useState } from "react";
 import ReactPlayer from "react-player";
+// import tutorialVideo from "/tutorial.mov";
+// import tutorial from "./tu";
 // import a from "../../public/videos/Making an Appointment - tutoarial.mp4";
 // import a from "./tut.mp4";
 
@@ -23,13 +26,22 @@ const VideoPlayer = ({
       </div> */}
       <div height={height}>
         <video
-          src={src}
+          src="/videos/tutorial.mov"
+          // src={tutorialVideo}
           width={width}
           height={height}
           autoPlay={autoPlay}
           controls
         ></video>
       </div>
+      {/* <div height={height}>
+        <ReactPlayer
+          url="https://www.youtube.com/watch?v=Gt5vsHCGQ0E"
+          width={width}
+          height={"400px"}
+          controls
+        />
+      </div> */}
     </>
   );
 };
