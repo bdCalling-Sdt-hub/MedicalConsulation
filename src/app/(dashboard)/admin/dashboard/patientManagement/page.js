@@ -49,14 +49,6 @@ const PatientsManagement = () => {
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (_, record) => (
-        <div className="flex items-center">{record.name}</div>
-      ),
-    },
-    {
       title: "Image",
       dataIndex: "image",
       key: "image",
@@ -65,13 +57,26 @@ const PatientsManagement = () => {
           <Image
             width={100}
             height={100}
-            src={imageUrl + record.image}
+            src={
+              record?.image
+                ? imageUrl + record?.image
+                : require("../../../../../../public/images/avatar.png")
+            }
             className="w-9 h-9 rounded"
             alt="avatar"
           />
         </div>
       ),
     },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (_, record) => (
+        <div className="flex items-center">{record.name}</div>
+      ),
+    },
+
     {
       title: "Email",
       dataIndex: "email",
