@@ -47,7 +47,7 @@ const Booking = (pops) => {
   };
   //
 
-  const handleNext = () => {
+  const handleNext = async () => {
     console.log("extraInfo", extraInfo);
     if (currentStep === 6) {
       handleAddEmailForZoomLink({
@@ -63,13 +63,14 @@ const Booking = (pops) => {
       });
     } else if (currentStep === 4) {
       console.log("extraInfo", extraInfo);
-      handleCreateAppointment({
+      const response = await handleCreateAppointment({
         ...dateTime,
         ...extraInfo,
         serviceId: selectedItem?._id,
         type: selectedItem?.consultationType,
         patientId: user._id,
       });
+      console.log("response", response);
     } else if (currentStep < 6) {
       setCurrentStep(currentStep + 1);
     }
@@ -88,10 +89,15 @@ const Booking = (pops) => {
           UData.nhsNumber = user.nhsNumber;
         }
         const response = await createAppointment(UData);
-        // console.log(response);
+        console.log("response handleCreateAppointment 92", response);
+        console.log(
+          "response?.data handleCreateAppointment 92",
+          response?.data
+        );
         if (response?.data) {
           setCreatedAppointment(response?.data?.data?.appointment);
-          setCurrentStep(4);
+          // setCurrentStep(4);
+          setCurrentStep(5);
         }
         if (response?.error) {
           Swal.fire("Error", response?.error?.data?.message, "error");
