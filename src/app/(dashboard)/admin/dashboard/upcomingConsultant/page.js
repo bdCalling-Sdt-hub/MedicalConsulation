@@ -709,7 +709,7 @@ const UpcomingConsultant = () => {
               // console.log(item);
               return (
                 <div key={item?.id} className="p-2 flex flex-col gap-3">
-                  <div className="flex gap-2 items-center">
+                  {/* <div className="flex gap-2 items-center">
                     <span className="text-lg text-gray-900">
                       {" "}
                       {index + 1}.{" "}
@@ -717,10 +717,16 @@ const UpcomingConsultant = () => {
                     <p className="text-lg font-semibold text-gray-900">
                       {item?.title}
                     </p>
-                  </div>
-                  <p className="text-sm text-gray-600 border border-dashed p-3 rounded-lg">
+                  </div> */}
+                  {/* <p className="text-sm text-gray-600 border border-dashed p-3 rounded-lg">
                     {item?.content}
-                  </p>
+                  </p> */}
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: item?.content,
+                    }}
+                    className="pl-10 text-justify py-12"
+                  ></div>
                 </div>
               );
             })
