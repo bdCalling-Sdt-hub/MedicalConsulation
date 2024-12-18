@@ -4,12 +4,9 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap");
 
-
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 html {
   scroll-behavior: smooth;
@@ -26,6 +23,10 @@ html {
 ::-webkit-scrollbar {
   width: 5px;
   display: none;
+}
+
+.ant-modal-content {
+  min-width: 50vw;
 }
 
 /* ::-webkit-scrollbar-thumb {
@@ -49,7 +50,6 @@ html {
   -webkit-backdrop-filter: blur(10px); /* For Safari */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds subtle shadow */
 }
-
 
 @media (max-width: 768px) {
   .sidebar-menu {
