@@ -60,14 +60,6 @@ const Doctor = () => {
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (_, record) => (
-        <div className="flex items-center">{record.name}</div>
-      ),
-    },
-    {
       title: "Image",
       dataIndex: "image",
       key: "image",
@@ -89,15 +81,24 @@ const Doctor = () => {
       ),
     },
     {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (_, record) => (
+        <div className="flex items-center">{record.name}</div>
+      ),
+    },
+
+    {
       title: "Email",
       dataIndex: "email",
       key: "email",
     },
-    {
-      title: "Date and Time",
-      dataIndex: "dateAndTime",
-      key: "dateAndTime",
-    },
+    // {
+    //   title: "Date and Time",
+    //   dataIndex: "dateAndTime",
+    //   key: "dateAndTime",
+    // },
     {
       title: "Total Consultation History",
       dataIndex: "totalConsultationHistory",
@@ -109,7 +110,7 @@ const Doctor = () => {
       key: "totalConsultationUpcoming",
     },
     {
-      title: "NHS Number",
+      title: "Unique ID",
       dataIndex: "nhsNumber",
       key: "nhsNumber",
     },
