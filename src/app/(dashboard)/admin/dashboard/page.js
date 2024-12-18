@@ -139,11 +139,11 @@ const Home = (props) => {
             />
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-2 w-[calc(100% -300px)] mt-[12px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 w-[calc(100% -300px)] mt-[12px]">
           {cardData.map((card, index) => (
             <div
               key={card.id}
-              className={`2xl:w-[350px] xl:w-[200px] lg:w-[150px] w-[450px] h-[210px] px-[20px] py-[32px] flex justify-between items-center rounded-2xl cursor-pointer ${
+              className={`2xl:w-[300px] xl:w-[200px] lg:w-[150px] w-[450px] h-[210px] px-[20px] py-[32px] flex justify-between items-center rounded-2xl cursor-pointer ${
                 selectedCard === index
                   ? "bg-[#02B5AA] text-[#E8EBF0]"
                   : "border border-[#E7E7E7]"
