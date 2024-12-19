@@ -49,7 +49,7 @@ function Header() {
     { name: "Home", path: "/" },
     { name: "What can we help with", path: "/we-can-help-with" },
     { name: "About Us", path: "/about-us" },
-    { name: "Services", path: "#services" },
+    // { name: "Services", path: "#services" },
     { name: "FAQ", path: "/faqs" },
     // { name: "Testimonials", path: "#testimonials" },
     // { name: "Tips", path: "#tips" },
