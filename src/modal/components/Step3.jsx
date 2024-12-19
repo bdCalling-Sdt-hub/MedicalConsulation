@@ -8,6 +8,8 @@ function Step3({ selectedItem, setDateTime, dateTime }) {
   //       : selectedItem.dateTimes;
   // }
 
+  console.log("selectedItem", selectedItem);
+
   return (
     <div>
       <h1
