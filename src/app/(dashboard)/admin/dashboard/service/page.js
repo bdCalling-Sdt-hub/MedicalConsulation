@@ -103,28 +103,36 @@ function CreteServices() {
               key={index}
             >
               <span className=" ">
+                {extractDateTimeParts(item, true, true).date}{" "}
+                {extractDateTimeParts(item, true, true).day}{" "}
                 {extractDateTimeParts(item, true, true).time}{" "}
-                {extractDateTimeParts(item, true, true).timeOfDay}
+                {/* {extractDateTimeParts(item, true, true).timeOfDay} */}
               </span>
             </Tag>
           ))}
         </div>
       ),
     },
-    {
-      title: "Days Of Week",
-      dataIndex: "daysOfWeek",
-      key: "daysOfWeek",
-      render: (_, record) => (
-        <div className="flex gap-2 flex-wrap">
-          {record?.daysOfWeek?.map((item, index) => (
-            <Tag type="secondary" color="success" key={index}>
-              {item?.toUpperCase()}
-            </Tag>
-          ))}
-        </div>
-      ),
-    },
+    // {
+    //   title: "Days Of Week",
+    //   dataIndex: "daysOfWeek",
+    //   key: "daysOfWeek",
+    //   render: (_, record) => (
+    //     <div className="flex gap-2 flex-wrap">
+    //       {/* {record?.daysOfWeek?.map((item, index) => (
+    //         <Tag type="secondary" color="success" key={index}>
+    //           {item?.toUpperCase()}
+    //         </Tag>
+    //       ))} */}
+    //       {record?.dateTimes?.map((item, index) => (
+    //         <Tag type="secondary" color="success" key={index}>
+    //           {/* {item?.toUpperCase()} */}
+    //           {extractDateTimeParts(item, false, true).day}
+    //         </Tag>
+    //       ))}
+    //     </div>
+    //   ),
+    // },
     {
       title: "ConsultationType",
       dataIndex: "consultationType",

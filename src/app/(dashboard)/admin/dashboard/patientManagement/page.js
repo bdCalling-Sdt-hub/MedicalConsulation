@@ -82,11 +82,11 @@ const PatientsManagement = () => {
       dataIndex: "email",
       key: "email",
     },
-    {
-      title: "Date and Time",
-      dataIndex: "dateAndTime",
-      key: "dateAndTime",
-    },
+    // {
+    //   title: "Date and Time",
+    //   dataIndex: "dateAndTime",
+    //   key: "dateAndTime",
+    // },
     {
       title: "Total Consultation History",
       dataIndex: "totalConsultationHistory",

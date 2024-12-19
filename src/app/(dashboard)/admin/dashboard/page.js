@@ -130,14 +130,14 @@ const Home = (props) => {
           <div>
             <h1 className="text-xl font-bold text-[#5D5D5D]">Overview</h1>
           </div>
-          <div className="pr-8">
+          {/* <div className="pr-8">
             <SelectBox
               options={selectOptions}
               placeholder="Week"
               onChange={handleSelectChange}
               style={{ width: 100 }}
             />
-          </div>
+          </div> */}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 w-[calc(100% -300px)] mt-[12px]">
           {cardData.map((card, index) => (
@@ -174,16 +174,16 @@ const Home = (props) => {
       </div>
       <div className="flex gap-4">
         <div className=" h-[350px] w-full mt-8 justify-center bg-white rounded-2xl">
-          <div className="flex justify-between w-full px-6">
-            <div className="text-lg font-bold">Static</div>
-            <div>
+          <div className="flex justify-center w-full px-6 py-2">
+            <div className="text-lg font-bold">Stats</div>
+            {/* <div>
               <SelectBox
                 placeholder="Last week"
                 options={selectOptions}
                 onChange={handleSelectChange}
                 style={{ width: 150 }}
               />
-            </div>
+            </div> */}
           </div>
           <SellerActivityChart />
         </div>
