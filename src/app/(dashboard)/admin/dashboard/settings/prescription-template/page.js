@@ -5,6 +5,7 @@ import { useGetPrescriptionTemplateQuery } from "../../../../../../../redux/apiS
 
 import { Button } from "antd";
 import { useRouter } from "next/navigation";
+import { IoIosArrowBack } from "react-icons/io";
 
 const SettingsTermsAndConditions = () => {
   const [isClient, setIsClient] = useState(false);
@@ -32,15 +33,15 @@ const SettingsTermsAndConditions = () => {
 
   return (
     <div className="w-[79vw] ">
-      <div>
+      {/* <div>
         <div
           // onClick={handleBackSettings}
           className="border-none text-[#193664] flex items-center gap-2 cursor-pointer"
         >
-          {/* <IoIosArrowBack /> */}
-          About Us
+          <IoIosArrowBack />
+          Prescription Template
         </div>
-      </div>
+      </div> */}
       <div
         dangerouslySetInnerHTML={{
           __html: prescriptionTemplate?.data?.content,

@@ -67,7 +67,9 @@ const EditAboutUs = () => {
         className="mt-[44px] cursor-pointer flex items-center pb-3 gap-2"
       >
         <MdOutlineKeyboardArrowLeft size={34} />
-        <h1 className="text-[24px] font-semibold">Edit About Us</h1>
+        <h1 className="text-[24px] font-semibold">
+          Edit Prescription Template
+        </h1>
       </div>
       <div className="text-justify mt-[24px] relative">
         {isMounted ? ( // Only render editor on client
