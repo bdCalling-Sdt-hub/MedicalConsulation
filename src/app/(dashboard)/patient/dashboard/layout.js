@@ -33,7 +33,7 @@ const userMenuItems = [
   },
   {
     path: "/patient/dashboard/consultant",
-    title: "Consultant",
+    title: "Consultations",
     icon: <FaRegUserCircle size={18} color="white" />,
     activeIcon: <FaUserCircle size={18} color="white" />,
   },
