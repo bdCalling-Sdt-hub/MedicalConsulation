@@ -81,7 +81,7 @@ const AppointmentDetails = (props) => {
 
   const { data: Appointments } = useGetAppointmentByIdQuery(props.params.id);
 
-  console.log(Appointments);
+  console.log("Appointments", Appointments);
 
   const [content, setContent] = useState("");
 
@@ -316,7 +316,7 @@ function myCode() {
         </div>
       </div>
       <div className="flex gap-2  items-center justify-center mt-4">
-        <div className="w-1/2 h-80 flex items-center justify-center py-8 bg-white rounded-2xl">
+        <div className="h-96 w-1/2 flex items-center justify-center py-8 bg-white rounded-2xl">
           <div className="mx-auto text-center items-center">
             <Image
               width={100}
@@ -337,13 +337,13 @@ function myCode() {
           </div>
         </div>
 
-        <div className=" h-80 w-1/2 py-4 justify-center bg-white rounded-2xl">
+        <div className="h-96 w-1/2 py-4 justify-center bg-white rounded-2xl">
           <div className=" px-6">
             <div className="text-lg font-bold text-center">
               Personal Information
             </div>
             <div className="flex-col  gap-24 items-center justify-center  ">
-              <div>
+              {/* <div>
                 <h1 className="mt-6">Name</h1>
                 <p className=" border-b border-gray-200 font-bold">
                   {Appointments?.data?.patient?.name}
@@ -352,11 +352,38 @@ function myCode() {
                 <p className="mt-2 border-b border-gray-200 font-bold">
                   {Appointments?.data?.patient?.phone}
                 </p>
-              </div>
-              <div>
+              </div> */}
+              {/* <div>
                 <h1 className="mt-6">Email</h1>
                 <p className="mt-2 border-b border-gray-200 font-bold">
                   {Appointments?.data?.patient?.email}
+                </p>
+              </div> */}
+              <div>
+                <h1 className="mt-6">Unique ID</h1>
+                <p className="mt-2 border-b border-gray-200 font-bold">
+                  {Appointments?.data?.patient?.nhsNumber}
+                </p>
+              </div>
+              <div>
+                <h1 className="mt-6">Description</h1>
+                <p className="mt-2 border-b border-gray-200 font-bold">
+                  {Appointments?.data?.description}
+                </p>
+              </div>
+              <div>
+                <h1 className="mt-6">current NHS GP Details</h1>
+                <p className="mt-2 border-b border-gray-200 font-bold">
+                  {Appointments?.data?.patient?.currentNHSGPDetails}
+                </p>
+              </div>
+              <div>
+                <h1 className="mt-6">Date Of Birth</h1>
+                <p className="mt-2 border-b border-gray-200 font-bold">
+                  {Appointments?.data?.patient?.dateOfBirth &&
+                    new Date(Appointments.data.patient.dateOfBirth)
+                      .toISOString()
+                      .split("T")[0]}
                 </p>
               </div>
             </div>
