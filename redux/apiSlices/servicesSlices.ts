@@ -78,6 +78,7 @@ export const {
   useGetAllServicesQuery,
   useLazyGetAllServicesQuery,
   useGetServiceByIdQuery,
+  useLazyGetServiceByIdQuery,
   useUpdateServiceByIdMutation,
   useDeletedServiceMutation,
 } = servicesSlices;

@@ -5,7 +5,10 @@ import {
   useAddEmailForZoomLinkMutation,
   useBookCreateAppointmentMutation,
 } from "../../../../redux/apiSlices/appointmentsSlices";
-import { useGetServiceByIdQuery } from "../../../../redux/apiSlices/servicesSlices";
+import {
+  useGetServiceByIdQuery,
+  useLazyGetServiceByIdQuery,
+} from "../../../../redux/apiSlices/servicesSlices";
 
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
@@ -25,9 +28,10 @@ const Booking = (pops) => {
   const [createAppointment] = useBookCreateAppointmentMutation({});
   const [addEmailForZoomLink] = useAddEmailForZoomLinkMutation({});
   // const { data: service } = useGetServiceByIdQuery(pops?.searchParams._id);
+  const [getServiceById, { data: service }] = useLazyGetServiceByIdQuery();
 
   // const { serviceById } = useGetServiceByIdQuery();
-  // console.log("service", service);
+  console.log("service", service);
 
   const router = useRouter();
 
@@ -139,12 +143,19 @@ const Booking = (pops) => {
 
   useEffect(() => {
     if (pops?.searchParams?._id) {
-      setSelectedItem(pops?.searchParams);
+      // setSelectedItem(pops?.searchParams);
+
+      getServiceById(pops?.searchParams?._id)
+        .then((data) => {
+          console.log("data", data);
+          setSelectedItem(data?.data?.data);
+        })
+        .catch((err) => console.log(err));
       setCurrentStep(2);
       // const data = serviceById(pops?.searchParams._id);
       // console.log("data", data);
     }
-  }, [pops?.searchParams, serviceById]);
+  }, [pops?.searchParams, getServiceById]);
 
   return (
     <div className=" container mx-auto  my-10">
