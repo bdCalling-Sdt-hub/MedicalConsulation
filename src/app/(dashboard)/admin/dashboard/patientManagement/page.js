@@ -20,15 +20,17 @@ const PatientsManagement = () => {
   const [role, setRole] = useState("");
   const [openPrescriptionModal, setOpenPrescriptionModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showSizeChange, onShowSizeChange] = useState(10);
 
-  console.log("searchTerm", searchTerm);
-  console.log("searchTerm", typeof searchTerm);
+  console.log("currentPage", currentPage);
+  // console.log("searchTerm", typeof searchTerm);
 
   const pageSize = 10;
 
   const { data: patient } = useAllPatientsQuery({
     page: currentPage,
-    limit: pageSize,
+    // limit: pageSize,
+    limit: showSizeChange,
     search: searchTerm,
   });
 
@@ -169,10 +171,12 @@ const PatientsManagement = () => {
           dataSource={data}
           columns={columns}
           pagination={{
-            pageSize,
-            total: patient?.data?.count,
+            // pageSize,
+            showSizeChange,
+            total: patient?.data?.total,
             current: currentPage,
             onChange: handlePage,
+            onShowSizeChange: (current, pageSize) => onShowSizeChange(pageSize),
           }}
           rowClassName={() => "hover:bg-transparent"}
         />
