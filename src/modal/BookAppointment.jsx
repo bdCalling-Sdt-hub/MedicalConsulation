@@ -70,6 +70,7 @@ function BookAppointment() {
 
       handleCancel();
     } else if (currentStep === 3) {
+      console.log("currentStep === 3 extraInfo", extraInfo);
       handleCreateAppointment({
         ...dateTime,
         ...extraInfo,
@@ -88,31 +89,66 @@ function BookAppointment() {
     }
   };
 
+  // const handleCreateAppointment = useCallback(
+  //   async (UData) => {
+  //     try {
+  //       if (!UData?.nhsNumber) {
+  //         UData.nhsNumber = user.nhsNumber;
+  //       }
+  //       const response = await createAppointment(UData);
+  //       // console.log(response);
+  //       if (response?.data) {
+  //         setCreatedAppointment(response?.data?.data?.appointment);
+  //         setCurrentStep(4);
+  //       }
+  //       if (response?.error) {
+  //         Swal.fire({
+  //           title: "Error",
+  //           text: res?.error?.data?.message,
+  //           icon: "error",
+  //           confirmButtonText: "OK",
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   },
+  //   [user, createAppointment]
+  // );
   const handleCreateAppointment = useCallback(
     async (UData) => {
       try {
-        if (!UData?.nhsNumber) {
-          UData.nhsNumber = user.nhsNumber;
-        }
-        const response = await createAppointment(UData);
-        // console.log(response);
-        if (response?.data) {
-          setCreatedAppointment(response?.data?.data?.appointment);
-          setCurrentStep(4);
-        }
-        if (response?.error) {
-          Swal.fire({
-            title: "Error",
-            text: res?.error?.data?.message,
-            icon: "error",
-            confirmButtonText: "OK",
+        const formData = new FormData();
+
+        // Append non-file fields
+        Object.keys(UData).forEach((key) => {
+          if (key !== "pdfFiles") {
+            formData.append(key, UData[key]);
+          }
+        });
+
+        // Append files
+        if (UData?.pdfFiles?.length) {
+          UData.pdfFiles.forEach((file) => {
+            formData.append("pdfFiles", file);
           });
         }
+
+        console.log("formData", formData);
+        console.log("UData.pdfFiles", UData.pdfFiles);
+
+        // Call mutation
+        const response = await createAppointment(formData).unwrap();
+
+        if (response?.data) {
+          setCreatedAppointment(response?.data?.appointment);
+          setCurrentStep(4);
+        }
       } catch (error) {
-        console.log(error);
+        console.error("Appointment creation failed", error);
       }
     },
-    [user, createAppointment]
+    [createAppointment, setCreatedAppointment, setCurrentStep]
   );
 
   // console.log(createdAppointment);

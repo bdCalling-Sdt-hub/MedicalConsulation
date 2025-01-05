@@ -1,8 +1,20 @@
-import { Input } from "antd";
+import { Input, Upload, Button, message } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 
 function NewStep({ setExtraInfo, extraInfo, user }) {
   console.log(user?.dateOfBirth);
+  // Handle file upload changes
+  const handleFileChange = ({ fileList }) => {
+    if (fileList.length > 5) {
+      message.error("You can only upload up to 5 files.");
+    } else {
+      const pdfFiles = fileList.map((file) => file.originFileObj); // Extract raw files
+      setExtraInfo({ ...extraInfo, pdfFiles });
+    }
+  };
+
+  console.log("extraInfo", extraInfo);
   return (
     <div className={`   gap-4`}>
       <div className={`col-span-2`}>
@@ -12,14 +24,15 @@ function NewStep({ setExtraInfo, extraInfo, user }) {
           </p>
           <Input
             type="number"
-            value={extraInfo?.nhsNumber}
-            defaultValue={user?.nhsNumber}
+            value={extraInfo?.uniqueId}
+            defaultValue={user?.uniqueId}
             onChange={(e) => {
-              setExtraInfo({ ...extraInfo, nhsNumber: e.target.value });
+              setExtraInfo({ ...extraInfo, uniqueId: e.target.value });
             }}
             id="cardNumber"
             placeholder="Enter your Your unique ID"
             className={`border border-neutral5 p-2 rounded w-full mt-1 text-base text-offBlack font-merri font-normal focus:outline-none`}
+            disabled={true}
           />
         </div>
         <div className={`mb-4 mt-6`}>
@@ -111,6 +124,22 @@ function NewStep({ setExtraInfo, extraInfo, user }) {
         </div>
         <div className={`mb-4 mt-6`}>
           <p className={`text-sm text-secondaryBlack font-merri font-normal`}>
+            NHS Number
+          </p>
+          <Input
+            type="text"
+            value={extraInfo?.nhsNumber}
+            defaultValue={user?.nhsNumber}
+            onChange={(e) => {
+              setExtraInfo({ ...extraInfo, nhsNumber: e.target.value });
+            }}
+            id="cardNumber"
+            placeholder="Enter your Name of Doctor"
+            className={`border border-neutral5 p-2 rounded w-full mt-1 text-base text-offBlack font-merri font-normal focus:outline-none`}
+          />
+        </div>
+        <div className={`mb-4 mt-6`}>
+          <p className={`text-sm text-secondaryBlack font-merri font-normal`}>
             Surgery Address
           </p>
           <Input
@@ -181,6 +210,25 @@ function NewStep({ setExtraInfo, extraInfo, user }) {
             className={`border border-neutral5 p-2 rounded w-full mt-1 text-base text-offBlack font-merri font-normal focus:outline-none`}
             rows={7}
           />
+        </div>
+        <div className={`mb-4 mt-6`}>
+          <p className={`text-sm text-secondaryBlack font-merri font-normal`}>
+            Upload PDF files (max 5)
+          </p>
+          <Upload
+            fileList={extraInfo?.pdfFiles || []}
+            beforeUpload={(file) => {
+              const isPDF = file.type === "application/pdf";
+              if (!isPDF) {
+                message.error(`${file.name} is not a PDF file.`);
+              }
+              return isPDF;
+            }}
+            onChange={handleFileChange}
+            multiple
+          >
+            <Button icon={<UploadOutlined />}>Upload Documents</Button>
+          </Upload>
         </div>
       </div>
     </div>

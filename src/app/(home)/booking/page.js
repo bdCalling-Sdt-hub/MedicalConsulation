@@ -92,31 +92,66 @@ const Booking = (pops) => {
     }
   };
 
+  // const handleCreateAppointment = useCallback(
+  //   async (UData) => {
+  //     try {
+  //       if (!UData?.nhsNumber) {
+  //         UData.nhsNumber = user.nhsNumber;
+  //       }
+  //       const response = await createAppointment(UData);
+  //       console.log("response handleCreateAppointment 92", response);
+  //       console.log(
+  //         "response?.data handleCreateAppointment 92",
+  //         response?.data
+  //       );
+  //       if (response?.data) {
+  //         setCreatedAppointment(response?.data?.data?.appointment);
+  //         // setCurrentStep(4);
+  //         setCurrentStep(5);
+  //       }
+  //       if (response?.error) {
+  //         Swal.fire("Error", response?.error?.data?.message, "error");
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   },
+  //   [user, createAppointment]
+  // );
   const handleCreateAppointment = useCallback(
     async (UData) => {
       try {
-        if (!UData?.nhsNumber) {
-          UData.nhsNumber = user.nhsNumber;
+        const formData = new FormData();
+
+        // Append non-file fields
+        Object.keys(UData).forEach((key) => {
+          if (key !== "pdfFiles") {
+            formData.append(key, UData[key]);
+          }
+        });
+
+        // Append files
+        if (UData?.pdfFiles?.length) {
+          UData.pdfFiles.forEach((file) => {
+            formData.append("pdfFiles", file);
+          });
         }
-        const response = await createAppointment(UData);
-        console.log("response handleCreateAppointment 92", response);
-        console.log(
-          "response?.data handleCreateAppointment 92",
-          response?.data
-        );
+
+        console.log("formData", formData);
+        console.log("UData.pdfFiles", UData.pdfFiles);
+
+        // Call mutation
+        const response = await createAppointment(formData).unwrap();
+
         if (response?.data) {
-          setCreatedAppointment(response?.data?.data?.appointment);
-          // setCurrentStep(4);
-          setCurrentStep(5);
-        }
-        if (response?.error) {
-          Swal.fire("Error", response?.error?.data?.message, "error");
+          setCreatedAppointment(response?.data?.appointment);
+          setCurrentStep(4);
         }
       } catch (error) {
-        console.log(error);
+        console.error("Appointment creation failed", error);
       }
     },
-    [user, createAppointment]
+    [createAppointment, setCreatedAppointment, setCurrentStep]
   );
 
   // console.log(createdAppointment);
