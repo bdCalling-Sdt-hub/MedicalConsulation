@@ -206,14 +206,14 @@ function NewStep({ setExtraInfo, extraInfo, user }) {
             onChange={(e) => {
               setExtraInfo({ ...extraInfo, description: e.target.value });
             }}
-            placeholder="Autosize height based on content lines"
+            placeholder="Describe your problem here..."
             className={`border border-neutral5 p-2 rounded w-full mt-1 text-base text-offBlack font-merri font-normal focus:outline-none`}
             rows={7}
           />
         </div>
         <div className={`mb-4 mt-6`}>
           <p className={`text-sm text-secondaryBlack font-merri font-normal`}>
-            Upload PDF files (max 5)
+            {/* Upload Documents */}
           </p>
           <Upload
             fileList={extraInfo?.pdfFiles || []}

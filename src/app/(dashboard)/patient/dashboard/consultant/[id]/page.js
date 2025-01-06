@@ -45,13 +45,20 @@ const AppointmentDetails = (props) => {
   const [editPrescriptionModalOpen, setEditPrescriptionModalOpen] =
     useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const route = useRouter();
   const [noteForm] = Form.useForm();
   const [prescriptionForm] = Form.useForm();
   const [selectNoteData, setSelectNoteData] = useState(null);
   const [selectPrescriptionData, setSelectPrescriptionData] = useState(null);
   const [isMounted, setIsMounted] = useState(false); // Track if component is mounted
   const componentRef = useRef();
-
+  console.log("url", window.location.href);
+  const url = new URL(window.location.href);
+  const path = url.pathname;
+  const slug = path.split("/").slice(3).join("/");
+  console.log("slug", slug);
+  console.log("path", path);
+  console.log("type of path", typeof path);
   // Effect to set mounted state
   useEffect(() => {
     setIsMounted(true);
@@ -336,12 +343,30 @@ const AppointmentDetails = (props) => {
     setEditPrescriptionModalOpen(true);
   };
 
+  const handleDocumentClick = () => {
+    console.log("handleDocumentClick");
+    // generatePdf(Appointments?.data?.prescription[0]);
+    // route.push(`/patient/dashboard/consultant/${recoded?._id}`);
+    route.push(`${path}/documents`);
+  };
+
   return (
     <div ref={TestRef}>
       <div className="flex justify-between gap-3 items-center w-full">
         <div onClick={handleBack} className="flex cursor-pointer">
           <ChevronLeft />
           <h1>Back</h1>
+        </div>
+        <div>
+          <Button
+            onClick={() =>
+              // handleDocumentClick(record)
+              handleDocumentClick()
+            }
+            type="default"
+          >
+            Documents
+          </Button>
         </div>
       </div>
       <div className="flex gap-2  items-center justify-center mt-4">

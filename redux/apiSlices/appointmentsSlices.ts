@@ -11,6 +11,10 @@ export const appointmentsSlices = api.injectEndpoints({
       query: (id) => `/appointment/get-appointment-by-id/${id}`,
       providesTags: ["appointments"],
     }),
+    getAllDocumentsByAppointmentId: builder.query({
+      query: (id) => `/appointment/get-all-documents-by-appointmentId/${id}`,
+      providesTags: ["appointments"],
+    }),
     getAppointmentPatientById: builder.query({
       query: ({ page, limit, status }) =>
         `/appointment/get-appointment-by-patientId?page=${page}&limit=${limit}&status=${status}`,
@@ -92,4 +96,5 @@ export const {
   useLazyGetAppointmentByIdQuery,
   useAssignDoctorToAppointmentMutation,
   useAddEmailForZoomLinkMutation,
+  useGetAllDocumentsByAppointmentIdQuery,
 } = appointmentsSlices;
