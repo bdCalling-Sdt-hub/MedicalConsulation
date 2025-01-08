@@ -40,6 +40,7 @@ import {
   useGetAppointmentByIdQuery,
   useGetAllDocumentsByAppointmentIdQuery,
   useDeleteDocumentByAppointmentIdMutation,
+  useAddDocumentByAppointmentIdMutation,
 } from "../../../../../../../../redux/apiSlices/appointmentsSlices";
 import { PDFRenderer } from "@react-pdf/renderer";
 // Dynamic import for JoditEditor
@@ -49,6 +50,7 @@ const { Title, Text } = Typography;
 
 const AppointmentDetails = (props) => {
   const [documents, setDocuments] = useState([]);
+  const [files, setFiles] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [noteModalOpen, setNoteModalOpen] = useState(false);
   const [editNoteModalOpen, setEditNoteModalOpen] = useState(false);
@@ -67,6 +69,15 @@ const AppointmentDetails = (props) => {
   );
   const [deleteDocumentByAppointmentId] =
     useDeleteDocumentByAppointmentIdMutation();
+
+  const [addDocumentModalOpen, setAddDocumentModalOpen] = useState(false);
+
+  const handleAddDocumentModalOpen = () => {
+    setAddDocumentModalOpen(true);
+  };
+  const handleAddDocumentModalCancel = () => {
+    setAddDocumentModalOpen(false);
+  };
 
   // Effect to set mounted state
   useEffect(() => {
@@ -143,6 +154,7 @@ const AppointmentDetails = (props) => {
   const [editNote] = useEditNoteMutation();
   const [addPrescription] = useAddPrescriptionMutation();
   const [editPrescription] = useEditPrescriptionMutation();
+  const [addDocumentToAppointment] = useAddDocumentByAppointmentIdMutation();
 
   const handleNoteSubmit = async (values) => {
     // console.log(values);
@@ -247,15 +259,10 @@ const AppointmentDetails = (props) => {
           <ChevronLeft />
           <h1>Back</h1>
         </div>
+
         <div>
-          <Button
-            onClick={() =>
-              // handleDocumentClick(record)
-              handleDocumentClick()
-            }
-            type="default"
-          >
-            Documents
+          <Button onClick={handleAddDocumentModalOpen} type="default">
+            Add Documents
           </Button>
         </div>
       </div>
@@ -271,73 +278,63 @@ const AppointmentDetails = (props) => {
           />
         </div>
       </div>
-
       <Modal
-        title="Add Note"
-        open={noteModalOpen}
-        onCancel={handleCancel}
+        title="Add Documents"
+        open={addDocumentModalOpen}
+        onCancel={handleAddDocumentModalCancel}
         footer={null}
       >
-        <Form
-          form={noteForm}
-          onFinish={handleNoteSubmit}
-          className="w-full pt-3"
-        >
+        <Form className="w-full pt-3">
           <Form.Item
-            name={"title"}
-            rules={[{ required: true, message: "Please input title" }]}
+            name={"document"}
+            rules={[{ required: true, message: "Please upload document" }]}
           >
-            <Input className="h-12" placeholder="Title" />
-          </Form.Item>
-          <Form.Item
-            name={"content"}
-            rules={[{ required: true, message: "Please input content" }]}
-          >
-            <Input.TextArea placeholder="Content" rows={4} />
+            <Input
+              type="file"
+              multiple
+              onChange={(e) => setFiles(e.target.files)}
+            />
           </Form.Item>
           <Form.Item style={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
               className="h-10 bg-primary6 text-white"
               type="text"
               htmlType="submit"
+              onClick={async () => {
+                if (!files) {
+                  return;
+                }
+                const formData = new FormData();
+
+                // Use the 'files' state directly instead of redefining it
+                for (let i = 0; i < files.length; i++) {
+                  formData.append("pdfFiles", files[i]);
+                }
+
+                const res = await addDocumentToAppointment({
+                  id: props.params.id,
+                  data: formData,
+                });
+
+                if (res.data) {
+                  Swal.fire({
+                    title: "Document added successfully!",
+                    text: "New documents added!",
+                    icon: "success",
+                  });
+                  setAddDocumentModalOpen(false);
+                }
+              }}
             >
               Submit
             </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
 
-      <Modal
-        title="Add Prescription"
-        open={prescriptionModalOpen}
-        onCancel={handleCancel}
-        footer={null}
-      >
-        <Form
-          form={noteForm}
-          onFinish={handlePrescriptionSubmit}
-          className="w-full pt-3"
-        >
-          <Form.Item
-            name={"title"}
-            rules={[{ required: true, message: "Please input title" }]}
-          >
-            <Input className="h-12" placeholder="Title" />
-          </Form.Item>
-          <Form.Item
-            name={"content"}
-            rules={[{ required: true, message: "Please input content" }]}
-          >
-            <Input.TextArea placeholder="Content" rows={4} />
-          </Form.Item>
-
-          <Form.Item style={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
-              className="h-10 bg-primary6 text-white"
+              className="h-10 ml-2"
               type="text"
-              htmlType="submit"
+              onClick={handleAddDocumentModalCancel}
             >
-              Submit
+              Cancel
             </Button>
           </Form.Item>
         </Form>
