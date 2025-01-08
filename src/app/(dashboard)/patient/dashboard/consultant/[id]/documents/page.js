@@ -39,6 +39,7 @@ import { imageUrl } from "../../../../../../../../redux/api/baseApi";
 import {
   useGetAppointmentByIdQuery,
   useGetAllDocumentsByAppointmentIdQuery,
+  useDeleteDocumentByAppointmentIdMutation,
 } from "../../../../../../../../redux/apiSlices/appointmentsSlices";
 import { PDFRenderer } from "@react-pdf/renderer";
 // Dynamic import for JoditEditor
@@ -64,6 +65,8 @@ const AppointmentDetails = (props) => {
   const { data: documentsData } = useGetAllDocumentsByAppointmentIdQuery(
     props.params.id
   );
+  const [deleteDocumentByAppointmentId] =
+    useDeleteDocumentByAppointmentIdMutation();
 
   // Effect to set mounted state
   useEffect(() => {
@@ -82,11 +85,33 @@ const AppointmentDetails = (props) => {
   // Handle delete document
   const handleDelete = (key) => {
     const documentToDelete = documents.find((doc) => doc.key === key);
-    // Here, you would make an API call to delete the document from the server
-    console.log("Deleting document:", documentToDelete);
 
-    // Remove the document from the state after deletion (if it's a local operation)
-    setDocuments(documents.filter((doc) => doc.key !== key));
+    Modal.confirm({
+      title: `Delete document: ${documentToDelete.documentName}?`,
+      content: `Are you sure you want to delete this document? This action is irreversible.`,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk: () => {
+        console.log("Deleting document:", documentToDelete);
+
+        // Call the API to delete the document
+        deleteDocumentByAppointmentId({
+          id: props.params.id,
+          data: { documentUrl: documentToDelete.url },
+        })
+          .unwrap()
+          .then(() => {
+            console.log("Document deleted successfully");
+            // Remove the document from the state after deletion
+            setDocuments(documents.filter((doc) => doc.key !== key));
+          })
+          .catch((error) => {
+            console.log("Error deleting document:", error);
+          });
+      },
+      onCancel: () => console.log("Delete cancelled"),
+    });
   };
 
   const TestRef = useRef();

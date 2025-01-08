@@ -15,6 +15,14 @@ export const appointmentsSlices = api.injectEndpoints({
       query: (id) => `/appointment/get-all-documents-by-appointmentId/${id}`,
       providesTags: ["appointments"],
     }),
+    deleteDocumentByAppointmentId: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/appointment/delete-a-document-by-appointmentId/${id}`,
+        body: data,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["appointments"],
+    }),
     getAppointmentPatientById: builder.query({
       query: ({ page, limit, status }) =>
         `/appointment/get-appointment-by-patientId?page=${page}&limit=${limit}&status=${status}`,
@@ -89,6 +97,7 @@ export const {
   useCancelAppointmentMutation,
   useCheckLoginMutation,
   useCompleteAppointmentMutation,
+  useDeleteDocumentByAppointmentIdMutation,
   useGetAllAppointmentQuery,
   useGetAppointmentByIdQuery,
   useGetAppointmentDoctorByIdQuery,
