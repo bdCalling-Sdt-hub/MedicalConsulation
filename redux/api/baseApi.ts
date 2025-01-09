@@ -96,4 +96,4 @@ export const api = createApi({
 });
 
 // export const imageUrl = "https://nail-flags-gnome-receiver.trycloudflare.com/";
-export const imageUrl = "http://192.168.12.158:3000/";
+export const imageUrl = "http://10.0.80.85:3000/";

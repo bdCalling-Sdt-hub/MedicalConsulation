@@ -14,19 +14,7 @@ import {
   Table,
 } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
-// import {
-//   useAddNoteMutation,
-//   useEditNoteMutation,
-// } from "../../../../../redux/apiSlices/notesSlices";
-import {
-  useAddNoteMutation,
-  useEditNoteMutation,
-} from "../../../../../../../../redux/apiSlices/notesSlices";
-import {
-  useAddPrescriptionMutation,
-  useEditPrescriptionMutation,
-  useDownloadPrescriptionMutation,
-} from "../../../../../../../../redux/apiSlices/prescriptionSlices";
+
 import { createRoot } from "react-dom/client"; // Import createRoot for React 18+
 import { InfoCircleOutlined, CloudDownloadOutlined } from "@ant-design/icons";
 import { ChevronLeft } from "lucide-react";
@@ -83,11 +71,20 @@ const AppointmentDetails = (props) => {
   useEffect(() => {
     setIsMounted(true);
     if (documentsData?.success) {
+      // setDocuments(
+      //   documentsData?.data?.map((doc, index) => ({
+      //     key: index,
+      //     documentName: doc.split("\\").pop(), // Extract file name from full path
+      //     // url: doc, // Store the full URL for deletion
+      //     url: `${imageUrl}public/uploads/pdfs/${doc.split("\\").pop()}`, // Use base URL to create the correct link
+      //   }))
+      // );
       setDocuments(
         documentsData?.data?.map((doc, index) => ({
           key: index,
-          documentName: doc.split("\\").pop(), // Extract file name from full path
-          url: doc, // Store the full URL for deletion
+          documentName: doc.split("\\").pop(), // Extract file name
+          url: `${imageUrl}public/uploads/pdfs/${doc.split("\\").pop()}`, // HTTP URL for display
+          localPath: doc, // Full local file path for deletion
         }))
       );
     }
@@ -109,7 +106,7 @@ const AppointmentDetails = (props) => {
         // Call the API to delete the document
         deleteDocumentByAppointmentId({
           id: props.params.id,
-          data: { documentUrl: documentToDelete.url },
+          data: { documentUrl: documentToDelete.localPath },
         })
           .unwrap()
           .then(() => {
@@ -132,8 +129,6 @@ const AppointmentDetails = (props) => {
 
   const [selectedValue, setSelectedValue] = useState();
 
-  // console.log(props);
-
   const { data: Appointments } = useGetAppointmentByIdQuery(props.params.id);
 
   console.log("props.params.id", props.params.id);
@@ -143,83 +138,12 @@ const AppointmentDetails = (props) => {
 
   const [content, setContent] = useState("");
 
-  // React chart section
-
   const navigate = useRouter();
   const handleBack = () => {
     navigate.push("/patient/dashboard/consultant");
   };
 
-  const [addNote] = useAddNoteMutation();
-  const [editNote] = useEditNoteMutation();
-  const [addPrescription] = useAddPrescriptionMutation();
-  const [editPrescription] = useEditPrescriptionMutation();
   const [addDocumentToAppointment] = useAddDocumentByAppointmentIdMutation();
-
-  const handleNoteSubmit = async (values) => {
-    // console.log(values);
-
-    const res = await addNote({
-      appointmentId: Appointments?.data?._id,
-      ...values,
-    });
-    // console.log(res);
-    if (res.data) {
-      Swal.fire({
-        title: "Good job!",
-        text: "You clicked the button!",
-        icon: "success",
-      });
-      noteForm.resetFields(); // Reset form fields after submission
-      setNoteModalOpen(false);
-    }
-  };
-  const handlePrescriptionSubmit = async (values) => {
-    console.log(values);
-
-    const res = await addPrescription({
-      appointmentId: Appointments?.data?.patient?._id,
-      ...values,
-    });
-    console.log(res);
-    if (res.data) {
-      Swal.fire({
-        title: "Good job!",
-        text: "You clicked the button!",
-        icon: "success",
-      });
-      prescriptionForm.resetFields(); // Reset form fields after submission
-      setPrescriptionNoteModalOpen(false);
-    }
-  };
-
-  const handleCancel = () => {
-    setNoteModalOpen(false);
-    setEditNoteModalOpen(false);
-    setPrescriptionNoteModalOpen(false);
-    setEditPrescriptionModalOpen(false);
-    setOpenDeleteModal(false);
-    noteForm.resetFields();
-    prescriptionForm.resetFields();
-  };
-
-  const noteModalClicked = () => {
-    setNoteModalOpen(true);
-  };
-
-  const editNoteModalClicked = (note) => {
-    noteForm.setFieldsValue(note);
-    setEditNoteModalOpen(true);
-  };
-
-  const prescriptionNoteModalClicked = () => {
-    setPrescriptionNoteModalOpen(true);
-  };
-
-  const prescriptionModalClicked = (prescription) => {
-    prescriptionForm.setFieldsValue(prescription);
-    setEditPrescriptionModalOpen(true);
-  };
 
   const handleDocumentClick = () => {
     console.log("handleDocumentClick");
@@ -230,12 +154,38 @@ const AppointmentDetails = (props) => {
   console.log("url", url);
   console.log("path", path);
 
+  // const columns = [
+  //   {
+  //     title: "Document Name",
+  //     dataIndex: "documentName",
+  //     key: "documentName",
+  //     render: (text) => <span>{text}</span>, // Display the document name
+  //   },
+  //   {
+  //     title: "Action",
+  //     key: "action",
+  //     render: (text, record) => (
+  //       <Button
+  //         type="danger"
+  //         icon={<DeleteOutlined />}
+  //         onClick={() => handleDelete(record.key)} // Trigger delete on click
+  //       >
+  //         Delete
+  //       </Button>
+  //     ),
+  //   },
+  // ];
+
   const columns = [
     {
       title: "Document Name",
       dataIndex: "documentName",
       key: "documentName",
-      render: (text) => <span>{text}</span>, // Display the document name
+      render: (text, record) => (
+        <a href={record.url} target="_blank" rel="noopener noreferrer">
+          {text}
+        </a>
+      ), // Display the document name as a clickable link
     },
     {
       title: "Action",
