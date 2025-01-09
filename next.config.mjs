@@ -4,7 +4,8 @@ const nextConfig = {
     domains: [
       // "192.168.12.158",
       "10.0.80.85",
-      "192.168.12.202",
+      // "192.168.12.202",
+      "10.0.80.85",
       "m.media-amazon.com",
       "upload.wikimedia.org",
       "***",
