@@ -345,8 +345,6 @@ const AppointmentDetails = (props) => {
 
   const handleDocumentClick = () => {
     console.log("handleDocumentClick");
-    // generatePdf(Appointments?.data?.prescription[0]);
-    // route.push(`/patient/dashboard/consultant/${recoded?._id}`);
     route.push(`${path}/documents`);
   };
 
@@ -358,13 +356,7 @@ const AppointmentDetails = (props) => {
           <h1>Back</h1>
         </div>
         <div>
-          <Button
-            onClick={() =>
-              // handleDocumentClick(record)
-              handleDocumentClick()
-            }
-            type="default"
-          >
+          <Button onClick={() => handleDocumentClick()} type="default">
             Documents
           </Button>
         </div>

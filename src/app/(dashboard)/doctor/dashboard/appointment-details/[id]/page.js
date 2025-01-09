@@ -29,7 +29,6 @@ import {
   useEditPrescriptionMutation,
   useGetPrescriptionTemplateQuery,
 } from "../../../../../../../redux/apiSlices/prescriptionSlices";
-
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -66,6 +65,7 @@ const AppointmentDetails = (props) => {
       flexGrow: 1,
     },
   });
+  const route = useRouter();
 
   // Effect to set mounted state
   useEffect(() => {
@@ -76,6 +76,10 @@ const AppointmentDetails = (props) => {
   const pageSize = 3;
 
   const [selectedValue, setSelectedValue] = useState();
+
+  const url = new URL(window.location.href);
+  const path = url.pathname;
+  const slug = path.split("/").slice(3).join("/");
 
   // console.log(props);
 
@@ -291,6 +295,11 @@ function myCode() {
     setEditPrescriptionModalOpen(true);
   };
 
+  const handleDocumentClick = () => {
+    console.log("handleDocumentClick");
+    route.push(`${path}/documents`);
+  };
+
   return (
     <div>
       <div className="flex justify-between gap-3 items-center w-full">
@@ -312,6 +321,9 @@ function myCode() {
             icon={<PlusCircleOutlined />}
           >
             Add Prescription
+          </Button>
+          <Button onClick={() => handleDocumentClick()} type="default">
+            Documents
           </Button>
         </div>
       </div>
