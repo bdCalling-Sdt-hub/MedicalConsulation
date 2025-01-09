@@ -29,6 +29,7 @@ import {
   useGetAllDocumentsByAppointmentIdQuery,
   useDeleteDocumentByAppointmentIdMutation,
   useAddDocumentByAppointmentIdMutation,
+  useGetAllDocumentsByAppointmentIdByDoctorQuery,
 } from "../../../../../../../../redux/apiSlices/appointmentsSlices";
 import { PDFRenderer } from "@react-pdf/renderer";
 // Dynamic import for JoditEditor
@@ -38,6 +39,7 @@ const { Title, Text } = Typography;
 
 const AppointmentDetails = (props) => {
   const [documents, setDocuments] = useState([]);
+  const [documentsByDoctorState, setDocumentsByDoctorState] = useState([]);
   const [files, setFiles] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [noteModalOpen, setNoteModalOpen] = useState(false);
@@ -55,6 +57,9 @@ const AppointmentDetails = (props) => {
   const { data: documentsData } = useGetAllDocumentsByAppointmentIdQuery(
     props.params.id
   );
+  const { data: documentsDataByDoctor } =
+    useGetAllDocumentsByAppointmentIdByDoctorQuery(props.params.id);
+  console.log("documentsDataByDoctor", documentsDataByDoctor);
   const [deleteDocumentByAppointmentId] =
     useDeleteDocumentByAppointmentIdMutation();
 
@@ -90,6 +95,20 @@ const AppointmentDetails = (props) => {
     }
   }, [documentsData]);
 
+  useEffect(() => {
+    setIsMounted(true);
+    if (documentsDataByDoctor?.success) {
+      setDocumentsByDoctorState(
+        documentsDataByDoctor?.data?.map((doc, index) => ({
+          key: index,
+          documentName: doc.split("\\").pop(), // Extract file name
+          url: `${imageUrl}public/uploads/pdfs/${doc.split("\\").pop()}`, // HTTP URL for display
+          localPath: doc, // Full local file path for deletion
+        }))
+      );
+    }
+  }, [documentsDataByDoctor]);
+
   // Handle delete document
   const handleDelete = (key) => {
     const documentToDelete = documents.find((doc) => doc.key === key);
@@ -113,6 +132,40 @@ const AppointmentDetails = (props) => {
             console.log("Document deleted successfully");
             // Remove the document from the state after deletion
             setDocuments(documents.filter((doc) => doc.key !== key));
+          })
+          .catch((error) => {
+            console.log("Error deleting document:", error);
+          });
+      },
+      onCancel: () => console.log("Delete cancelled"),
+    });
+  };
+  const handleDeleteDocumentOfDoctor = (key) => {
+    const documentToDelete = documentsByDoctorState.find(
+      (doc) => doc.key === key
+    );
+
+    Modal.confirm({
+      title: `Delete document: ${documentToDelete.documentName}?`,
+      content: `Are you sure you want to delete this document? This action is irreversible.`,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk: () => {
+        console.log("Deleting document:", documentToDelete);
+
+        // Call the API to delete the document
+        deleteDocumentByAppointmentId({
+          id: props.params.id,
+          data: { documentUrl: documentToDelete.localPath },
+        })
+          .unwrap()
+          .then(() => {
+            console.log("Document deleted successfully");
+            // Remove the document from the state after deletion
+            setDocumentsByDoctorState(
+              documentsByDoctorState.filter((doc) => doc.key !== key)
+            );
           })
           .catch((error) => {
             console.log("Error deleting document:", error);
@@ -202,6 +255,19 @@ const AppointmentDetails = (props) => {
     },
   ];
 
+  const columnsForDoctor = [
+    {
+      title: "Document Name",
+      dataIndex: "documentName",
+      key: "documentName",
+      render: (text, record) => (
+        <a href={record.url} target="_blank" rel="noopener noreferrer">
+          {text}
+        </a>
+      ), // Display the document name as a clickable link
+    },
+  ];
+
   return (
     <div ref={TestRef}>
       <div className="flex justify-between gap-3 items-center w-full">
@@ -220,8 +286,19 @@ const AppointmentDetails = (props) => {
       <div className="mt-6 grid grid-cols-2 gap-4">
         <div className="bg-white rounded-lg ">
           <Table
+            title={() => "Documents Uploaded by Patient"}
             columns={columns}
             dataSource={documents}
+            rowKey="key"
+            pagination={false}
+            bordered
+          />
+        </div>
+        <div className="bg-white rounded-lg ">
+          <Table
+            title={() => "Documents Uploaded by Doctor"}
+            columns={columnsForDoctor}
+            dataSource={documentsByDoctorState}
             rowKey="key"
             pagination={false}
             bordered
