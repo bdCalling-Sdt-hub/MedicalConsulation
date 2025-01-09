@@ -23,6 +23,14 @@ export const appointmentsSlices = api.injectEndpoints({
       }),
       invalidatesTags: ["appointments"],
     }),
+    deleteDocumentByAppointmentIdByDoctor: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/appointment/delete-a-document-by-appointmentId-by-doctor/${id}`,
+        body: data,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["appointments"],
+    }),
     addDocumentByAppointmentId: builder.mutation({
       query: ({ id, data }) => ({
         url: `/appointment/add-document-to-appointment/${id}`,
@@ -119,6 +127,7 @@ export const {
   useCheckLoginMutation,
   useCompleteAppointmentMutation,
   useDeleteDocumentByAppointmentIdMutation,
+  useDeleteDocumentByAppointmentIdByDoctorMutation,
   useGetAllAppointmentQuery,
   useGetAppointmentByIdQuery,
   useGetAppointmentDoctorByIdQuery,
