@@ -117,7 +117,7 @@ const AppointmentDetails = (props) => {
           .then(() => {
             console.log("Document deleted successfully");
             // Remove the document from the state after deletion
-            setDocuments(
+            setDocumentsByDoctorState(
               documentsByDoctorState.filter((doc) => doc.key !== key)
             );
           })
