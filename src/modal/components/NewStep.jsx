@@ -10,7 +10,13 @@ function NewStep({ setExtraInfo, extraInfo, user }) {
       message.error("You can only upload up to 5 files.");
     } else {
       const pdfFiles = fileList.map((file) => file.originFileObj); // Extract raw files
-      setExtraInfo({ ...extraInfo, pdfFiles });
+      // Add `uid` and necessary metadata back to fileList
+      const updatedFileList = fileList.map((file) => ({
+        ...file,
+        uid: file.uid || Date.now().toString(), // Ensure uid exists
+        status: file.status || "done", // Add a default status
+      }));
+      setExtraInfo({ ...extraInfo, pdfFiles, fileList: updatedFileList });
     }
   };
 
@@ -216,7 +222,7 @@ function NewStep({ setExtraInfo, extraInfo, user }) {
             {/* Upload Documents */}
           </p>
           <Upload
-            fileList={extraInfo?.pdfFiles || []}
+            fileList={extraInfo?.fileList || []}
             beforeUpload={(file) => {
               const isPDF = file.type === "application/pdf";
               if (!isPDF) {
