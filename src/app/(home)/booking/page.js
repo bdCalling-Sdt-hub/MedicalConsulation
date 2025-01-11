@@ -145,7 +145,7 @@ const Booking = (pops) => {
 
         if (response?.data) {
           setCreatedAppointment(response?.data?.appointment);
-          setCurrentStep(4);
+          setCurrentStep(5);
         }
       } catch (error) {
         console.error("Appointment creation failed", error);
@@ -191,6 +191,8 @@ const Booking = (pops) => {
       // console.log("data", data);
     }
   }, [pops?.searchParams, getServiceById]);
+
+  console.log("currentStep", currentStep);
 
   return (
     <div className=" container mx-auto  my-10">
