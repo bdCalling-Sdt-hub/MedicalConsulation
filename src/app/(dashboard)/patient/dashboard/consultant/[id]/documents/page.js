@@ -59,7 +59,7 @@ const AppointmentDetails = (props) => {
   );
   const { data: documentsDataByDoctor } =
     useGetAllDocumentsByAppointmentIdByDoctorQuery(props.params.id);
-  console.log("documentsDataByDoctor", documentsDataByDoctor);
+  // console.log("documentsDataByDoctor", documentsDataByDoctor);
   const [deleteDocumentByAppointmentId] =
     useDeleteDocumentByAppointmentIdMutation();
 
@@ -184,10 +184,10 @@ const AppointmentDetails = (props) => {
 
   const { data: Appointments } = useGetAppointmentByIdQuery(props.params.id);
 
-  console.log("props.params.id", props.params.id);
-  console.log("documentsData", documentsData);
+  // console.log("props.params.id", props.params.id);
+  // console.log("documentsData", documentsData);
 
-  console.log(Appointments);
+  // console.log(Appointments);
 
   const [content, setContent] = useState("");
 
@@ -331,6 +331,7 @@ const AppointmentDetails = (props) => {
                 if (!files) {
                   return;
                 }
+                console.log("files", files);
                 const formData = new FormData();
 
                 // Use the 'files' state directly instead of redefining it
@@ -342,6 +343,8 @@ const AppointmentDetails = (props) => {
                   id: props.params.id,
                   data: formData,
                 });
+
+                console.log("res", res);
 
                 if (res.data) {
                   Swal.fire({

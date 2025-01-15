@@ -234,7 +234,7 @@ const Appointment = () => {
   return (
     <div>
       <div className="flex justify-between">
-        <Input
+        {/* <Input
           prefix={<Search />}
           className="w-1/2 rounded-2xl h-12 bg-base border-0 text-primary placeholder:text-gray-200"
           placeholder="Search by email"
@@ -242,7 +242,7 @@ const Appointment = () => {
             backgroundColor: "#f0f0f0",
             color: "#333333",
           }}
-        />
+        /> */}
         <div>
           <SelectBox
             placeholder="Filter by status"
