@@ -58,7 +58,7 @@ const Appointment = () => {
 
   const columns = [
     {
-      title: "Email",
+      title: "Doctor's Email",
       dataIndex: "patientEmail",
       key: "patientEmail",
       render: (_, record) => (
@@ -74,7 +74,21 @@ const Appointment = () => {
       ),
     },
     {
-      title: "Slots",
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      render: (_, record) => (
+        <div className="flex-col flex w-40 gap-4">
+          <Tag className="text-center" color="geekblue" type="secondary">
+            <span className=" ">
+              {extractDateTimeParts(record?.dateTime, true, true).date}{" "}
+            </span>
+          </Tag>
+        </div>
+      ),
+    },
+    {
+      title: "Time",
       dataIndex: "dateTimes",
       key: "dateTimes",
       render: (_, record) => (
@@ -89,7 +103,7 @@ const Appointment = () => {
       ),
     },
     {
-      title: "Days Of Week",
+      title: "Day",
       dataIndex: "daysOfWeek",
       key: "daysOfWeek",
       render: (_, record) => (

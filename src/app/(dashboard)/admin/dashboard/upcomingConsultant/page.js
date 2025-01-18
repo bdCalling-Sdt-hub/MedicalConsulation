@@ -318,7 +318,7 @@ const UpcomingConsultant = () => {
       key: "dateTime",
       render: (_, record) => (
         <Text code className="text-[#71717A]">
-          {new Date(record?.dateTime).toLocaleDateString()}
+          {new Date(record?.dateTime).toLocaleString()}
         </Text>
       ),
     },
