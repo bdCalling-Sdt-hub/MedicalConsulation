@@ -177,6 +177,12 @@ const Booking = (pops) => {
   // console.log(selectedItem);
 
   useEffect(() => {
+    console.log("user", user);
+    if (!user?.email) {
+      router.push("/auth/login");
+      return;
+    }
+    console.log("user", user);
     if (pops?.searchParams?._id) {
       // setSelectedItem(pops?.searchParams);
 
@@ -190,7 +196,7 @@ const Booking = (pops) => {
       // const data = serviceById(pops?.searchParams._id);
       // console.log("data", data);
     }
-  }, [pops?.searchParams, getServiceById]);
+  }, [pops?.searchParams, getServiceById, router, user]);
 
   console.log("currentStep", currentStep);
 
