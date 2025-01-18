@@ -1,14 +1,17 @@
 import { extractDateTimeParts } from "../../utils/extractDateTimeParts";
 
 function Step3({ selectedItem, setDateTime, dateTime }) {
-  // if (selectedItem) {
-  //   selectedItem.dateTimes =
-  //     typeof selectedItem.dateTimes === "string"
-  //       ? [selectedItem.dateTimes]
-  //       : selectedItem.dateTimes;
-  // }
+  const handleDayClick = (day) => {
+    setDateTime({
+      ...dateTime,
+      dayOfWeek: day?.toLocaleLowerCase(),
+      dateTime: null,
+    });
+  };
 
-  console.log("selectedItem", selectedItem);
+  const handleTimeClick = (time) => {
+    setDateTime({ ...dateTime, dateTime: time });
+  };
 
   return (
     <div>
@@ -25,7 +28,7 @@ function Step3({ selectedItem, setDateTime, dateTime }) {
         </h1>
         <div className="grid grid-cols-7 gap-3">
           {selectedItem?.dateTimes &&
-            selectedItem?.dateTimes?.map((item, index) => (
+            selectedItem.dateTimes.map((item, index) => (
               <div
                 key={index}
                 className={`h-36 flex-col flex justify-center items-center gap-y-2 cursor-pointer ${
@@ -34,13 +37,7 @@ function Step3({ selectedItem, setDateTime, dateTime }) {
                     ? "bg-primary6"
                     : "bg-primary1"
                 }`}
-                onClick={() => {
-                  setDateTime({
-                    ...dateTime,
-                    dayOfWeek:
-                      extractDateTimeParts(item).day?.toLocaleLowerCase(),
-                  });
-                }}
+                onClick={() => handleDayClick(extractDateTimeParts(item).day)}
               >
                 <h3 className={`text-sm text-gray-600 font-merri font-normal`}>
                   {extractDateTimeParts(item).date}
@@ -56,33 +53,41 @@ function Step3({ selectedItem, setDateTime, dateTime }) {
       </div>
 
       {/* Pick a Time */}
-      <div>
-        <h1 className={`text-offBlack text-base font-merri font-normal mb-6`}>
-          Pick your Time
-        </h1>
-        <div className="grid grid-cols-7 gap-3">
-          {selectedItem?.dateTimes?.map((item, index) => (
-            <div
-              key={index}
-              className={`h-36 flex-col flex justify-center items-center gap-y-2 cursor-pointer ${
-                dateTime?.dateTime === item ? "bg-primary6" : "bg-primary1"
-              }`}
-              onClick={() => {
-                setDateTime({ ...dateTime, dateTime: item });
-              }}
-            >
-              <h3 className={`text-sm text-gray-600 font-merri font-normal`}>
-                {extractDateTimeParts(item).period}
-              </h3>
-              <h1
-                className={`text-[20px] text-gray-700 font-normal font-merri`}
-              >
-                {extractDateTimeParts(item, true, true).time}
-              </h1>
-            </div>
-          ))}
+      {dateTime?.dayOfWeek && (
+        <div>
+          <h1 className={`text-offBlack text-base font-merri font-normal mb-6`}>
+            Pick your Time
+          </h1>
+          <div className="grid grid-cols-7 gap-3">
+            {selectedItem?.dateTimes
+              ?.filter(
+                (item) =>
+                  extractDateTimeParts(item).day?.toLocaleLowerCase() ===
+                  dateTime.dayOfWeek
+              )
+              .map((item, index) => (
+                <div
+                  key={index}
+                  className={`h-36 flex-col flex justify-center items-center gap-y-2 cursor-pointer ${
+                    dateTime?.dateTime === item ? "bg-primary6" : "bg-primary1"
+                  }`}
+                  onClick={() => handleTimeClick(item)}
+                >
+                  <h3
+                    className={`text-sm text-gray-600 font-merri font-normal`}
+                  >
+                    {extractDateTimeParts(item).period}
+                  </h3>
+                  <h1
+                    className={`text-[20px] text-gray-700 font-normal font-merri`}
+                  >
+                    {extractDateTimeParts(item, true, true).time}
+                  </h1>
+                </div>
+              ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
