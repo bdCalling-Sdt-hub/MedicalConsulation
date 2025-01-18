@@ -22,7 +22,6 @@ function Services({
 
   // Function to handle selecting an item
   const handleSelectItem = (item) => {
-    console.log(item);
     setSelectedItem && setSelectedItem(item); // Set the clicked item as the selected item
   };
 
