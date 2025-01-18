@@ -77,7 +77,7 @@ function Step3({ selectedItem, setDateTime, dateTime }) {
               <h1
                 className={`text-[20px] text-gray-700 font-normal font-merri`}
               >
-                {extractDateTimeParts(item).time}
+                {extractDateTimeParts(item, true, true).time}
               </h1>
             </div>
           ))}
